@@ -53,10 +53,14 @@ function toggleCreateBoardFormDisplay() {
     form.classList.toggle('hidden');
 }
 
+function focusSelectTextField(textField) {
+    textField.focus();
+    textField.select();
+}
+
 function focusSelectInput() {
     const input = getCreateBoardInput();
-    input.focus();
-    input.select();
+    focusSelectTextField(input);
 }
 
 function handleCreateBoardButtonClick() {
