@@ -10,10 +10,8 @@ export let dom = {
         });
         document.querySelector('button.save-new-board').addEventListener('click', () => {
             const boardTitle = document.querySelector('input.create-board').value;
-            dataHandler.createNewBoard(boardTitle, (boardTitle) => {
-                const boardHTML = `<li>${boardTitle}</li>`;
-                const boardContainer = document.querySelector('.board-container');
-                boardContainer.insertAdjacentHTML('beforeend', boardHTML);
+            dataHandler.createNewBoard(boardTitle, (boardElement) => {
+                document.querySelector('.board-container').appendChild(boardElement);
             })
         })
     },
