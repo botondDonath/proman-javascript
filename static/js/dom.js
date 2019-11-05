@@ -15,6 +15,9 @@ export let dom = {
                 const board = this.renderBoard(boardData, boardTemplate);
                 const container = document.getElementById('boards');
                 container.appendChild(board);
+                const form = document.querySelector('.form.create-board');
+                form.querySelector('input').value = '';
+                form.classList.toggle('hidden');
             })
         })
     },
