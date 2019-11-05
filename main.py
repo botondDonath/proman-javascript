@@ -1,6 +1,8 @@
 from flask import Flask, render_template, url_for
 from util import json_response
 
+import data_manager
+
 app = Flask(__name__)
 
 
@@ -18,7 +20,7 @@ def get_boards():
     """
     All the boards
     """
-    return 'sanyi'
+    return data_manager.get_boards()
 
 
 @app.route("/get-cards/<int:board_id>")
