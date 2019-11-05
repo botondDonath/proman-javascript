@@ -17,5 +17,27 @@
     <body>
         <h1>ProMan</h1>
         <div id="boards">Boards are loading...</div>
+
+        <template id="board-template">
+            <div class="board">
+                <div class="board-header">
+                    <div class="board-title"></div>
+                    <button type="button" class="add-card"></button>
+                    <button type="button" class="open-board"></button>
+                </div>
+                <div class="board-columns"></div>
+            </div>
+        </template>
+
+        <template id="board-column-template">
+            <div class="board-column"></div>
+        </template>
+
+        <template id="card-template">
+            <div class="card">
+                <div class="card-title"></div>
+                <button type="button" class="card-delete"></button>
+            </div>
+        </template>
     </body>
 </html>
