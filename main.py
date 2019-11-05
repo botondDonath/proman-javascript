@@ -35,6 +35,13 @@ def get_cards_for_board(board_id: int):
     return cards
 
 
+@app.route("/create-board")
+@json_response
+def create_board():
+    # req = request.form.get
+    return '', 204
+
+
 def main():
     app.run(debug=True)
 
