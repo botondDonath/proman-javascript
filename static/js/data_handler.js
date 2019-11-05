@@ -19,6 +19,18 @@ export let dataHandler = {
     _api_post: function (url, data, callback) {
         // it is not called from outside
         // sends the data to the API, and calls callback function
+
+        fetch(url, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: new Headers({
+                'content-type': 'application/json'
+            }),
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(json_response => callback(json_response));
+
     },
     init: function () {
     },
