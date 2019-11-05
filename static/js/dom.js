@@ -10,6 +10,9 @@ export let dom = {
         });
         document.querySelector('button.save-new-board').addEventListener('click', () => {
             const boardTitle = document.querySelector('input.create-board').value;
+            if (!boardTitle) {
+                return;
+            }
             dataHandler.createNewBoard(boardTitle, (boardData) => {
                 const boardTemplate = document.getElementById('board-template');
                 const board = this.renderBoard(boardData, boardTemplate);
