@@ -30,11 +30,6 @@ function resetCreateBoardInput() {
     input.value = input.dataset.default;
 }
 
-function toggleCreateBoardFormDisplay() {
-    const form = getCreateBoardForm();
-    form.classList.toggle('hidden');
-}
-
 function renderBoard(boardData, template) {
     const board = document.importNode(template.content, true);
     board.querySelector('.board-title').textContent = boardData.title;
@@ -53,8 +48,20 @@ function handleCreateBoardInputClickOutside() {
     }
 }
 
+function toggleCreateBoardFormDisplay() {
+    const form = getCreateBoardForm();
+    form.classList.toggle('hidden');
+}
+
+function focusSelectInput() {
+    const input = getCreateBoardInput();
+    input.focus();
+    input.select();
+}
+
 function handleCreateBoardButtonClick() {
     toggleCreateBoardFormDisplay();
+    focusSelectInput();
 }
 
 function handleSaveBoardButtonClick() {
