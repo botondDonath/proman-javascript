@@ -1,37 +1,74 @@
 // It uses data_handler.js to visualize elements
 import {dataHandler} from "./data_handler.js";
 
+function getCreateBoardInput() {
+    return document.querySelector('input.create-board');
+}
+
+function getCreateBoardForm() {
+    return document.querySelector('.form.create-board');
+}
+
+function getCreateBoardButton() {
+    return document.querySelector('button.create-board');
+}
+
+function getSaveBoardButton() {
+    return document.querySelector('button.save-board');
+}
+
+function getBoardTemplate() {
+    return document.getElementById('board-template');
+}
+
+function getBoardsContainer() {
+    return document.getElementById('boards');
+}
+
+function resetCreateBoardInput() {
+    const input = getCreateBoardInput();
+    input.value = input.dataset.default;
+}
+
+function toggleCreateBoardFormDisplay() {
+    const form = getCreateBoardForm();
+    form.classList.toggle('hidden');
+}
+
 function renderBoard(boardData, template) {
     const board = document.importNode(template.content, true);
     board.querySelector('.board-title').textContent = boardData.title;
     return board
 }
 
+function appendBoard(board) {
+    const container = getBoardsContainer();
+    container.appendChild(board);
+}
+
 function handleCreateBoardInputClickOutside() {
-    const input = document.querySelector('input.create-board');
-    if (input.value) {
-        input.value = '';
+    const input = getCreateBoardInput();
+    if (input.value !== input.dataset.default) {
+        input.value = input.dataset.default;
     }
 }
 
 function handleCreateBoardButtonClick() {
-    const form = document.querySelector('.form.create-board');
-    form.classList.toggle('hidden');
+    toggleCreateBoardFormDisplay();
 }
 
 function handleSaveBoardButtonClick() {
-    const boardTitle = document.querySelector('input.create-board').value;
+    const input = getCreateBoardInput();
+    const boardTitle = input.value;
     if (!boardTitle) {
         return;
     }
     dataHandler.createNewBoard(boardTitle, (boardData) => {
-        const boardTemplate = document.getElementById('board-template');
+        const boardTemplate = getBoardTemplate();
         const board = renderBoard(boardData, boardTemplate);
-        const container = document.getElementById('boards');
-        container.appendChild(board);
-        const form = document.querySelector('.form.create-board');
-        form.querySelector('input').value = '';
-        form.classList.toggle('hidden');
+        appendBoard(board);
+        resetCreateBoardInput();
+        toggleCreateBoardFormDisplay();
     })
 }
 
@@ -40,8 +77,8 @@ export let dom = {
         // This function should run once, when the page is loaded.
 
         // Get relevant elements
-        const createBoardButton = document.querySelector('button.create-board');
-        const saveBoardButton = document.querySelector('button.save-new-board');
+        const createBoardButton = getCreateBoardButton();
+        const saveBoardButton = getSaveBoardButton();
 
         // Add event listeners
         window.addEventListener('click', handleCreateBoardInputClickOutside);
@@ -57,8 +94,8 @@ export let dom = {
     showBoards: function (boards) {
         // shows boards appending them to #boards div
         // it adds necessary event listeners also
-        const boardTemplate = document.getElementById('board-template');
-        const container = document.getElementById('boards');
+        const boardTemplate = getBoardTemplate();
+        const container = getBoardsContainer();
         for (const boardData of boards) {
             const board = renderBoard(boardData, boardTemplate);
             container.appendChild(board);
