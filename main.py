@@ -39,9 +39,8 @@ def get_cards_for_board(board_id: int):
 @json_response
 def create_board():
     req = request.get_json()
-    board_title = req['title']
-    data_manager.insert_board(board_title)
-    return req
+    data_manager.insert_board(req['title'])
+    return data_manager.get_newest_board()
 
 
 def main():

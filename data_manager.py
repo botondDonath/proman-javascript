@@ -47,3 +47,15 @@ def insert_board(cursor, title):
         ''',
         {'title': title}
     )
+
+
+@connection_handler
+def get_newest_board(cursor):
+    cursor.execute(
+        '''
+        SELECT id, title FROM boards
+        ORDER BY id DESC LIMIT 1;
+        '''
+    )
+    board = cursor.fetchone()
+    return board
