@@ -1,5 +1,5 @@
 // It uses data_handler.js to visualize elements
-import { dataHandler } from "./data_handler.js";
+import {dataHandler} from "./data_handler.js";
 
 export let dom = {
     init: function () {
@@ -7,11 +7,20 @@ export let dom = {
         document.querySelector('button.create-board').addEventListener('click', () => {
             const form = document.querySelector('.form.create-board');
             form.classList.toggle('hidden');
+        });
+        document.querySelector('button.save-new-board').addEventListener('click', () => {
+            const boardTitle = document.querySelector('input.create-board').value;
+            dataHandler.createNewBoard(boardTitle, (boardTitle) => {
+                const boardHTML = `<li>${boardTitle}</li>`;
+                console.log('boardHTML created');
+                const boardContainer = document.querySelector('.board-container');
+                boardContainer.insertAdjacentHTML('beforeend', boardHTML);
+            })
         })
     },
     loadBoards: function () {
         // retrieves boards and makes showBoards called
-        dataHandler.getBoards(function(boards){
+        dataHandler.getBoards(function (boards) {
             dom.showBoards(boards);
         });
     },
@@ -21,7 +30,7 @@ export let dom = {
 
         let boardList = '';
 
-        for(let board of boards){
+        for (let board of boards) {
             boardList += `
                 <li>${board.title}</li>
             `;
