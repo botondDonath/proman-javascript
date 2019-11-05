@@ -12,7 +12,6 @@ export let dom = {
             const boardTitle = document.querySelector('input.create-board').value;
             dataHandler.createNewBoard(boardTitle, (boardTitle) => {
                 const boardHTML = `<li>${boardTitle}</li>`;
-                console.log('boardHTML created');
                 const boardContainer = document.querySelector('.board-container');
                 boardContainer.insertAdjacentHTML('beforeend', boardHTML);
             })
