@@ -5,7 +5,7 @@ from connection import connection_handler
 def get_boards(cursor):
     cursor.execute(
         '''
-        SELECT id, title
+        SELECT title
         FROM boards
         '''
     )
