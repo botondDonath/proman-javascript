@@ -10,8 +10,11 @@ export let dom = {
         });
         document.querySelector('button.save-new-board').addEventListener('click', () => {
             const boardTitle = document.querySelector('input.create-board').value;
-            dataHandler.createNewBoard(boardTitle, (boardElement) => {
-                document.querySelector('.board-container').appendChild(boardElement);
+            dataHandler.createNewBoard(boardTitle, (boardData) => {
+                const boardTemplate = document.getElementById('board-template');
+                const board = this.renderBoard(boardData, boardTemplate);
+                const container = document.getElementById('boards');
+                container.appendChild(board);
             })
         })
     },
@@ -24,23 +27,12 @@ export let dom = {
     showBoards: function (boards) {
         // shows boards appending them to #boards div
         // it adds necessary event listeners also
-
-        let boardList = '';
-
-        for (let board of boards) {
-            boardList += `
-                <li>${board.title}</li>
-            `;
+        const boardTemplate = document.getElementById('board-template');
+        const container = document.getElementById('boards');
+        for (const boardData of boards) {
+            const board = this.renderBoard(boardData, boardTemplate);
+            container.appendChild(board);
         }
-
-        const outerHtml = `
-            <ul class="board-container">
-                ${boardList}
-            </ul>
-        `;
-
-        let boardsContainer = document.querySelector('#boards');
-        boardsContainer.insertAdjacentHTML("beforeend", outerHtml);
     },
     loadCards: function (boardId) {
         // retrieves cards and makes showCards called
@@ -50,4 +42,9 @@ export let dom = {
         // it adds necessary event listeners also
     },
     // here comes more features
+    renderBoard: function (boardData, template) {
+        const board = document.importNode(template.content, true);
+        board.querySelector('.board-title').textContent = boardData.title;
+        return board
+    }
 };
