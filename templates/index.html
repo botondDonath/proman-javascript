@@ -18,7 +18,7 @@
         <h1>ProMan</h1>
         <div class="container create-board">
             <button type="button" class="create-board">Create new board</button>
-            <form action="{{ url_for('create_board') }}" class="create-board">
+            <form action="{{ url_for('create_board') }}" class="create-board hidden">
                 <input type="text" name="title" maxlength="100" required>
                 <button type="submit">Save</button>
             </form>
