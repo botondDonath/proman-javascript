@@ -4,6 +4,12 @@ import {dataHandler} from "./data_handler.js";
 export let dom = {
     init: function () {
         // This function should run once, when the page is loaded.
+        window.addEventListener('click', () => {
+            const input = document.querySelector('input.create-board');
+            if (input.value) {
+                input.value = '';
+            }
+        });
         document.querySelector('button.create-board').addEventListener('click', () => {
             const form = document.querySelector('.form.create-board');
             form.classList.toggle('hidden');
