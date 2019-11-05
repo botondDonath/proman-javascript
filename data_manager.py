@@ -5,7 +5,7 @@ from connection import connection_handler
 def get_boards(cursor):
     cursor.execute(
         '''
-        SELECT title
+        SELECT id, title
         FROM boards
         '''
     )
@@ -35,4 +35,15 @@ def delete_card(cursor, card_id):
         WHERE id = %(card_id)s
         ''',
         {'card_id': card_id}
+    )
+
+
+@connection_handler
+def insert_board(cursor, title):
+    cursor.execute(
+        '''
+        INSERT INTO boards (title)
+        VALUES (%(title)s)
+        ''',
+        {'title': title}
     )
