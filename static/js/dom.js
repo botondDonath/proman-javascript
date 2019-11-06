@@ -53,19 +53,15 @@ function toggleCreateBoardFormDisplay() {
     form.classList.toggle('hidden');
 }
 
-function focusSelectTextField(textField) {
-    textField.focus();
-    textField.select();
-}
-
-function focusSelectInput() {
-    const input = getCreateBoardInput();
-    focusSelectTextField(input);
+function focusSelectTextInputElement(element) {
+    element.focus();
+    element.select();
 }
 
 function handleCreateBoardButtonClick() {
     toggleCreateBoardFormDisplay();
-    focusSelectInput();
+    const input = getCreateBoardInput();
+    focusSelectTextInputElement(input);
 }
 
 function handleSaveBoardButtonClick() {
