@@ -24,6 +24,14 @@ def get_boards():
     return boards
 
 
+@app.route("/boards", methods=['POST'])
+@json_response
+def create_board():
+    req = request.get_json()
+    data_manager.insert_board(req['title'])
+    return data_manager.get_newest_board()
+
+
 @app.route("/get-cards/<board_id>")
 @json_response
 def get_cards_for_board(board_id: int):
@@ -35,12 +43,12 @@ def get_cards_for_board(board_id: int):
     return cards
 
 
-@app.route("/boards", methods=['POST'])
+@app.route('/new-card', methods=['POST'])
 @json_response
-def create_board():
+def add_new_card():
     req = request.get_json()
-    data_manager.insert_board(req['title'])
-    return data_manager.get_newest_board()
+    data_manager.new_card(req['board_id'], req['title'], req['status_id'])
+    pass
 
 
 @app.route('/statuses')
