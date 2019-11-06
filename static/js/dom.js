@@ -32,6 +32,14 @@ function focusSelectTextInputElement(element) {
     element.select();
 }
 
+function isElementHidden(element) {
+    return element.classList.contains('hidden');
+}
+
+function hasElementFocus(element) {
+    return document.activeElement === element;
+}
+
 //----------------------------------------------------------------------
 // EVENT HANDLERS
 //----------------------------------------------------------------------
@@ -65,7 +73,11 @@ function handleSaveBoardButtonClick() {
 }
 
 function handleCreateBoardInputEscPress(event) {
-    
+    const input = event.target;
+    if (hasElementFocus(input) && !isElementHidden(input)) {
+        input.value = input.dataset.default;
+        input.blur();
+    }
 }
 
 //----------------------------------------------------------------------
@@ -76,14 +88,11 @@ export let dom = {
     init: function () {
         // This function should run once, when the page is loaded.
 
-        // Get relevant elements
-        const createBoardButton = $.getCreateBoardButton();
-        const saveBoardButton = $.getSaveBoardButton();
-
         // Add event listeners
         window.addEventListener('click', handleCreateBoardInputClickOutside);
-        createBoardButton.addEventListener('click', handleCreateBoardButtonClick);
-        saveBoardButton.addEventListener('click', handleSaveBoardButtonClick);
+        $.getCreateBoardButton().addEventListener('click', handleCreateBoardButtonClick);
+        $.getSaveBoardButton().addEventListener('click', handleSaveBoardButtonClick);
+        $.getCreateBoardInput().addEventListener('keyup', handleCreateBoardInputEscPress);
     },
     loadBoards: function () {
         // retrieves boards and makes showBoards called
