@@ -166,8 +166,6 @@ export let dom = {
         // shows the cards of a board
         // it adds necessary event listeners also
         const board = document.querySelector(`.board[data-board-id="${cards[0].board_id}"]`);
-        console.log(board);
-        console.log(cards);
         for (const card of cards) {
             const column = board.querySelector(`.board-column[data-status-id="${card.status_id}"]`);
             const cardNode = createCard(card);
