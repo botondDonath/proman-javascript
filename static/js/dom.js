@@ -57,10 +57,27 @@ function handleCreateBoardButtonClick(event) {
     }
 }
 
-function handleCreateBoardInputClickOutside() {
-    const input = $.getCreateBoardInput();
-    input.value = input.dataset.default;
-    input.blur();
+
+function resetBoardTitleIfNecessary(event) {
+    const renameBoardInput = document.querySelector('.rename-board-container');
+    if (!renameBoardInput) {
+        return;
+    }
+    let saveButton = document.querySelector('.save-board-title');
+    let input = document.querySelector('.rename-board-input');
+    if (event.target !== input && event.target !== saveButton) {
+        renameBoardInput.remove();
+        let renamedBoard = document.querySelector('.board-title.hidden');
+        toggleElementDisplay(renamedBoard);
+    }
+}
+
+function handleOutsideClick(event) {
+    const createBoardInput = $.getCreateBoardInput();
+    createBoardInput.value = createBoardInput.dataset.default;
+    createBoardInput.blur();
+    resetBoardTitleIfNecessary(event);
+
 }
 
 function handleCreateBoardInputClick(event) {
@@ -94,22 +111,28 @@ function handleSaveBoardButtonClick(event) {
 
 function renameBoard(event) {
     event.stopPropagation();
+    resetBoardTitleIfNecessary(event);
     let boardTitleElement = event.target;
     let boardTitle = boardTitleElement.textContent;
     let boardId = boardTitleElement.dataset.boardId;
     toggleElementDisplay(boardTitleElement);
     let inputContainer = document.createElement('div');
+    inputContainer.classList.add("rename-board-container");
     let input = document.createElement('input');
+    input.classList.add('rename-board-input');
     input.type = "text";
     input.setAttribute('value', `${boardTitle}`);
     inputContainer.appendChild(input);
     let button = document.createElement('button');
+    button.classList.add('save-board-title');
     button.type = "button";
     button.textContent = "Save";
     inputContainer.appendChild(button);
     boardTitleElement.parentNode.insertAdjacentHTML('afterbegin', inputContainer.outerHTML);
 
 }
+
+
 
 //----------------------------------------------------------------------
 // OBJECT WITH FUNCTIONS FOR EXPORT
@@ -125,7 +148,7 @@ export let dom = {
         const createBoardInput = $.getCreateBoardInput();
 
         // Add event listeners
-        window.addEventListener('click', handleCreateBoardInputClickOutside);
+        window.addEventListener('click', handleOutsideClick);
         createBoardButton.addEventListener('click', handleCreateBoardButtonClick);
         saveBoardButton.addEventListener('click', handleSaveBoardButtonClick);
         createBoardInput.addEventListener('click', handleCreateBoardInputClick);
