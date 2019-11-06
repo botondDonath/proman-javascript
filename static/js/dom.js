@@ -41,6 +41,7 @@ function resetCreateBoardInput() {
 function renderBoard(boardData, template) {
     const board = document.importNode(template.content, true);
     board.querySelector('.board-title').textContent = boardData.title;
+    board.querySelector('.board').dataset.boardId = boardData.id;
     return board
 }
 
@@ -64,7 +65,7 @@ const createColumns = function(status){
     const clone = document.importNode(template.content, true);
 
     clone.querySelector('.board-column-title').textContent = status.title;
-
+    clone.querySelector('.board-column').dataset.statusId = status.id;
     return clone;
 };
 
@@ -103,7 +104,6 @@ function handleSaveBoardButtonClick() {
 function handleOpenBoardClick() {
     const button = this;
     const board = button.parentNode.parentNode;
-    console.log(board);
     dom.loadColumns(board);
 }
 
@@ -139,7 +139,6 @@ export let dom = {
         dataHandler.getBoards(function (boards) {
             dom.showBoards(boards);
             const openButtons = document.querySelectorAll('.open-board');
-            console.log(openButtons);
             for (let button of openButtons) {
                 button.addEventListener('click', handleOpenBoardClick);
                 }
@@ -155,9 +154,8 @@ export let dom = {
             container.appendChild(board);
         }
     },
-    loadCards: function () {
+    loadCards: function (board) {
         // retrieves cards and makes showCards called
-        const board = this;
         const boardId = board.dataset.boardId;
         dataHandler.getCardsByBoardId(boardId, function (cards) {
             dom.showCards(cards);
@@ -166,19 +164,20 @@ export let dom = {
     showCards: function (cards) {
         // shows the cards of a board
         // it adds necessary event listeners also
-        let cardNodes = [];
-        for (let card of cards) {
-            cardNodes.push(createCard(card));
-        }
-
-        for (let cardNode of cardNodes) {
-
+        const board = document.querySelector(`.board[data-board-id="${cards[0].board_id}"]`);
+        console.log(board);
+        console.log(cards);
+        for (const card of cards) {
+            const column = board.querySelector(`.board-column[data-status-id="${card.status_id}"]`);
+            const cardNode = createCard(card);
+            column.appendChild(cardNode);
         }
     },
     loadColumns: function (board) {
         alert('AI');
         dataHandler.getStatuses(function (statuses) {
             dom.showColumns(board, statuses);
+            dom.loadCards(board)
         });
     },
     showColumns: function (board, statuses) {
@@ -186,7 +185,6 @@ export let dom = {
             const column = createColumns(status);
             board.appendChild(column)
         }
-        // loadcards, showcards
     }
     // here comes more features
 };
