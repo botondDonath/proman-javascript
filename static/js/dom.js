@@ -65,7 +65,7 @@ function resetBoardTitleIfNecessary(event, newTitle=null) {
     }
     let saveButton = document.querySelector('.save-board-title');
     let input = document.querySelector('.rename-board-input');
-    if (event.target !== input && (event.target !== saveButton || newTitle)) {
+    if (event.target !== input && (event.target !== saveButton || newTitle) && !input.classList.contains('clicked')) {
         renameBoardInput.remove();
         let renamedBoard = document.querySelector('.board-title.hidden');
         if (newTitle) {
@@ -73,6 +73,7 @@ function resetBoardTitleIfNecessary(event, newTitle=null) {
         }
         toggleElementDisplay(renamedBoard);
     }
+    input.classList.remove('clicked');
 }
 
 function handleOutsideClick(event) {
@@ -134,6 +135,10 @@ function displayInputToRenameBoard(event) {
     inputContainer.appendChild(button);
     boardTitleElement.parentNode.insertAdjacentHTML('afterbegin', inputContainer.outerHTML);
     document.querySelector('.save-board-title').addEventListener('click', renameBoard);
+    document.querySelector('.rename-board-input').addEventListener('mousedown', function(event) {
+        event.stopPropagation();
+        event.target.classList.add('clicked');
+    })
 }
 
 function renameBoard(event) {
