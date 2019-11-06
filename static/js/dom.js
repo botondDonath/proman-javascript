@@ -3,6 +3,14 @@ import {dataHandler} from "./data_handler.js";
 import {query as $} from "./query.js";
 
 //----------------------------------------------------------------------
+// GLOBALS
+//----------------------------------------------------------------------
+
+const globals = {
+    keyCodeEsc: 27,
+};
+
+//----------------------------------------------------------------------
 // FUNCTIONS EXTRACTED FOR THE SAKE OF CLEANER CODE
 //----------------------------------------------------------------------
 
@@ -74,7 +82,7 @@ function handleSaveBoardButtonClick() {
 
 function handleCreateBoardInputEscPress(event) {
     const input = event.target;
-    if (hasElementFocus(input) && !isElementHidden(input)) {
+    if (event.keyCode === globals.keyCodeEsc && hasElementFocus(input) && !isElementHidden(input)) {
         input.value = input.dataset.default;
         input.blur();
     }
