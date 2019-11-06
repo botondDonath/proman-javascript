@@ -1,6 +1,9 @@
 // It uses data_handler.js to visualize elements
 import {dataHandler} from "./data_handler.js";
 
+
+//----------FUNCTIONS TO GET ELEMENTS----------
+
 function getCreateBoardInput() {
     return document.querySelector('input.create-board');
 }
@@ -25,6 +28,9 @@ function getBoardsContainer() {
     return document.getElementById('boards');
 }
 
+
+//----------FUNCTIONS EXTRACTED FOR THE SAKE OF CLEANER CODE----------
+
 function resetCreateBoardInput() {
     const input = getCreateBoardInput();
     input.value = input.dataset.default;
@@ -41,13 +47,6 @@ function appendBoard(board) {
     container.appendChild(board);
 }
 
-function handleCreateBoardInputClickOutside() {
-    const input = getCreateBoardInput();
-    if (input.value !== input.dataset.default) {
-        input.value = input.dataset.default;
-    }
-}
-
 function toggleCreateBoardFormDisplay() {
     const form = getCreateBoardForm();
     form.classList.toggle('hidden');
@@ -56,6 +55,16 @@ function toggleCreateBoardFormDisplay() {
 function focusSelectTextInputElement(element) {
     element.focus();
     element.select();
+}
+
+
+//----------EVENT HANDLERS----------
+
+function handleCreateBoardInputClickOutside() {
+    const input = getCreateBoardInput();
+    if (input.value !== input.dataset.default) {
+        input.value = input.dataset.default;
+    }
 }
 
 function handleCreateBoardButtonClick() {
@@ -78,6 +87,9 @@ function handleSaveBoardButtonClick() {
         toggleCreateBoardFormDisplay();
     })
 }
+
+
+//----------OBJECT WITH FUNCTIONS FOR EXPORT----------
 
 export let dom = {
     init: function () {
