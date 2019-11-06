@@ -13,8 +13,8 @@ export let dataHandler = {
             method: 'GET',
             credentials: 'same-origin'
         })
-        .then(response => response.json())  // parse the response as JSON
-        .then(json_response => callback(json_response));  // Call the `callback` with the returned object
+            .then(response => response.json())  // parse the response as JSON
+            .then(json_response => callback(json_response));  // Call the `callback` with the returned object
     },
     _api_post: function (url, data, callback) {
         // it is not called from outside
@@ -28,8 +28,8 @@ export let dataHandler = {
             }),
             body: JSON.stringify(data)
         })
-        .then(response => response.json())
-        .then(json_response => callback(json_response));
+            .then(response => response.json())
+            .then(json_response => callback(json_response));
 
     },
     init: function () {
@@ -59,13 +59,14 @@ export let dataHandler = {
     },
     getCardsByBoardId: function (boardId, callback) {
         // the cards are retrieved and then the callback function is called with the cards
-        this._api_get(`/get-cards/${boardId}`, (response) =>{
+        this._api_get(`/get-cards/${boardId}`, (response) => {
             this._data = response;
             callback(response);
         })
     },
     getCard: function (cardId, callback) {
         // the card is retrieved and then the callback function is called with the card
+        this._api_get(`/card/${cardId}`, (card) => callback(card))
     },
     createNewBoard: function (boardTitle, callback) {
         // creates new board, saves it and calls the callback function with its data
@@ -73,7 +74,15 @@ export let dataHandler = {
     },
     createNewCard: function (cardTitle, boardId, statusId, callback) {
         // creates new card, saves it and calls the callback function with its data
-        this._api_post('/new-card', {'title': cardTitle, 'board_id': boardId, 'status_id': statusId}, (response) => callback(response))
+        this._api_post('/new-card', {
+            'title': cardTitle,
+            'board_id': boardId,
+            'status_id': statusId
+        }, (cardId) => {
+            dataHandler.getCard(cardId, (card) => {
+                callback(card)
+            })
+        })
     }
     // here comes more features
 };
