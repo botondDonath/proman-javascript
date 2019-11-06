@@ -38,12 +38,18 @@ function resetCreateBoardInput() {
     input.value = input.dataset.default;
 }
 
+function resetAddCardInput(board) {
+    const input = board.querySelector('input.new-card');
+    input.value = input.dataset.default;
+}
+
 function renderBoard(boardData, template) {
     const board = document.importNode(template.content, true);
     board.querySelector('.board-title').textContent = boardData.title;
     board.querySelector('.board-title').dataset.boardId = boardData.id;
     board.querySelector('.board').dataset.boardId = boardData.id;
     board.querySelector('.open-board').dataset.boardId = boardData.id;
+    board.querySelector('.add-card').dataset.boardId = boardData.id;
     return board
 }
 
@@ -73,6 +79,16 @@ function appendBoard(board) {
 function toggleCreateBoardFormDisplay() {
     const form = getCreateBoardForm();
     form.classList.toggle('hidden');
+}
+
+function toggleNewCardInput(board) {
+    const form = board.querySelector('.form');
+    form.classList.toggle('hidden');
+}
+
+function toggleAddCardButton(board) {
+    const addCardButton = board.querySelector('.add-card');
+    addCardButton.classList.toggle('hidden');
 }
 
 function focusSelectTextInputElement(element) {
@@ -116,15 +132,46 @@ function handleOpenBoardClick() {
     const button = this;
     const board = document.querySelector(`.board[data-board-id="${button.dataset.boardId}"]`);
     const boardColumns = board.querySelector('.board-columns');
+    toggleAddCardButton(board);
+    const addCardButton = board.querySelector('.add-card');
+
     if (boardColumns.hasChildNodes()) {
         boardColumns.classList.toggle('hidden');
-        if (boardColumns.classList.contains('hidden')) {
-            button.textContent = "OPEN";
-        } else {button.textContent = "CLOSE";}
     } else {
         dom.loadColumns(board);
         button.textContent = "CLOSE";
     }
+    if (boardColumns.classList.contains('hidden')) {
+        button.textContent = "OPEN";
+    } else {
+        button.textContent = "CLOSE";
+    }
+    addCardButton.addEventListener('click', (event) => handleAddCardClick(event));
+}
+
+function handleAddCardClick(event) {
+    const button = event.target;
+    const boardId = button.dataset.boardId;
+    const board = document.querySelector(`.board[data-board-id="${boardId}"]`);
+    toggleAddCardButton(board);
+    toggleNewCardInput(board);
+
+    const saveButton = board.querySelector('.save-card');
+    saveButton.addEventListener('click', (event) => handleSaveNewCardClick(event, board));
+
+}
+
+function handleSaveNewCardClick(event, board) {
+    const input = board.querySelector(`input.new-card`);
+    const cardTitle = input.value;
+    const statusId = 1; // as the acceptance criteria asks
+    toggleNewCardInput(board);
+    resetAddCardInput(board);
+
+    dataHandler.createNewCard(cardTitle, board.dataset.boardId, statusId, (card) => {
+        dom.showCards([card]); //passed as a length 1 list, in order to use showCards
+    });
+
 }
 
 //----------------------------------------------------------------------
@@ -178,6 +225,7 @@ export let dom = {
         // it adds necessary event listeners also
         const board = document.querySelector(`.board[data-board-id="${cards[0].board_id}"]`);
         for (const card of cards) {
+            console.log(card);
             const column = board.querySelector(`.board-column[data-status-id="${card.status_id}"]`);
             const cardNode = createCard(card);
             column.appendChild(cardNode);
