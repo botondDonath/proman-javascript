@@ -25,13 +25,14 @@
 <template id="board-template">
     <div class="board">
         <div class="board-header">
-            <div class="board-title-container">
-                <div class="board-title"></div>
+            <div class="board-title"></div>
+            <button type="button" class="add-card hidden">Add card</button>
+            <div class="form add-card hidden">
+                <input type="text" class="new-card" minlength="1" maxlength="100" data-default="New Card"
+                       value="New Card">
+                <button type="button" class="save-card">Save</button>
             </div>
-            <div class="board-button-container">
-                <button type="button" class="add-card">Add card</button>
-                <button type="button" class="open-board">OPEN</button>
-            </div>
+            <button type="button" class="open-board">OPEN</button>
         </div>
         <div class="board-columns"></div>
     </div>

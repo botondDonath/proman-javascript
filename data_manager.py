@@ -80,3 +80,40 @@ def update_board(cursor, board_data):
         UPDATE boards SET title = %(title)s WHERE id = %(id)s;
         ''', board_data
     )
+
+
+@connection_handler
+def new_card(cursor, board_id, title, status_id):
+    cursor.execute(
+        '''
+        INSERT INTO cards (board_id, title, status_id, "order")
+        VALUES (%(board_id)s, %(title)s, %(status_id)s, 0)
+        ''',
+        {'board_id': board_id, 'title': title, 'status_id': status_id}
+    )
+
+
+@connection_handler
+def get_card_by_id(cursor, card_id):
+    cursor.execute(
+        '''
+        SELECT board_id, title, status_id, "order"
+        FROM cards
+        WHERE id = %(id)s
+        ''',
+        {'id': card_id}
+    )
+    card = cursor.fetchone()
+    return card
+
+
+@connection_handler
+def get_new_card_id(cursor):
+    cursor.execute(
+        '''
+        SELECT MAX(id) as id
+        FROM cards
+        '''
+    )
+    _id = cursor.fetchone()
+    return _id

@@ -14,18 +14,62 @@ const globals = {
 // FUNCTIONS EXTRACTED FOR THE SAKE OF CLEANER CODE
 //----------------------------------------------------------------------
 
+function resetCreateBoardInput() {
+    const input = getCreateBoardInput();
+    input.value = input.dataset.default;
+}
+
+function resetAddCardInput(board) {
+    const input = board.querySelector('input.new-card');
+    input.value = input.dataset.default;
+}
+
 function renderBoard(boardData, template) {
     const board = document.importNode(template.content, true);
     board.querySelector('.board-title').textContent = boardData.title;
     board.querySelector('.board-title').dataset.boardId = boardData.id;
     board.querySelector('.board').dataset.boardId = boardData.id;
     board.querySelector('.open-board').dataset.boardId = boardData.id;
+    board.querySelector('.add-card').dataset.boardId = boardData.id;
     return board
 }
+
+const createColumns = function(status){
+    const template = document.querySelector('#board-column-template');
+    const clone = document.importNode(template.content, true);
+
+    clone.querySelector('.board-column-title').textContent = status.title;
+    clone.querySelector('.board-column').dataset.statusId = status.id;
+    return clone;
+};
+
+const createCard = function(card){
+    const template = document.querySelector('#card-template');
+    const copy = document.importNode(template.content, true);
+
+    copy.querySelector('.card-title').textContent = card.title;
+
+    return copy;
+};
 
 function appendBoard(board) {
     const container = $.getBoardsContainer();
     container.appendChild(board);
+}
+
+function toggleCreateBoardFormDisplay() {
+    const form = getCreateBoardForm();
+    form.classList.toggle('hidden');
+}
+
+function toggleNewCardInput(board) {
+    const form = board.querySelector('.form');
+    form.classList.toggle('hidden');
+}
+
+function toggleAddCardButton(board) {
+    const addCardButton = board.querySelector('.add-card');
+    addCardButton.classList.toggle('hidden');
 }
 
 function focusSelectTextInputElement(element) {
@@ -44,15 +88,6 @@ function isElementHidden(element) {
 function hasElementFocus(element) {
     return document.activeElement === element;
 }
-
-const createColumns = function(status){
-    const template = document.querySelector('#board-column-template');
-    const clone = document.importNode(template.content, true);
-
-    clone.querySelector('.board-column-title').textContent = status.title;
-    clone.querySelector('.board-column').dataset.statusId = status.id;
-    return clone;
-};
 
 //----------------------------------------------------------------------
 // EVENT HANDLERS
@@ -128,15 +163,46 @@ function handleOpenBoardClick() {
     const button = this;
     const board = document.querySelector(`.board[data-board-id="${button.dataset.boardId}"]`);
     const boardColumns = board.querySelector('.board-columns');
+    toggleAddCardButton(board);
+    const addCardButton = board.querySelector('.add-card');
+
     if (boardColumns.hasChildNodes()) {
         boardColumns.classList.toggle('hidden');
-        if (boardColumns.classList.contains('hidden')) {
-            button.textContent = "OPEN";
-        } else {button.textContent = "CLOSE";}
     } else {
         dom.loadColumns(board);
         button.textContent = "CLOSE";
     }
+    if (boardColumns.classList.contains('hidden')) {
+        button.textContent = "OPEN";
+    } else {
+        button.textContent = "CLOSE";
+    }
+    addCardButton.addEventListener('click', (event) => handleAddCardClick(event));
+}
+
+function handleAddCardClick(event) {
+    const button = event.target;
+    const boardId = button.dataset.boardId;
+    const board = document.querySelector(`.board[data-board-id="${boardId}"]`);
+    toggleAddCardButton(board);
+    toggleNewCardInput(board);
+
+    const saveButton = board.querySelector('.save-card');
+    saveButton.addEventListener('click', (event) => handleSaveNewCardClick(event, board));
+
+}
+
+function handleSaveNewCardClick(event, board) {
+    const input = board.querySelector(`input.new-card`);
+    const cardTitle = input.value;
+    const statusId = 1; // as the acceptance criteria asks
+    toggleNewCardInput(board);
+    resetAddCardInput(board);
+
+    dataHandler.createNewCard(cardTitle, board.dataset.boardId, statusId, (card) => {
+        dom.showCards([card]); //passed as a length 1 list, in order to use showCards
+    });
+
 }
 
 function displayInputToRenameBoard(event) {
@@ -184,15 +250,6 @@ function renameBoard(event) {
 //----------------------------------------------------------------------
 // OBJECT WITH FUNCTIONS FOR EXPORT
 //----------------------------------------------------------------------
-
-const createCard = function(card){
-    const template = document.querySelector('#card-template');
-    const copy = document.importNode(template.content, true);
-
-    copy.querySelector('.card-title').textContent = card.title;
-
-    return copy;
-};
 
 export let dom = {
     init: function () {
