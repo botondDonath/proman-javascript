@@ -46,21 +46,31 @@ function hasElementFocus(element) {
 // EVENT HANDLERS
 //----------------------------------------------------------------------
 
-function handleCreateBoardInputClickOutside() {
-    const input = $.getCreateBoardInput();
-    const button = $.getCreateBoardButton();
-    if (![input, button].includes(event.target) && hasElementFocus(input)) {
-        input.value = input.dataset.default;
-        input.blur();
-    }
-}
-
-function handleCreateBoardButtonClick() {
+function handleCreateBoardButtonClick(event) {
+    event.stopPropagation();
     const createBoardForm = $.getCreateBoardForm();
     createBoardForm.classList.toggle('hidden');
     if (!isElementHidden(createBoardForm)) {
         const input = $.getCreateBoardInput();
         focusSelectTextInputElement(input);
+    }
+}
+
+function handleCreateBoardInputClickOutside() {
+    const input = $.getCreateBoardInput();
+    input.value = input.dataset.default;
+    input.blur();
+}
+
+function handleCreateBoardInputClick(event) {
+    event.stopPropagation();
+}
+
+function handleCreateBoardInputEscPress(event) {
+    const input = event.target;
+    if (event.keyCode === globals.keyCodeEsc && hasElementFocus(input) && !isElementHidden(input)) {
+        input.value = input.dataset.default;
+        input.blur();
     }
 }
 
@@ -81,14 +91,6 @@ function handleSaveBoardButtonClick(event) {
     })
 }
 
-function handleCreateBoardInputEscPress(event) {
-    const input = event.target;
-    if (event.keyCode === globals.keyCodeEsc && hasElementFocus(input) && !isElementHidden(input)) {
-        input.value = input.dataset.default;
-        input.blur();
-    }
-}
-
 //----------------------------------------------------------------------
 // OBJECT WITH FUNCTIONS FOR EXPORT
 //----------------------------------------------------------------------
@@ -97,11 +99,17 @@ export let dom = {
     init: function () {
         // This function should run once, when the page is loaded.
 
+        // Get relevant elements
+        const createBoardButton = $.getCreateBoardButton();
+        const saveBoardButton = $.getSaveBoardButton();
+        const createBoardInput = $.getCreateBoardInput();
+
         // Add event listeners
         window.addEventListener('click', handleCreateBoardInputClickOutside);
-        $.getCreateBoardButton().addEventListener('click', handleCreateBoardButtonClick);
-        $.getSaveBoardButton().addEventListener('click', handleSaveBoardButtonClick);
-        $.getCreateBoardInput().addEventListener('keyup', handleCreateBoardInputEscPress);
+        createBoardButton.addEventListener('click', handleCreateBoardButtonClick);
+        saveBoardButton.addEventListener('click', handleSaveBoardButtonClick);
+        createBoardInput.addEventListener('click', handleCreateBoardInputClick);
+        createBoardInput.addEventListener('keyup', handleCreateBoardInputEscPress);
     },
     loadBoards: function () {
         // retrieves boards and makes showBoards called
