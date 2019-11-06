@@ -71,3 +71,14 @@ def get_statuses(cursor):
     )
     statuses = cursor.fetchall()
     return statuses
+
+
+@connection_handler
+def new_card(cursor, board_id, title, status_id):
+    cursor.execute(
+        '''
+        INSERT INTO cards (board_id, title, status_id, "order")
+        VALUES (%(board_id)s, %(title)s, %(status_id)s, 0)
+        ''',
+        {'board_id': board_id, 'title': title, 'status_id': status_id}
+    )
