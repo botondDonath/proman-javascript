@@ -158,7 +158,8 @@ export let dom = {
         // retrieves cards and makes showCards called
         const boardId = board.dataset.boardId;
         dataHandler.getCardsByBoardId(boardId, function (cards) {
-            dom.showCards(cards);
+            if (cards.length) {
+            dom.showCards(cards);}
         });
     },
     showCards: function (cards) {
@@ -174,7 +175,6 @@ export let dom = {
         }
     },
     loadColumns: function (board) {
-        alert('AI');
         dataHandler.getStatuses(function (statuses) {
             dom.showColumns(board, statuses);
             dom.loadCards(board)
