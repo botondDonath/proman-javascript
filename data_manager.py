@@ -65,7 +65,7 @@ def get_newest_board(cursor):
 def get_statuses(cursor):
     cursor.execute(
         '''
-        SELECT title
+        SELECT id, title
         FROM statuses
         '''
     )
