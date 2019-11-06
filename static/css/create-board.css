@@ -11,12 +11,19 @@
 .form-container.create-board:not(.hidden)
 {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     height: 40px;
 }
 
 form.create-board
 {
     display: flex;
-    align-items: start;
+    align-items: stretch;
+}
+
+.input-container.create-board,
+.button-container.save-board
+{
+    display: flex;
+    align-items: stretch;
 }
