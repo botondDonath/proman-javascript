@@ -41,7 +41,9 @@ function resetCreateBoardInput() {
 function renderBoard(boardData, template) {
     const board = document.importNode(template.content, true);
     board.querySelector('.board-title').textContent = boardData.title;
+    board.querySelector('.board-title').dataset.boardId = boardData.id;
     board.querySelector('.board').dataset.boardId = boardData.id;
+    board.querySelector('.open-board').dataset.boardId = boardData.id;
     return board
 }
 
@@ -103,8 +105,13 @@ function handleSaveBoardButtonClick() {
 
 function handleOpenBoardClick() {
     const button = this;
-    const board = button.parentNode.parentNode;
-    dom.loadColumns(board);
+    const board = document.querySelector(`.board[data-board-id="${button.dataset.boardId}"]`);
+    const boardColumns = board.querySelector('.board-columns');
+    if (boardColumns.hasChildNodes()) {
+        boardColumns.classList.toggle('hidden');
+    } else {
+        dom.loadColumns()
+    }
 }
 
 //----------------------------------------------------------------------
@@ -181,7 +188,8 @@ export let dom = {
     showColumns: function (board, statuses) {
         for (let status of statuses) {
             const column = createColumns(status);
-            board.appendChild(column)
+            const columns = board.querySelector('.board-columns');
+            columns.appendChild(column);
         }
     }
     // here comes more features
