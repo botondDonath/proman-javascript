@@ -48,7 +48,7 @@ function hasElementFocus(element) {
 
 function handleCreateBoardButtonClick(event) {
     event.stopPropagation();
-    const createBoardForm = $.getCreateBoardForm();
+    const createBoardForm = $.getCreateBoardFormContainer();
     createBoardForm.classList.toggle('hidden');
     if (!isElementHidden(createBoardForm)) {
         const input = $.getCreateBoardInput();
@@ -87,7 +87,7 @@ function handleSaveBoardButtonClick(event) {
         appendBoard(board);
 
         input.value = input.dataset.default;
-        toggleElementDisplay($.getCreateBoardForm());
+        toggleElementDisplay($.getCreateBoardFormContainer());
     })
 }
 

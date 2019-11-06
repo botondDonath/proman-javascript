@@ -4,7 +4,7 @@
 
 export let query = {
     getCreateBoardInput: () => document.querySelector('input.create-board'),
-    getCreateBoardForm: () => document.querySelector('form.create-board'),
+    getCreateBoardFormContainer: () => document.querySelector('.form-container.create-board'),
     getCreateBoardButton: () => document.querySelector('button.create-board'),
     getSaveBoardButton: () => document.querySelector('button.save-board'),
     getBoardTemplate: () => document.getElementById('board-template'),

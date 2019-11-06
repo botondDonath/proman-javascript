@@ -1,0 +1,22 @@
+.container.create-board
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 450px;
+    padding: 10px;
+}
+
+.button-container.create-board,
+.form-container.create-board:not(.hidden)
+{
+    display: flex;
+    align-items: center;
+    height: 40px;
+}
+
+form.create-board
+{
+    display: flex;
+    align-items: start;
+}
