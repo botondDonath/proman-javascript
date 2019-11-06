@@ -1,11 +1,18 @@
 // It uses data_handler.js to visualize elements
 import { dataHandler } from "./data_handler.js";
 
+const createCard = function(card){
+    const template = document.querySelector('#card-template');
+    const copy = document.importNode(template.content, true);
+
+    copy.querySelector('.card-title').textContent = card.title;
+
+    return copy;
+};
+
 export let dom = {
     init: function () {
         // This function should run once, when the page is loaded.
-        const board_headers = document.querySelectorAll('.board-header');
-        for (let header of board_headers) {header.addEventListener('click', loadCards)}
     },
     loadBoards: function () {
         // retrieves boards and makes showBoards called
@@ -45,7 +52,14 @@ export let dom = {
     showCards: function (cards) {
         // shows the cards of a board
         // it adds necessary event listeners also
+        let cardNodes = [];
+        for (let card of cards) {
+            cardNodes.push(createCard(card));
+        }
 
+        for (let cardNode of cardNodes) {
+
+        }
     },
     // here comes more features
 };
