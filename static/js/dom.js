@@ -109,8 +109,12 @@ function handleOpenBoardClick() {
     const boardColumns = board.querySelector('.board-columns');
     if (boardColumns.hasChildNodes()) {
         boardColumns.classList.toggle('hidden');
+        if (boardColumns.classList.contains('hidden')) {
+            button.textContent = "OPEN";
+        } else {button.textContent = "CLOSE";}
     } else {
         dom.loadColumns(board);
+        button.textContent = "CLOSE";
     }
 }
 
