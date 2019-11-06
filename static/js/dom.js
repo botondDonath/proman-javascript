@@ -1,40 +1,13 @@
 // It uses data_handler.js to visualize elements
 import {dataHandler} from "./data_handler.js";
-
-//----------------------------------------------------------------------
-// FUNCTIONS TO GET ELEMENTS
-//----------------------------------------------------------------------
-
-function getCreateBoardInput() {
-    return document.querySelector('input.create-board');
-}
-
-function getCreateBoardForm() {
-    return document.querySelector('.form.create-board');
-}
-
-function getCreateBoardButton() {
-    return document.querySelector('button.create-board');
-}
-
-function getSaveBoardButton() {
-    return document.querySelector('button.save-board');
-}
-
-function getBoardTemplate() {
-    return document.getElementById('board-template');
-}
-
-function getBoardsContainer() {
-    return document.getElementById('boards');
-}
+import {query as $} from "./query.js";
 
 //----------------------------------------------------------------------
 // FUNCTIONS EXTRACTED FOR THE SAKE OF CLEANER CODE
 //----------------------------------------------------------------------
 
 function resetCreateBoardInput() {
-    const input = getCreateBoardInput();
+    const input = $.getCreateBoardInput();
     input.value = input.dataset.default;
 }
 
@@ -45,12 +18,12 @@ function renderBoard(boardData, template) {
 }
 
 function appendBoard(board) {
-    const container = getBoardsContainer();
+    const container = $.getBoardsContainer();
     container.appendChild(board);
 }
 
 function toggleCreateBoardFormDisplay() {
-    const form = getCreateBoardForm();
+    const form = $.getCreateBoardForm();
     form.classList.toggle('hidden');
 }
 
@@ -64,7 +37,7 @@ function focusSelectTextInputElement(element) {
 //----------------------------------------------------------------------
 
 function handleCreateBoardInputClickOutside() {
-    const input = getCreateBoardInput();
+    const input = $.getCreateBoardInput();
     if (input.value !== input.dataset.default) {
         input.value = input.dataset.default;
     }
@@ -72,23 +45,27 @@ function handleCreateBoardInputClickOutside() {
 
 function handleCreateBoardButtonClick() {
     toggleCreateBoardFormDisplay();
-    const input = getCreateBoardInput();
+    const input = $.getCreateBoardInput();
     focusSelectTextInputElement(input);
 }
 
 function handleSaveBoardButtonClick() {
-    const input = getCreateBoardInput();
+    const input = $.getCreateBoardInput();
     const boardTitle = input.value;
     if (!boardTitle) {
         return;
     }
     dataHandler.createNewBoard(boardTitle, (boardData) => {
-        const boardTemplate = getBoardTemplate();
+        const boardTemplate = $.getBoardTemplate();
         const board = renderBoard(boardData, boardTemplate);
         appendBoard(board);
         resetCreateBoardInput();
         toggleCreateBoardFormDisplay();
     })
+}
+
+function handleCreateBoardInputEscPress(event) {
+    
 }
 
 //----------------------------------------------------------------------
@@ -100,8 +77,8 @@ export let dom = {
         // This function should run once, when the page is loaded.
 
         // Get relevant elements
-        const createBoardButton = getCreateBoardButton();
-        const saveBoardButton = getSaveBoardButton();
+        const createBoardButton = $.getCreateBoardButton();
+        const saveBoardButton = $.getSaveBoardButton();
 
         // Add event listeners
         window.addEventListener('click', handleCreateBoardInputClickOutside);
@@ -117,8 +94,8 @@ export let dom = {
     showBoards: function (boards) {
         // shows boards appending them to #boards div
         // it adds necessary event listeners also
-        const boardTemplate = getBoardTemplate();
-        const container = getBoardsContainer();
+        const boardTemplate = $.getBoardTemplate();
+        const container = $.getBoardsContainer();
         for (const boardData of boards) {
             const board = renderBoard(boardData, boardTemplate);
             container.appendChild(board);
