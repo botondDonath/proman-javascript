@@ -58,16 +58,19 @@ function handleCreateBoardButtonClick(event) {
 }
 
 
-function resetBoardTitleIfNecessary(event) {
+function resetBoardTitleIfNecessary(event, newTitle=null) {
     const renameBoardInput = document.querySelector('.rename-board-container');
     if (!renameBoardInput) {
         return;
     }
     let saveButton = document.querySelector('.save-board-title');
     let input = document.querySelector('.rename-board-input');
-    if (event.target !== input && event.target !== saveButton) {
+    if (event.target !== input && (event.target !== saveButton || newTitle)) {
         renameBoardInput.remove();
         let renamedBoard = document.querySelector('.board-title.hidden');
+        if (newTitle) {
+            renamedBoard.textContent = newTitle;
+        }
         toggleElementDisplay(renamedBoard);
     }
 }
@@ -109,7 +112,7 @@ function handleSaveBoardButtonClick(event) {
     })
 }
 
-function renameBoard(event) {
+function displayInputToRenameBoard(event) {
     event.stopPropagation();
     resetBoardTitleIfNecessary(event);
     let boardTitleElement = event.target;
@@ -126,13 +129,26 @@ function renameBoard(event) {
     let button = document.createElement('button');
     button.classList.add('save-board-title');
     button.type = "button";
+    button.dataset.boardId = boardId;
     button.textContent = "Save";
     inputContainer.appendChild(button);
     boardTitleElement.parentNode.insertAdjacentHTML('afterbegin', inputContainer.outerHTML);
-
+    document.querySelector('.save-board-title').addEventListener('click', renameBoard);
 }
 
+function renameBoard(event) {
+    event.stopPropagation();
+    let button = event.target;
+    let boardData = {
+        id: button.dataset.boardId,
+        title: document.querySelector('.rename-board-input').value
+    };
+    dataHandler.renameBoard(boardData, boardData => {
+        resetBoardTitleIfNecessary(event, boardData.title);
 
+    })
+
+}
 
 //----------------------------------------------------------------------
 // OBJECT WITH FUNCTIONS FOR EXPORT
@@ -160,7 +176,7 @@ export let dom = {
             dom.showBoards(boards);
             let boardElements = document.querySelectorAll(".board");
             for (let board of boardElements) {
-                board.querySelector('.board-title').addEventListener('click', renameBoard)
+                board.querySelector('.board-title').addEventListener('click', displayInputToRenameBoard)
             }
         });
     },

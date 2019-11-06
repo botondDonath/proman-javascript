@@ -42,6 +42,14 @@ def create_board():
     data_manager.insert_board(req['title'])
     return data_manager.get_newest_board()
 
+@app.route("/boards/<int:board_id>", methods=['POST'])
+@json_response
+def rename_board(board_id: int):
+    req = request.get_json()
+    data_manager.update_board(req)
+    return req
+
+
 
 def main():
     app.run(debug=True)

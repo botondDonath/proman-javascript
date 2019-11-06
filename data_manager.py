@@ -59,3 +59,12 @@ def get_newest_board(cursor):
     )
     board = cursor.fetchone()
     return board
+
+
+@connection_handler
+def update_board(cursor, board_data):
+    cursor.execute(
+        '''
+        UPDATE boards SET title = %(title)s WHERE id = %(id)s;
+        ''', board_data
+    )
