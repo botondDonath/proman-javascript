@@ -98,10 +98,17 @@ function renameBoard(event) {
     let boardTitle = boardTitleElement.textContent;
     let boardId = boardTitleElement.dataset.boardId;
     toggleElementDisplay(boardTitleElement);
+    let inputContainer = document.createElement('div');
     let input = document.createElement('input');
     input.type = "text";
     input.setAttribute('value', `${boardTitle}`);
-    boardTitleElement.parentNode.insertAdjacentHTML('afterbegin', input.outerHTML);
+    inputContainer.appendChild(input);
+    let button = document.createElement('button');
+    button.type = "button";
+    button.textContent = "Save";
+    inputContainer.appendChild(button);
+    boardTitleElement.parentNode.insertAdjacentHTML('afterbegin', inputContainer.outerHTML);
+
 }
 
 //----------------------------------------------------------------------
