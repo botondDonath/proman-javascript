@@ -17,6 +17,7 @@ const globals = {
 function renderBoard(boardData, template) {
     const board = document.importNode(template.content, true);
     board.querySelector('.board-title').textContent = boardData.title;
+    board.querySelector('.board').dataset.boardId = boardData.id;
     return board
 }
 
@@ -41,6 +42,15 @@ function isElementHidden(element) {
 function hasElementFocus(element) {
     return document.activeElement === element;
 }
+
+const createColumns = function(status){
+    const template = document.querySelector('#board-column-template');
+    const clone = document.importNode(template.content, true);
+
+    clone.querySelector('.board-column-title').textContent = status.title;
+    clone.querySelector('.board-column').dataset.statusId = status.id;
+    return clone;
+};
 
 //----------------------------------------------------------------------
 // EVENT HANDLERS
@@ -91,9 +101,24 @@ function handleSaveBoardButtonClick(event) {
     })
 }
 
+function handleOpenBoardClick() {
+    const button = this;
+    const board = button.parentNode.parentNode;
+    dom.loadColumns(board);
+}
+
 //----------------------------------------------------------------------
 // OBJECT WITH FUNCTIONS FOR EXPORT
 //----------------------------------------------------------------------
+
+const createCard = function(card){
+    const template = document.querySelector('#card-template');
+    const copy = document.importNode(template.content, true);
+
+    copy.querySelector('.card-title').textContent = card.title;
+
+    return copy;
+};
 
 export let dom = {
     init: function () {
@@ -115,7 +140,11 @@ export let dom = {
         // retrieves boards and makes showBoards called
         dataHandler.getBoards(function (boards) {
             dom.showBoards(boards);
-        });
+            const openButtons = document.querySelectorAll('.open-board');
+            for (let button of openButtons) {
+                button.addEventListener('click', handleOpenBoardClick);
+                }
+            });
     },
     showBoards: function (boards) {
         // shows boards appending them to #boards div
@@ -127,12 +156,37 @@ export let dom = {
             container.appendChild(board);
         }
     },
-    loadCards: function (boardId) {
+    loadCards: function (board) {
         // retrieves cards and makes showCards called
+        const boardId = board.dataset.boardId;
+        dataHandler.getCardsByBoardId(boardId, function (cards) {
+            if (cards.length) {
+            dom.showCards(cards);}
+        });
     },
     showCards: function (cards) {
         // shows the cards of a board
         // it adds necessary event listeners also
+        const board = document.querySelector(`.board[data-board-id="${cards[0].board_id}"]`);
+        console.log(board);
+        console.log(cards);
+        for (const card of cards) {
+            const column = board.querySelector(`.board-column[data-status-id="${card.status_id}"]`);
+            const cardNode = createCard(card);
+            column.appendChild(cardNode);
+        }
     },
+    loadColumns: function (board) {
+        dataHandler.getStatuses(function (statuses) {
+            dom.showColumns(board, statuses);
+            dom.loadCards(board)
+        });
+    },
+    showColumns: function (board, statuses) {
+        for (let status of statuses) {
+            const column = createColumns(status);
+            board.appendChild(column)
+        }
+    }
     // here comes more features
 };

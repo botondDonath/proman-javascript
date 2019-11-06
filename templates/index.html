@@ -15,7 +15,7 @@
         <script type="module" src="{{ url_for('static', filename='js/main.js') }}" defer></script>
     </head>
     <body>
-        <h1>ProMan</h1>
+        <h1 id="main-title">ProMan</h1>
         {% include 'create-board.html' %}
         <div id="boards">Boards are loading...</div>
 
@@ -24,13 +24,14 @@
                 <div class="board-header">
                     <div class="board-title"></div>
                     <button type="button" class="add-card">Add card</button>
-                    <button type="button" class="open-board"></button>
+                    <button type="button" class="open-board">OPEN</button>
                 </div>
                 <div class="board-columns"></div>
             </div>
         </template>
 
         <template id="board-column-template">
+            <div class="board-column-title"></div>
             <div class="board-column"></div>
         </template>
 
