@@ -17,7 +17,9 @@ const globals = {
 function renderBoard(boardData, template) {
     const board = document.importNode(template.content, true);
     board.querySelector('.board-title').textContent = boardData.title;
+    board.querySelector('.board-title').dataset.boardId = boardData.id;
     board.querySelector('.board').dataset.boardId = boardData.id;
+    board.querySelector('.open-board').dataset.boardId = boardData.id;
     return board
 }
 
@@ -103,8 +105,17 @@ function handleSaveBoardButtonClick(event) {
 
 function handleOpenBoardClick() {
     const button = this;
-    const board = button.parentNode.parentNode;
-    dom.loadColumns(board);
+    const board = document.querySelector(`.board[data-board-id="${button.dataset.boardId}"]`);
+    const boardColumns = board.querySelector('.board-columns');
+    if (boardColumns.hasChildNodes()) {
+        boardColumns.classList.toggle('hidden');
+        if (boardColumns.classList.contains('hidden')) {
+            button.textContent = "OPEN";
+        } else {button.textContent = "CLOSE";}
+    } else {
+        dom.loadColumns(board);
+        button.textContent = "CLOSE";
+    }
 }
 
 //----------------------------------------------------------------------
@@ -168,8 +179,6 @@ export let dom = {
         // shows the cards of a board
         // it adds necessary event listeners also
         const board = document.querySelector(`.board[data-board-id="${cards[0].board_id}"]`);
-        console.log(board);
-        console.log(cards);
         for (const card of cards) {
             const column = board.querySelector(`.board-column[data-status-id="${card.status_id}"]`);
             const cardNode = createCard(card);
@@ -185,7 +194,8 @@ export let dom = {
     showColumns: function (board, statuses) {
         for (let status of statuses) {
             const column = createColumns(status);
-            board.appendChild(column)
+            const columns = board.querySelector('.board-columns');
+            columns.appendChild(column);
         }
     }
     // here comes more features

@@ -47,7 +47,6 @@ def create_board():
 @json_response
 def statuses():
     statuses = data_manager.get_statuses()
-    print(statuses)
     return statuses
 
 
