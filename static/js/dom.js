@@ -47,6 +47,24 @@ function renderBoard(boardData, template) {
     return board
 }
 
+const createColumns = function(status){
+    const template = document.querySelector('#board-column-template');
+    const clone = document.importNode(template.content, true);
+
+    clone.querySelector('.board-column-title').textContent = status.title;
+    clone.querySelector('.board-column').dataset.statusId = status.id;
+    return clone;
+};
+
+const createCard = function(card){
+    const template = document.querySelector('#card-template');
+    const copy = document.importNode(template.content, true);
+
+    copy.querySelector('.card-title').textContent = card.title;
+
+    return copy;
+};
+
 function appendBoard(board) {
     const container = getBoardsContainer();
     container.appendChild(board);
@@ -61,15 +79,6 @@ function focusSelectTextInputElement(element) {
     element.focus();
     element.select();
 }
-
-const createColumns = function(status){
-    const template = document.querySelector('#board-column-template');
-    const clone = document.importNode(template.content, true);
-
-    clone.querySelector('.board-column-title').textContent = status.title;
-    clone.querySelector('.board-column').dataset.statusId = status.id;
-    return clone;
-};
 
 //----------------------------------------------------------------------
 // EVENT HANDLERS
@@ -121,15 +130,6 @@ function handleOpenBoardClick() {
 //----------------------------------------------------------------------
 // OBJECT WITH FUNCTIONS FOR EXPORT
 //----------------------------------------------------------------------
-
-const createCard = function(card){
-    const template = document.querySelector('#card-template');
-    const copy = document.importNode(template.content, true);
-
-    copy.querySelector('.card-title').textContent = card.title;
-
-    return copy;
-};
 
 export let dom = {
     init: function () {
