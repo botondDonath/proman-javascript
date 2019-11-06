@@ -48,7 +48,15 @@ def get_cards_for_board(board_id: int):
 def add_new_card():
     req = request.get_json()
     data_manager.new_card(req['board_id'], req['title'], req['status_id'])
-    pass
+    card_id = data_manager.get_new_card_id()
+    return card_id['id']
+
+
+@app.route('/card/<card_id>')
+def get_card(card_id: int):
+    print(card_id)
+    card = data_manager.get_card_by_id(card_id)
+    return card
 
 
 @app.route('/statuses')
