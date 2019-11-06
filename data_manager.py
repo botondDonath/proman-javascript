@@ -59,3 +59,15 @@ def get_newest_board(cursor):
     )
     board = cursor.fetchone()
     return board
+
+
+@connection_handler
+def get_statuses(cursor):
+    cursor.execute(
+        '''
+        SELECT title
+        FROM statuses
+        '''
+    )
+    statuses = cursor.fetchall()
+    return statuses

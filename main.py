@@ -43,6 +43,13 @@ def create_board():
     return data_manager.get_newest_board()
 
 
+@app.route('/statuses')
+@json_response
+def statuses():
+    statuses = data_manager.get_statuses()
+    print(statuses)
+    return statuses
+
 def main():
     app.run(debug=True)
 

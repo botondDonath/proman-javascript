@@ -59,6 +59,15 @@ function focusSelectTextInputElement(element) {
     element.select();
 }
 
+const createColumns = function(status){
+    const template = document.querySelector('#board-column-template');
+    const clone = document.importNode(template.content, true);
+
+    clone.querySelector('.board-column-title').textContent = status.title;
+
+    return clone;
+};
+
 //----------------------------------------------------------------------
 // EVENT HANDLERS
 //----------------------------------------------------------------------
@@ -91,6 +100,13 @@ function handleSaveBoardButtonClick() {
     })
 }
 
+function handleOpenBoardClick() {
+    const button = this;
+    const board = button.parentNode.parentNode;
+    console.log(board);
+    dom.loadColumns(board);
+}
+
 //----------------------------------------------------------------------
 // OBJECT WITH FUNCTIONS FOR EXPORT
 //----------------------------------------------------------------------
@@ -107,12 +123,18 @@ export let dom = {
         window.addEventListener('click', handleCreateBoardInputClickOutside);
         createBoardButton.addEventListener('click', handleCreateBoardButtonClick);
         saveBoardButton.addEventListener('click', handleSaveBoardButtonClick);
+
     },
     loadBoards: function () {
         // retrieves boards and makes showBoards called
         dataHandler.getBoards(function (boards) {
             dom.showBoards(boards);
-        });
+            const openButtons = document.querySelectorAll('.open-board');
+            console.log(openButtons);
+            for (let button of openButtons) {
+                button.addEventListener('click', handleOpenBoardClick);
+                }
+            });
     },
     showBoards: function (boards) {
         // shows boards appending them to #boards div
@@ -131,5 +153,18 @@ export let dom = {
         // shows the cards of a board
         // it adds necessary event listeners also
     },
+    loadColumns: function (board) {
+        alert('AI');
+        dataHandler.getStatuses(function (statuses) {
+            dom.showColumns(board, statuses);
+        });
+    },
+    showColumns: function (board, statuses) {
+        for (let status of statuses) {
+            const column = createColumns(status);
+            board.appendChild(column)
+        }
+        // loadcards, showcards
+    }
     // here comes more features
 };

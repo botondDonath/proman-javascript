@@ -2,6 +2,11 @@
     background-color: green;
 }
 
+.board {
+    display: block;
+
+}
+
 .hidden {
     display: none;
 }
