@@ -20,14 +20,18 @@
 <body>
 <h1 id="main-title">ProMan</h1>
 {% include 'create-board.html' %}
-<div id="boards">Boards are loading...</div>
+<div id="boards"></div>
 
 <template id="board-template">
     <div class="board">
         <div class="board-header">
-            <div class="board-title"></div>
-            <button type="button" class="add-card">Add card</button>
-            <button type="button" class="open-board">OPEN</button>
+            <div class="board-title-container">
+                <div class="board-title"></div>
+            </div>
+            <div class="board-button-container">
+                <button type="button" class="add-card">Add card</button>
+                <button type="button" class="open-board">OPEN</button>
+            </div>
         </div>
         <div class="board-columns"></div>
     </div>

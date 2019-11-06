@@ -1,0 +1,66 @@
+/*Add borders for testing purposes*/
+
+/*.board {*/
+/*    border: white solid 1px;*/
+/*}*/
+
+/*.board-header {*/
+/*    border: black solid 1px;*/
+/*}*/
+
+/*.board-title {*/
+/*    border: red solid 1px;*/
+/*}*/
+
+/*.board-title-container,*/
+/*.board-button-container {*/
+/*    border: yellow dashed 1px;*/
+/*}*/
+
+/*Real stuff*/
+
+.board-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    height: 30px;
+}
+
+.board-title-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.board-title {
+    width: 200px;
+}
+
+.rename-board-container {
+    display: flex;
+    justify-content: space-between;
+    width: 275px;
+}
+
+.board-button-container {
+    display: flex;
+    justify-content: stretch;
+}
+
+.rename-board-input {
+    width: 190px;
+}
+
+button.save-board-title {
+    width: 60px;
+}
+
+button.add-card {
+    margin-right: 600px;
+}
+
+button.open-board {
+    width: 75px;
+}

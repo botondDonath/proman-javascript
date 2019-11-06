@@ -1,12 +1,22 @@
 @import "create-board.css";
+@import "board-header.css";
 
-#boards {
-    background-color: green;
+html {
+    background-image: url("../images/chill01.jpg");
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+body {
+    margin: 0 24% 0 8%;
 }
 
 .board {
-    display: block;
-
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, .4);
+    margin-bottom: 20px;
 }
 
 .hidden {
