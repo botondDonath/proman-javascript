@@ -4,6 +4,8 @@ import { dataHandler } from "./data_handler.js";
 export let dom = {
     init: function () {
         // This function should run once, when the page is loaded.
+        const board_headers = document.querySelectorAll('.board-header');
+        for (let header of board_headers) {header.addEventListener('click', loadCards)}
     },
     loadBoards: function () {
         // retrieves boards and makes showBoards called
@@ -32,12 +34,18 @@ export let dom = {
         let boardsContainer = document.querySelector('#boards');
         boardsContainer.insertAdjacentHTML("beforeend", outerHtml);
     },
-    loadCards: function (boardId) {
+    loadCards: function () {
         // retrieves cards and makes showCards called
+        const board = this;
+        const boardId = board.dataset.boardId;
+        dataHandler.getCardsByBoardId(boardId, function (cards) {
+            dom.showCards(cards);
+        });
     },
     showCards: function (cards) {
         // shows the cards of a board
         // it adds necessary event listeners also
+
     },
     // here comes more features
 };
