@@ -50,6 +50,7 @@ def statuses():
     print(statuses)
     return statuses
 
+
 def main():
     app.run(debug=True)
 
