@@ -14,11 +14,6 @@ const globals = {
 // FUNCTIONS EXTRACTED FOR THE SAKE OF CLEANER CODE
 //----------------------------------------------------------------------
 
-function resetCreateBoardInput() {
-    const input = $.getCreateBoardInput();
-    input.value = input.dataset.default;
-}
-
 function renderBoard(boardData, template) {
     const board = document.importNode(template.content, true);
     board.querySelector('.board-title').textContent = boardData.title;
@@ -30,14 +25,13 @@ function appendBoard(board) {
     container.appendChild(board);
 }
 
-function toggleCreateBoardFormDisplay() {
-    const form = $.getCreateBoardForm();
-    form.classList.toggle('hidden');
-}
-
 function focusSelectTextInputElement(element) {
     element.focus();
     element.select();
+}
+
+function toggleElementDisplay(element) {
+    element.classList.toggle('hidden');
 }
 
 function isElementHidden(element) {
@@ -60,12 +54,13 @@ function handleCreateBoardInputClickOutside() {
 }
 
 function handleCreateBoardButtonClick() {
-    toggleCreateBoardFormDisplay();
+    $.getCreateBoardForm().classList.toggle('hidden');
     const input = $.getCreateBoardInput();
     focusSelectTextInputElement(input);
 }
 
-function handleSaveBoardButtonClick() {
+function handleSaveBoardButtonClick(event) {
+    event.preventDefault();
     const input = $.getCreateBoardInput();
     const boardTitle = input.value;
     if (!boardTitle) {
@@ -75,8 +70,9 @@ function handleSaveBoardButtonClick() {
         const boardTemplate = $.getBoardTemplate();
         const board = renderBoard(boardData, boardTemplate);
         appendBoard(board);
-        resetCreateBoardInput();
-        toggleCreateBoardFormDisplay();
+
+        input.value = input.dataset.default;
+        toggleElementDisplay($.getCreateBoardForm());
     })
 }
 

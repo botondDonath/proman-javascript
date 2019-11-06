@@ -1,7 +1,8 @@
 <div class="container create-board">
     <button type="button" class="create-board">Create new board</button>
-    <div class="form create-board hidden">
-        <input type="text" class="create-board" minlength="1" maxlength="100" data-default="New Board" value="New Board">
-        <button type="button" class="save-board">Save</button>
-    </div>
+    <form class="create-board hidden">
+        <input type="text" class="create-board" maxlength="100"
+               data-default="New Board" value="New Board" required>
+        <button type="submit" class="save-board">Save</button>
+    </form>
 </div>
