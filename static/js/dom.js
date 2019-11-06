@@ -97,7 +97,11 @@ function renameBoard(event) {
     let boardTitleElement = event.target;
     let boardTitle = boardTitleElement.textContent;
     let boardId = boardTitleElement.dataset.boardId;
-    toggleElementDisplay(boardTitleElement)
+    toggleElementDisplay(boardTitleElement);
+    let input = document.createElement('input');
+    input.type = "text";
+    input.setAttribute('value', `${boardTitle}`);
+    boardTitleElement.parentNode.insertAdjacentHTML('afterbegin', input.outerHTML);
 }
 
 //----------------------------------------------------------------------
