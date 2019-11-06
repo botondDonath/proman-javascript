@@ -1,8 +1,9 @@
 // It uses data_handler.js to visualize elements
 import {dataHandler} from "./data_handler.js";
 
-
-//----------FUNCTIONS TO GET ELEMENTS----------
+//----------------------------------------------------------------------
+// FUNCTIONS TO GET ELEMENTS
+//----------------------------------------------------------------------
 
 function getCreateBoardInput() {
     return document.querySelector('input.create-board');
@@ -28,8 +29,9 @@ function getBoardsContainer() {
     return document.getElementById('boards');
 }
 
-
-//----------FUNCTIONS EXTRACTED FOR THE SAKE OF CLEANER CODE----------
+//----------------------------------------------------------------------
+// FUNCTIONS EXTRACTED FOR THE SAKE OF CLEANER CODE
+//----------------------------------------------------------------------
 
 function resetCreateBoardInput() {
     const input = getCreateBoardInput();
@@ -57,8 +59,9 @@ function focusSelectTextInputElement(element) {
     element.select();
 }
 
-
-//----------EVENT HANDLERS----------
+//----------------------------------------------------------------------
+// EVENT HANDLERS
+//----------------------------------------------------------------------
 
 function handleCreateBoardInputClickOutside() {
     const input = getCreateBoardInput();
@@ -88,8 +91,9 @@ function handleSaveBoardButtonClick() {
     })
 }
 
-
-//----------OBJECT WITH FUNCTIONS FOR EXPORT----------
+//----------------------------------------------------------------------
+// OBJECT WITH FUNCTIONS FOR EXPORT
+//----------------------------------------------------------------------
 
 export let dom = {
     init: function () {
