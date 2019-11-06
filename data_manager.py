@@ -5,7 +5,7 @@ from connection import connection_handler
 def get_boards(cursor):
     cursor.execute(
         '''
-        SELECT title
+        SELECT id, title
         FROM boards
         '''
     )
@@ -36,3 +36,38 @@ def delete_card(cursor, card_id):
         ''',
         {'card_id': card_id}
     )
+
+
+@connection_handler
+def insert_board(cursor, title):
+    cursor.execute(
+        '''
+        INSERT INTO boards (title)
+        VALUES (%(title)s)
+        ''',
+        {'title': title}
+    )
+
+
+@connection_handler
+def get_newest_board(cursor):
+    cursor.execute(
+        '''
+        SELECT id, title FROM boards
+        ORDER BY id DESC LIMIT 1;
+        '''
+    )
+    board = cursor.fetchone()
+    return board
+
+
+@connection_handler
+def get_statuses(cursor):
+    cursor.execute(
+        '''
+        SELECT title
+        FROM statuses
+        '''
+    )
+    statuses = cursor.fetchall()
+    return statuses
