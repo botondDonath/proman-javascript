@@ -110,7 +110,7 @@ function handleOpenBoardClick() {
     if (boardColumns.hasChildNodes()) {
         boardColumns.classList.toggle('hidden');
     } else {
-        dom.loadColumns()
+        dom.loadColumns(board);
     }
 }
 
