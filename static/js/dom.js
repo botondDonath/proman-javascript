@@ -92,6 +92,14 @@ function handleSaveBoardButtonClick(event) {
     })
 }
 
+function renameBoard(event) {
+    event.stopPropagation();
+    let boardTitleElement = event.target;
+    let boardTitle = boardTitleElement.textContent;
+    let boardId = boardTitleElement.dataset.boardId;
+    toggleElementDisplay(boardTitleElement)
+}
+
 //----------------------------------------------------------------------
 // OBJECT WITH FUNCTIONS FOR EXPORT
 //----------------------------------------------------------------------
@@ -116,6 +124,10 @@ export let dom = {
         // retrieves boards and makes showBoards called
         dataHandler.getBoards(function (boards) {
             dom.showBoards(boards);
+            let boardElements = document.querySelectorAll(".board");
+            for (let board of boardElements) {
+                board.querySelector('.board-title').addEventListener('click', renameBoard)
+            }
         });
     },
     showBoards: function (boards) {
