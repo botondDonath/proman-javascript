@@ -14,11 +14,6 @@ const globals = {
 // FUNCTIONS EXTRACTED FOR THE SAKE OF CLEANER CODE
 //----------------------------------------------------------------------
 
-function resetCreateBoardInput() {
-    const input = getCreateBoardInput();
-    input.value = input.dataset.default;
-}
-
 function resetAddCardInput(board) {
     const input = board.querySelector('input.new-card');
     input.value = input.dataset.default;
@@ -55,11 +50,6 @@ const createCard = function(card){
 function appendBoard(board) {
     const container = $.getBoardsContainer();
     container.appendChild(board);
-}
-
-function toggleCreateBoardFormDisplay() {
-    const form = getCreateBoardForm();
-    form.classList.toggle('hidden');
 }
 
 function toggleNewCardInput(board) {
