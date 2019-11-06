@@ -17,6 +17,7 @@ const globals = {
 function renderBoard(boardData, template) {
     const board = document.importNode(template.content, true);
     board.querySelector('.board-title').textContent = boardData.title;
+    board.querySelector('.board-title').dataset.boardId = boardData.id;
     return board
 }
 
