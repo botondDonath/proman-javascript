@@ -48,15 +48,20 @@ function hasElementFocus(element) {
 
 function handleCreateBoardInputClickOutside() {
     const input = $.getCreateBoardInput();
-    if (input.value !== input.dataset.default) {
+    const button = $.getCreateBoardButton();
+    if (![input, button].includes(event.target) && hasElementFocus(input)) {
         input.value = input.dataset.default;
+        input.blur();
     }
 }
 
 function handleCreateBoardButtonClick() {
-    $.getCreateBoardForm().classList.toggle('hidden');
-    const input = $.getCreateBoardInput();
-    focusSelectTextInputElement(input);
+    const createBoardForm = $.getCreateBoardForm();
+    createBoardForm.classList.toggle('hidden');
+    if (!isElementHidden(createBoardForm)) {
+        const input = $.getCreateBoardInput();
+        focusSelectTextInputElement(input);
+    }
 }
 
 function handleSaveBoardButtonClick(event) {
