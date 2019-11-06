@@ -13,8 +13,8 @@ export let dataHandler = {
             method: 'GET',
             credentials: 'same-origin'
         })
-            .then(response => response.json())  // parse the response as JSON
-            .then(json_response => callback(json_response));  // Call the `callback` with the returned object
+        .then(response => response.json())  // parse the response as JSON
+        .then(json_response => callback(json_response));  // Call the `callback` with the returned object
     },
     _api_post: function (url, data, callback) {
         // it is not called from outside
@@ -28,8 +28,8 @@ export let dataHandler = {
             }),
             body: JSON.stringify(data)
         })
-            .then(response => response.json())
-            .then(json_response => callback(json_response));
+        .then(response => response.json())
+        .then(json_response => callback(json_response));
 
     },
     init: function () {
@@ -83,6 +83,9 @@ export let dataHandler = {
                 callback(card)
             })
         })
+    },
+    renameBoard: function (boardData, callback) {
+        this._api_post(`/boards/${boardData.id}`, boardData, boardData => callback(boardData))
     }
     // here comes more features
 };

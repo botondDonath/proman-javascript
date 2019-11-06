@@ -58,6 +58,14 @@ def get_card(card_id: int):
     card = data_manager.get_card_by_id(card_id)
     return card
 
+@app.route("/boards/<int:board_id>", methods=['POST'])
+@json_response
+def rename_board(board_id: int):
+    req = request.get_json()
+    data_manager.update_board(req)
+    return req
+
+
 
 @app.route('/statuses')
 @json_response

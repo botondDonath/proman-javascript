@@ -108,3 +108,12 @@ def get_new_card_id(cursor):
     )
     _id = cursor.fetchone()
     return _id
+
+
+@connection_handler
+def update_board(cursor, board_data):
+    cursor.execute(
+        '''
+        UPDATE boards SET title = %(title)s WHERE id = %(id)s;
+        ''', board_data
+    )

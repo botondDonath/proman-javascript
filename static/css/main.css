@@ -1,3 +1,5 @@
+@import "create-board.css";
+
 #boards {
     background-color: green;
 }
