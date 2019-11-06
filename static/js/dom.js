@@ -68,10 +68,31 @@ function handleCreateBoardButtonClick(event) {
     }
 }
 
-function handleCreateBoardInputClickOutside() {
-    const input = $.getCreateBoardInput();
-    input.value = input.dataset.default;
-    input.blur();
+
+function resetBoardTitleIfNecessary(event, newTitle=null) {
+    const renameBoardInput = document.querySelector('.rename-board-container');
+    if (!renameBoardInput) {
+        return;
+    }
+    let saveButton = document.querySelector('.save-board-title');
+    let input = document.querySelector('.rename-board-input');
+    if (event.target !== input && (event.target !== saveButton || newTitle) && !input.classList.contains('clicked')) {
+        renameBoardInput.remove();
+        let renamedBoard = document.querySelector('.board-title.hidden');
+        if (newTitle) {
+            renamedBoard.textContent = newTitle;
+        }
+        toggleElementDisplay(renamedBoard);
+    }
+    input.classList.remove('clicked');
+}
+
+function handleOutsideClick(event) {
+    const createBoardInput = $.getCreateBoardInput();
+    createBoardInput.value = createBoardInput.dataset.default;
+    createBoardInput.blur();
+    resetBoardTitleIfNecessary(event);
+
 }
 
 function handleCreateBoardInputClick(event) {
@@ -118,6 +139,48 @@ function handleOpenBoardClick() {
     }
 }
 
+function displayInputToRenameBoard(event) {
+    event.stopPropagation();
+    resetBoardTitleIfNecessary(event);
+    let boardTitleElement = event.target;
+    let boardTitle = boardTitleElement.textContent;
+    let boardId = boardTitleElement.dataset.boardId;
+    toggleElementDisplay(boardTitleElement);
+    let inputContainer = document.createElement('div');
+    inputContainer.classList.add("rename-board-container");
+    let input = document.createElement('input');
+    input.classList.add('rename-board-input');
+    input.type = "text";
+    input.setAttribute('value', `${boardTitle}`);
+    inputContainer.appendChild(input);
+    let button = document.createElement('button');
+    button.classList.add('save-board-title');
+    button.type = "button";
+    button.dataset.boardId = boardId;
+    button.textContent = "Save";
+    inputContainer.appendChild(button);
+    boardTitleElement.parentNode.insertAdjacentHTML('afterbegin', inputContainer.outerHTML);
+    document.querySelector('.save-board-title').addEventListener('click', renameBoard);
+    document.querySelector('.rename-board-input').addEventListener('mousedown', function(event) {
+        event.stopPropagation();
+        event.target.classList.add('clicked');
+    })
+}
+
+function renameBoard(event) {
+    event.stopPropagation();
+    let button = event.target;
+    let boardData = {
+        id: button.dataset.boardId,
+        title: document.querySelector('.rename-board-input').value
+    };
+    dataHandler.renameBoard(boardData, boardData => {
+        resetBoardTitleIfNecessary(event, boardData.title);
+
+    })
+
+}
+
 //----------------------------------------------------------------------
 // OBJECT WITH FUNCTIONS FOR EXPORT
 //----------------------------------------------------------------------
@@ -141,7 +204,7 @@ export let dom = {
         const createBoardInput = $.getCreateBoardInput();
 
         // Add event listeners
-        window.addEventListener('click', handleCreateBoardInputClickOutside);
+        window.addEventListener('click', handleOutsideClick);
         createBoardButton.addEventListener('click', handleCreateBoardButtonClick);
         saveBoardButton.addEventListener('click', handleSaveBoardButtonClick);
         createBoardInput.addEventListener('click', handleCreateBoardInputClick);
@@ -154,8 +217,12 @@ export let dom = {
             const openButtons = document.querySelectorAll('.open-board');
             for (let button of openButtons) {
                 button.addEventListener('click', handleOpenBoardClick);
-                }
-            });
+            }
+            let boardElements = document.querySelectorAll(".board");
+            for (let board of boardElements) {
+                board.querySelector('.board-title').addEventListener('click', displayInputToRenameBoard)
+            }
+        });
     },
     showBoards: function (boards) {
         // shows boards appending them to #boards div

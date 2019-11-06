@@ -71,3 +71,12 @@ def get_statuses(cursor):
     )
     statuses = cursor.fetchall()
     return statuses
+
+
+@connection_handler
+def update_board(cursor, board_data):
+    cursor.execute(
+        '''
+        UPDATE boards SET title = %(title)s WHERE id = %(id)s;
+        ''', board_data
+    )
