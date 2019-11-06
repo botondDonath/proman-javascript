@@ -24,7 +24,7 @@ def get_boards():
     return boards
 
 
-@app.route("/get-cards/<int:board_id>")
+@app.route("/get-cards/<board_id>")
 @json_response
 def get_cards_for_board(board_id: int):
     """
