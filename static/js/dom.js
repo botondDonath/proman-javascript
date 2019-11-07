@@ -155,6 +155,14 @@ function handleSaveBoardButtonClick(event) {
     })
 }
 
+function toggleBoardHeader(board) {
+    const form = board.querySelector('.form');
+    if (!form.classList.contains('hidden')) {
+        form.classList.toggle('hidden');
+        toggleAddCardButton(board);
+    }
+}
+
 function handleOpenBoardClick() {
     const button = this;
     const board = document.querySelector(`.board[data-board-id="${button.dataset.boardId}"]`);
@@ -167,6 +175,16 @@ function handleOpenBoardClick() {
 
     toggleAddCardButton(board);
     boardColumns.classList.toggle('hidden');
+
+    removeFormOnClose(board);
+
+    function removeFormOnClose(board) {
+        const form = board.querySelector('.form');
+        if (!form.classList.contains('hidden')) {
+            form.classList.toggle('hidden');
+            toggleAddCardButton(board);
+            }
+        }
 
     addCardButton.addEventListener('click', (event) => handleAddCardClick(event));
 }
