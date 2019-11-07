@@ -17,7 +17,7 @@ def get_boards(cursor):
 def get_cards_for_board(cursor, board_id):
     cursor.execute(
         '''
-        SELECT board_id, title, status_id, "order"
+        SELECT id, board_id, title, status_id, "order"
         FROM cards
         WHERE board_id = %(board_id)s
         ''',
@@ -88,7 +88,7 @@ def new_card(cursor, board_id, title, status_id):
 def get_card_by_id(cursor, card_id):
     cursor.execute(
         '''
-        SELECT board_id, title, status_id, "order"
+        SELECT id, board_id, title, status_id, "order"
         FROM cards
         WHERE id = %(id)s
         ''',
