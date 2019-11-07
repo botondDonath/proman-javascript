@@ -33,7 +33,7 @@ const createColumns = function(status){
     const template = document.querySelector('#board-column-template');
     const clone = document.importNode(template.content, true);
 
-    clone.querySelector('.board-column-title').value = status.title;
+    clone.querySelector('.board-column-title').textContent = status.title;
     clone.querySelector('.board-column').dataset.statusId = status.id;
     return clone;
 };
@@ -42,7 +42,7 @@ const createCard = function(card){
     const template = document.querySelector('#card-template');
     const copy = document.importNode(template.content, true);
 
-    copy.querySelector('.card-title').textContent = card.title;
+    copy.querySelector('.card-title').value = card.title;
     copy.querySelector('.card').dataset.cardId = card.id;
     copy.querySelector('.card-delete').dataset.cardId = card.id;
 

@@ -1,0 +1,20 @@
+.card {
+    margin: 5px 0;
+    display: flex;
+}
+
+.card-title {
+    padding: 4px;
+    font-size: 14px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+    color: black;
+}
+
+.card-title:hover {
+    cursor: default;
+}
+
+.card-title:focus {
+    cursor: text;
+}

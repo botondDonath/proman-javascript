@@ -72,13 +72,3 @@ button.open-board {
     color: black;
     border: none;
 }
-
-.card {
-    margin: 5px 0;
-    display: flex;
-}
-
-.card-title {
-    padding: 4px;
-    font-size: 14px;
-}

@@ -1,5 +1,6 @@
 @import "create-board.css";
 @import "board-header.css";
+@import "card.css";
 
 * {
     font-family: inherit;
