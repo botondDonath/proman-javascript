@@ -290,8 +290,22 @@ function renameCard(event) {
     })
 }
 
+function handleRenameColumnClick(event) {
+    let input = event.target;
+    let saveButton = input.parentNode.querySelector('.save-column-title');
+    $.toggleElementDisplay(saveButton);
+    saveButton.addEventListener('click', renameColumn);
+}
+
+function renameColumn(event) {
+    let saveButton = event.target;
+    let columnTitle = saveButton.parentNode.querySelector('.board-column-title');
+    dataHandler.renameColumn(columnTitle.value, columnTitle.dataset.statusId);
+    $.toggleElementDisplay(saveButton);
+}
+
 //----------------------------------------------------------------------
-// OBJECT WITH FUNCTIONS FOR EXPORT
+// ADD EVENT HANDLERS WHEN LOADING BOARDS OR ONE BOARD
 //----------------------------------------------------------------------
 
 function _addEventListenerToBoardTitles(board=null) {
@@ -335,19 +349,9 @@ function _addEventListenerToSaveBoardTitleButtons(board = null) {
     }
 }
 
-function renameColumn(event) {
-    let saveButton = event.target;
-    let columnTitle = saveButton.parentNode.querySelector('.board-column-title');
-    dataHandler.renameColumn(columnTitle.value, columnTitle.dataset.statusId);
-    $.toggleElementDisplay(saveButton);
-}
-
-function handleRenameColumnClick(event) {
-    let input = event.target;
-    let saveButton = input.parentNode.querySelector('.save-column-title');
-    $.toggleElementDisplay(saveButton);
-    saveButton.addEventListener('click', renameColumn);
-}
+//----------------------------------------------------------------------
+// OBJECT WITH FUNCTIONS FOR EXPORT
+//----------------------------------------------------------------------
 
 export let dom = {
     init: function () {
