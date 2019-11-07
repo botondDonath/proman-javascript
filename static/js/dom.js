@@ -208,6 +208,7 @@ function handleSaveBoardButtonClick(event) {
         _addEventListenerToBoardTitles(appendedBoard);
         _addEventListenerToAddCardButtons(appendedBoard);
         _addEventListenerToSaveCardButtons(appendedBoard);
+        _addEventListenerToSaveBoardTitleButtons(appendedBoard);
 
         input.value = input.dataset.default;
         toggleElementDisplay($.getCreateBoardFormContainer());
@@ -271,10 +272,6 @@ function handleSaveNewCardClick(event, board) {
 
 }
 
-//------------------------------------------------------------
-// RENAME BOARD
-//------------------------------------------------------------
-
 function toggleBoardTitleInput(event) {
     let boardTitleInput = event.target;
     let activeBoardTitleInput = isElementTypeActive('.board-title');
@@ -288,7 +285,6 @@ function toggleBoardTitleInput(event) {
         focusSelectTextInputElement(boardTitleInput);
         toggleElementVisibility(saveBoardTitleButton);
         toggleElementActiveState(boardTitleInput);
-        saveBoardTitleButton.addEventListener('click', renameBoard);
     }
 }
 
@@ -377,6 +373,14 @@ function _addEventListenerToSaveCardButtons(board=null) {
     }
 }
 
+function _addEventListenerToSaveBoardTitleButtons(board = null) {
+    let selectionRoot = board ? board : document;
+    let saveBoardButtons = selectionRoot.querySelectorAll('.save-board-title');
+    for (let button of saveBoardButtons) {
+        button.addEventListener('click', renameBoard);
+    }
+}
+
 function renameColumn(event) {
     let saveButton = event.target;
     let columnTitle = saveButton.parentNode.querySelector('.board-column-title');
@@ -415,6 +419,7 @@ export let dom = {
             _addEventListenerToBoardTitles();
             _addEventListenerToAddCardButtons();
             _addEventListenerToSaveCardButtons();
+            _addEventListenerToSaveBoardTitleButtons();
         });
     },
     showBoards: function (boards) {
