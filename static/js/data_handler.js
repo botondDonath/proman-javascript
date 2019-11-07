@@ -86,6 +86,12 @@ export let dataHandler = {
     },
     renameBoard: function (boardData, callback) {
         this._api_post(`/boards/${boardData.id}`, boardData, boardData => callback(boardData))
+    },
+    deleteCard: function (cardId) {
+        // deletes card
+        this._api_post('/delete-card', {'card_id': cardId}, (response) => {
+            this._data = response;
+        })
     }
     // here comes more features
 };

@@ -58,6 +58,7 @@ def get_card(card_id: int):
     card = data_manager.get_card_by_id(card_id)
     return card
 
+
 @app.route("/boards/<int:board_id>", methods=['POST'])
 @json_response
 def rename_board(board_id: int):
@@ -65,6 +66,12 @@ def rename_board(board_id: int):
     data_manager.update_board(req)
     return req
 
+
+@app.route('/delete-card', methods=['POST'])
+@json_response
+def delete_card():
+    req = request.get_json()
+    data_manager.delete_card(req['card_id'])
 
 
 @app.route('/statuses')

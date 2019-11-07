@@ -44,7 +44,7 @@ const createCard = function(card){
 
     copy.querySelector('.card-title').textContent = card.title;
     copy.querySelector('.card').dataset.cardId = card.id;
-    copy.querySelector('.card-delete').cardId = card.id;
+    copy.querySelector('.card-delete').dataset.cardId = card.id;
 
     return copy;
 };
@@ -247,6 +247,14 @@ function displayInputToRenameColumn(event) {
 
 }
 
+function deleteCard(event) {
+    const button = event.target;
+    const cardId = button.dataset.cardId;
+    dataHandler.deleteCard(cardId);
+    const cardToDelete = button.parentNode;
+    cardToDelete.remove();
+}
+
 //----------------------------------------------------------------------
 // OBJECT WITH FUNCTIONS FOR EXPORT
 //----------------------------------------------------------------------
@@ -315,6 +323,8 @@ export let dom = {
         for (const card of cards) {
             const column = board.querySelector(`.board-column[data-status-id="${card.status_id}"]`);
             const cardNode = createCard(card);
+            const deleteButton = cardNode.querySelector('.card-delete');
+            deleteButton.addEventListener('click', (event) => deleteCard(event));
             column.appendChild(cardNode);
         }
     },
