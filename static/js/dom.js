@@ -21,11 +21,13 @@ function resetAddCardInput(board) {
 
 function renderBoard(boardData, template) {
     const board = document.importNode(template.content, true);
-    board.querySelector('.board-title').textContent = boardData.title;
-    board.querySelector('.board-title').dataset.boardId = boardData.id;
     board.querySelector('.board').dataset.boardId = boardData.id;
-    board.querySelector('.open-board').dataset.boardId = boardData.id;
+    board.querySelector('.board-title').value = boardData.title;
+    board.querySelector('.board-title').dataset.boardTitle = boardData.title;
+    board.querySelector('.board-title').dataset.boardId = boardData.id;
+    board.querySelector('.save-board-title').dataset.boardId = boardData.id;
     board.querySelector('.add-card').dataset.boardId = boardData.id;
+    board.querySelector('.open-board').dataset.boardId = boardData.id;
     return board
 }
 
@@ -83,12 +85,19 @@ function hasElementFocus(element) {
     return document.activeElement === element;
 }
 
+function toggleElementActiveState(element) {
+    element.classList.toggle('active');
+}
+
+function isElementTypeActive(selectors) {
+    return document.querySelector(`${selectors}.active`);
+}
+
 //----------------------------------------------------------------------
 // EVENT HANDLERS
 //----------------------------------------------------------------------
 
 function handleCreateBoardButtonClick(event) {
-    event.stopPropagation();
     const createBoardForm = $.getCreateBoardFormContainer();
     createBoardForm.classList.toggle('hidden');
     if (!isElementHidden(createBoardForm)) {
@@ -97,22 +106,11 @@ function handleCreateBoardButtonClick(event) {
     }
 }
 
-function resetBoardTitleIfNecessary(event, newTitle=null) {
-    const renameBoardInput = document.querySelector('.rename-board-container');
-    if (!renameBoardInput) {
-        return;
-    }
-    let saveButton = document.querySelector('.save-board-title');
-    let input = document.querySelector('.rename-board-input');
-    if (event.target !== input && (event.target !== saveButton || newTitle) && !input.classList.contains('clicked')) {
-        renameBoardInput.remove();
-        let renamedBoard = document.querySelector('.board-title.hidden');
-        if (newTitle) {
-            renamedBoard.textContent = newTitle;
-        }
-        toggleElementDisplay(renamedBoard);
-    }
-    input.classList.remove('clicked');
+function resetBoardTitleInput(activeBoardTitleInput) {
+    let saveBoardTitleButton = activeBoardTitleInput.nextElementSibling;
+    toggleElementActiveState(activeBoardTitleInput);
+    toggleElementDisplay(saveBoardTitleButton);
+    activeBoardTitleInput.value = activeBoardTitleInput.dataset.boardTitle;
 }
 
 function resetCardTitleInputIfNecessary(event) {
@@ -130,10 +128,20 @@ function resetCardTitleInputIfNecessary(event) {
 }
 
 function handleOutsideClick(event) {
-    const createBoardInput = $.getCreateBoardInput();
-    createBoardInput.value = createBoardInput.dataset.default;
-    createBoardInput.blur();
-    resetBoardTitleIfNecessary(event);
+    let createBoardInput = $.getCreateBoardInput();
+    let createBoardButton = $.getCreateBoardButton();
+    let createBoardFormContainer = $.getCreateBoardFormContainer();
+    if (event.target !== createBoardButton || !isElementHidden(createBoardFormContainer)) {
+        createBoardInput.value = createBoardInput.dataset.default;
+        createBoardInput.blur();
+    }
+    let activeBoardTitleInput = isElementTypeActive('.board-title');
+    if (activeBoardTitleInput && event.target !== activeBoardTitleInput) {
+        let activeSaveBoardTitleButton = activeBoardTitleInput.nextElementSibling;
+        if (event.target !== activeSaveBoardTitleButton) {
+            resetBoardTitleInput(activeBoardTitleInput);
+        }
+    }
     resetCardTitleInputIfNecessary(event);
 }
 
@@ -219,45 +227,45 @@ function handleSaveNewCardClick(event, board) {
 
 }
 
-function displayInputToRenameBoard(event) {
-    event.stopPropagation();
-    resetBoardTitleIfNecessary(event);
-    let boardTitleElement = event.target;
-    let boardTitle = boardTitleElement.textContent;
-    let boardId = boardTitleElement.dataset.boardId;
-    toggleElementDisplay(boardTitleElement);
-    let inputContainer = document.createElement('div');
-    inputContainer.classList.add("rename-board-container");
-    let input = document.createElement('input');
-    input.classList.add('rename-board-input');
-    input.type = "text";
-    input.setAttribute('value', `${boardTitle}`);
-    inputContainer.appendChild(input);
-    let button = document.createElement('button');
-    button.classList.add('save-board-title');
-    button.type = "button";
-    button.dataset.boardId = boardId;
-    button.textContent = "Save";
-    inputContainer.appendChild(button);
-    boardTitleElement.parentNode.insertAdjacentHTML('afterbegin', inputContainer.outerHTML);
-    document.querySelector('.save-board-title').addEventListener('click', renameBoard);
-    document.querySelector('.rename-board-input').addEventListener('mousedown', function(event) {
+//------------------------------------------------------------
+// RENAME BOARD
+//------------------------------------------------------------
+
+function toggleBoardTitleInput(event) {
+    let boardTitleInput = event.target;
+    let activeBoardTitleInput = isElementTypeActive('.board-title');
+    if (activeBoardTitleInput && activeBoardTitleInput !== event.target) {
         event.stopPropagation();
-        event.target.classList.add('clicked');
-    })
+        let clickOutsideActiveInput = new Event('click');
+        window.dispatchEvent(clickOutsideActiveInput);
+    }
+    let saveBoardTitleButton = boardTitleInput.nextElementSibling;
+    if (isElementHidden(saveBoardTitleButton)) {
+        focusSelectTextInputElement(boardTitleInput);
+        toggleElementDisplay(saveBoardTitleButton);
+        toggleElementActiveState(boardTitleInput);
+        saveBoardTitleButton.addEventListener('click', renameBoard);
+    }
 }
 
 function renameBoard(event) {
-    event.stopPropagation();
-    let button = event.target;
+    let saveBoardTitleButton = event.target;
+    let boardTitleInput = saveBoardTitleButton.previousElementSibling;
     let boardData = {
-        id: button.dataset.boardId,
-        title: document.querySelector('.rename-board-input').value
+        id: saveBoardTitleButton.dataset.boardId,
+        title: boardTitleInput.value
     };
-    dataHandler.renameBoard(boardData, boardData => {
-        resetBoardTitleIfNecessary(event, boardData.title);
+    dataHandler.renameBoard(boardData, responseBoardData => {
+        toggleElementDisplay(saveBoardTitleButton);
+        toggleElementActiveState(boardTitleInput);
+        boardTitleInput.dataset.boardTitle = responseBoardData.title;
     })
 }
+
+//------------------------------------------------------------
+//------------------------------------------------------------
+//------------------------------------------------------------
+
 
 function deleteCard(event) {
     const button = event.target;
@@ -299,7 +307,7 @@ function renameCard(event) {
 function _addEventListenerToRenameBoard() {
     let boardElements = document.querySelectorAll(".board");
     for (let board of boardElements) {
-        board.querySelector('.board-title').addEventListener('click', displayInputToRenameBoard)
+        board.querySelector('.board-title').addEventListener('click', toggleBoardTitleInput)
     }
 }
 
