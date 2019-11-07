@@ -69,11 +69,6 @@ function toggleNewCardInput(board) {
     return form;
 }
 
-function toggleAddCardButton(board) {
-    const addCardButton = board.querySelector('.add-card');
-    addCardButton.classList.toggle('hidden');
-}
-
 function focusSelectTextInputElement(element) {
     element.focus();
     element.select();
