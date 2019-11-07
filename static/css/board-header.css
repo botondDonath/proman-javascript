@@ -8,10 +8,6 @@
 /*    border: black solid 1px;*/
 /*}*/
 
-/*.board-title {*/
-/*    border: red solid 1px;*/
-/*}*/
-
 /*.board-title-container,*/
 /*.board-button-container {*/
 /*    border: yellow dashed 1px;*/
@@ -23,34 +19,26 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: stretch;
-    height: 30px;
-}
-
-.board-title-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
     align-items: center;
+    height: 30px;
+    margin: 3px 6px;
 }
 
 .board-title {
     width: 200px;
-}
-
-.rename-board-container {
-    display: flex;
-    justify-content: space-between;
-    width: 275px;
-}
-
-.board-button-container {
-    display: flex;
-    justify-content: stretch;
+    border: black solid 1px;
+    border-radius: 5px;
+    padding: 3px 8px;
+    background-color: rgba(200, 240, 5, .5);
 }
 
 .rename-board-input {
-    width: 190px;
+    width: 200px;
+    font-size: 16px;
+    border: black solid 1px;
+    border-radius: 5px;
+    padding: 3px 8px;
+    background-color: rgba(200, 240, 5, .5);
 }
 
 button.save-board-title {
@@ -63,4 +51,31 @@ button.add-card {
 
 button.open-board {
     width: 75px;
+}
+
+.board-columns {
+    display: flex;
+}
+
+.board-column-container {
+    margin: 0 6px;
+}
+
+.board-column-title, .card {
+    background-color: rgba(200, 240, 5, .5);
+}
+
+.board-column-title {
+    margin: 10px 0;
+    padding: 6px;
+}
+
+.card {
+    margin: 5px 0;
+    display: flex;
+}
+
+.card-title {
+    padding: 4px;
+    font-size: 14px;
 }
