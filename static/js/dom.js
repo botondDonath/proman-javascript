@@ -63,12 +63,6 @@ function appendBoard(board) {
     return container.lastElementChild;
 }
 
-function toggleNewCardInput(board) {
-    const form = board.querySelector('.form');
-    form.classList.toggle('hidden');
-    return form;
-}
-
 function focusSelectTextInputElement(element) {
     element.focus();
     element.select();
@@ -261,7 +255,8 @@ function handleSaveNewCardClick(event, board) {
     const input = board.querySelector(`input.new-card`);
     const cardTitle = input.value;
     const statusId = 1; // as the acceptance criteria asks
-    toggleNewCardInput(board);
+    let form = board.querySelector('.form');
+    setElementDisplay(form, true);
     resetAddCardInput(board);
 
     dataHandler.createNewCard(cardTitle, board.dataset.boardId, statusId, (card) => {
