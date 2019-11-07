@@ -224,9 +224,9 @@ function handleOpenBoardClick() {
     }
 
     if (!boardColumns.classList.toggle('hidden')) {
-        button.style.transform = 'rotate('+270+'deg)';
+        button.innerHTML = '&#9651';
     } else {
-        button.style.transform = 'rotate('+90+'deg)';
+        button.innerHTML = '&#9661';
     }
 
     if (isElementHidden(boardColumns)) {
