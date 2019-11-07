@@ -7,6 +7,7 @@ def get_boards(cursor):
         '''
         SELECT id, title
         FROM boards
+        ORDER BY id;
         '''
     )
     boards = cursor.fetchall()
@@ -20,6 +21,7 @@ def get_cards_for_board(cursor, board_id):
         SELECT id, board_id, title, status_id, "order"
         FROM cards
         WHERE board_id = %(board_id)s
+        ORDER BY "order";
         ''',
         {'board_id': board_id}
     )

@@ -287,6 +287,7 @@ function renameCard(event) {
     };
     dataHandler.renameCard(cardData, cardData => {
         cardTitleInput.value = cardData.title;
+        toggleElementDisplay(saveButton.nextElementSibling);
         toggleElementDisplay(saveButton);
     })
 }
