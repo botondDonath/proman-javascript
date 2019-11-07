@@ -59,6 +59,13 @@
     padding-left: 10px;
 }
 
+.add-card {
+    background: none;
+    border: none;
+    color: white;
+    font-size: x-large;
+}
+
 button.save-board-title {
     width: 60px;
 }

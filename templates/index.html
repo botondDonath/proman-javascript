@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>ProMan</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/b90dba08a8.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.ico') }}">
     <link rel="icon" type="image/png" sizes="32x32"
           href="{{ url_for('static', filename='favicon/favicon-32x32.png') }}">
@@ -32,8 +32,8 @@
                     <button class="save-board-title invisible">Save</button>
                 </div>
                 <div class="add-card-container">
-                    <button type="button" class="add-card hidden">Add card</button>
-                    <div class="form add-card hidden">
+                    <button type="button" class="add-card hidden far fa-plus-square"></button>
+                    <div class="form add-card-form hidden">
                         <input type="text" class="new-card" minlength="1" maxlength="100" data-default="New Card"
                                value="New Card">
                         <button type="button" class="save-card">Save</button>
