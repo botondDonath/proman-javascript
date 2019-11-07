@@ -71,6 +71,7 @@ function showFeedback(message) {
     $.toggleElementDisplay(feedbackElement);
     setTimeout(() => {
         $.toggleElementDisplay(feedbackElement);
+        $.toggleElementDisplay(feedbackContainer);
     }, 4000)
 }
 
@@ -192,6 +193,7 @@ function handleSaveBoardButtonClick(event) {
 
         input.value = input.dataset.default;
         $.toggleElementDisplay($.getCreateBoardFormContainer());
+        showFeedback('Board created!');
     });
 }
 
@@ -270,6 +272,7 @@ function renameColumn(event) {
     let columnTitle = saveButton.parentNode.querySelector('.board-column-title');
     dataHandler.renameColumn(columnTitle.value, columnTitle.dataset.statusId);
     $.toggleElementDisplay(saveButton);
+    showFeedback('Column renamed!');
 }
 
 function handleRenameColumnClick(event) {
@@ -310,6 +313,7 @@ function handleSaveNewCardClick(event, board) {
         dom.showCards([card]); //passed as a length 1 list, in order to use showCards
         let addCardButton = board.querySelector('button.add-card');
         $.setElementDisplay(addCardButton, false);
+        showFeedback('Card created!');
     });
 
 }
@@ -341,6 +345,7 @@ function renameCard(event) {
         cardTitleInput.dataset.cardTitle = cardData.title;
         $.toggleElementDisplay(saveButton.nextElementSibling);
         $.toggleElementDisplay(saveButton);
+        showFeedback('Card renamed!');
     })
 }
 
@@ -354,6 +359,7 @@ function deleteCard(event) {
     dataHandler.deleteCard(cardId);
     const cardToDelete = button.parentNode;
     cardToDelete.remove();
+    showFeedback('Card deleted!');
 }
 
 //----------------------------------------------------------------------
