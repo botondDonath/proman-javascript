@@ -57,11 +57,6 @@ function appendBoard(board) {
     container.appendChild(board);
 }
 
-function toggleCreateBoardFormDisplay() {
-    const form = getCreateBoardForm();
-    form.classList.toggle('hidden');
-}
-
 function toggleNewCardInput(board) {
     const form = board.querySelector('.form');
     form.classList.toggle('hidden');
@@ -153,6 +148,7 @@ function handleSaveBoardButtonClick(event) {
         const boardTemplate = $.getBoardTemplate();
         const board = renderBoard(boardData, boardTemplate);
         appendBoard(board);
+        _addEventListenerToOpenButtons();
 
         input.value = input.dataset.default;
         toggleElementDisplay($.getCreateBoardFormContainer());
@@ -163,20 +159,15 @@ function handleOpenBoardClick() {
     const button = this;
     const board = document.querySelector(`.board[data-board-id="${button.dataset.boardId}"]`);
     const boardColumns = board.querySelector('.board-columns');
-    toggleAddCardButton(board);
     const addCardButton = board.querySelector('.add-card');
 
-    if (boardColumns.hasChildNodes()) {
-        boardColumns.classList.toggle('hidden');
-    } else {
+    if (!boardColumns.hasChildNodes()) {
         dom.loadColumns(board);
-        button.textContent = "CLOSE";
     }
-    if (boardColumns.classList.contains('hidden')) {
-        button.textContent = "OPEN";
-    } else {
-        button.textContent = "CLOSE";
-    }
+
+    toggleAddCardButton(board);
+    boardColumns.classList.toggle('hidden');
+
     addCardButton.addEventListener('click', (event) => handleAddCardClick(event));
 }
 
@@ -251,6 +242,13 @@ function renameBoard(event) {
 // OBJECT WITH FUNCTIONS FOR EXPORT
 //----------------------------------------------------------------------
 
+function _addEventListenerToOpenButtons() {
+    const openButtons = document.querySelectorAll('.open-board');
+    for (let button of openButtons) {
+        button.addEventListener('click', handleOpenBoardClick);
+    }
+}
+
 export let dom = {
     init: function () {
         // This function should run once, when the page is loaded.
@@ -271,10 +269,7 @@ export let dom = {
         // retrieves boards and makes showBoards called
         dataHandler.getBoards(function (boards) {
             dom.showBoards(boards);
-            const openButtons = document.querySelectorAll('.open-board');
-            for (let button of openButtons) {
-                button.addEventListener('click', handleOpenBoardClick);
-            }
+            _addEventListenerToOpenButtons();
             let boardElements = document.querySelectorAll(".board");
             for (let board of boardElements) {
                 board.querySelector('.board-title').addEventListener('click', displayInputToRenameBoard)
