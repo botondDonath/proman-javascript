@@ -31,7 +31,7 @@ function renderBoard(boardData, template) {
     return board
 }
 
-const createColumns = function(status){
+const createColumns = function (status) {
     const template = document.querySelector('#board-column-template');
     const clone = document.importNode(template.content, true);
 
@@ -40,7 +40,7 @@ const createColumns = function(status){
     return clone;
 };
 
-const createCard = function(card){
+const createCard = function (card) {
     const template = document.querySelector('#card-template');
     const copy = document.importNode(template.content, true);
 
@@ -78,6 +78,10 @@ function toggleElementDisplay(element) {
     element.classList.toggle('hidden');
 }
 
+function setElementDisplay(element, hide=false) {
+    element.classList.toggle('hidden', hide);
+}
+
 function isElementHidden(element) {
     return element.classList.contains('hidden');
 }
@@ -96,6 +100,10 @@ function hasElementFocus(element) {
 
 function toggleElementActiveState(element) {
     element.classList.toggle('active');
+}
+
+function setElementActiveState(element, active=true) {
+    element.classList.toggle('active', active);
 }
 
 function isElementTypeActive(selectors) {
@@ -209,22 +217,20 @@ function handleOpenBoardClick() {
     const board = document.querySelector(`.board[data-board-id="${button.dataset.boardId}"]`);
     const boardColumns = board.querySelector('.board-columns');
     const addCardButton = board.querySelector('.add-card');
+    const form = board.querySelector('.form');
 
     if (!boardColumns.hasChildNodes()) {
         dom.loadColumns(board);
     }
 
-    toggleAddCardButton(board);
-    boardColumns.classList.toggle('hidden');
+    toggleElementDisplay(boardColumns);
 
-    removeFormOnClose(board);
-
-    function removeFormOnClose(board) {
-        const form = board.querySelector('.form');
-        if (!form.classList.contains('hidden')) {
-            form.classList.toggle('hidden');
-            toggleAddCardButton(board);
-        }
+    if (isElementHidden(boardColumns)) {
+        setElementDisplay(form, true);
+        setElementActiveState(form, false);
+        setElementDisplay(addCardButton, true)
+    } else {
+        setElementDisplay(addCardButton, false);
     }
 
     addCardButton.addEventListener('click', (event) => handleAddCardClick(event));
@@ -239,8 +245,9 @@ function handleAddCardClick(event) {
     const button = event.target;
     const boardId = button.dataset.boardId;
     const board = document.querySelector(`.board[data-board-id="${boardId}"]`);
-    toggleAddCardButton(board);
-    let form = toggleNewCardInput(board);
+    let form = board.querySelector('.form');
+    toggleElementDisplay(button);
+    toggleElementDisplay(form);
     toggleElementActiveState(form);
 
     const saveButton = board.querySelector('.save-card');
