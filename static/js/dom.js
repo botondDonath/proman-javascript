@@ -27,6 +27,7 @@ function renderBoard(boardData, template) {
     board.querySelector('.board-title').dataset.boardId = boardData.id;
     board.querySelector('.save-board-title').dataset.boardId = boardData.id;
     board.querySelector('.add-card').dataset.boardId = boardData.id;
+    board.querySelector('.save-card').dataset.boardId = boardData.id;
     board.querySelector('.open-board').dataset.boardId = boardData.id;
     return board
 }
@@ -59,17 +60,13 @@ const createCard = function (card) {
 function appendBoard(board) {
     const container = $.getBoardsContainer();
     container.appendChild(board);
+    return container.lastElementChild;
 }
 
 function toggleNewCardInput(board) {
     const form = board.querySelector('.form');
     form.classList.toggle('hidden');
     return form;
-}
-
-function toggleAddCardButton(board) {
-    const addCardButton = board.querySelector('.add-card');
-    addCardButton.classList.toggle('hidden');
 }
 
 function focusSelectTextInputElement(element) {
@@ -175,9 +172,9 @@ function handleOutsideClick(event) {
 
         let ignoredElements = [addCardButton, openBoardButton, activeNewCardInput, activeSaveCardButton];
         if (!ignoredElements.includes(event.target)) {
-            toggleElementActiveState(activeAddCardForm);
-            toggleElementDisplay(activeAddCardForm);
-            toggleElementDisplay(addCardButton);
+            setElementActiveState(activeAddCardForm, false);
+            setElementDisplay(activeAddCardForm, true);
+            setElementDisplay(addCardButton, false);
         }
     }
 
@@ -206,17 +203,19 @@ function handleSaveBoardButtonClick(event) {
     dataHandler.createNewBoard(boardTitle, (boardData) => {
         const boardTemplate = $.getBoardTemplate();
         const board = renderBoard(boardData, boardTemplate);
-        appendBoard(board);
-        _addEventListenerToOpenButtons();
-        _addEventListenerToRenameBoard();
+        let appendedBoard = appendBoard(board);
+        _addEventListenerToOpenButtons(appendedBoard);
+        _addEventListenerToBoardTitles(appendedBoard);
+        _addEventListenerToAddCardButtons(appendedBoard);
+        _addEventListenerToSaveCardButtons(appendedBoard);
 
         input.value = input.dataset.default;
         toggleElementDisplay($.getCreateBoardFormContainer());
     });
 }
 
-function handleOpenBoardClick() {
-    const button = this;
+function handleOpenBoardClick(event) {
+    const button = event.target;
     const board = document.querySelector(`.board[data-board-id="${button.dataset.boardId}"]`);
     const boardColumns = board.querySelector('.board-columns');
     const addCardButton = board.querySelector('.add-card');
@@ -240,7 +239,6 @@ function handleOpenBoardClick() {
         setElementDisplay(addCardButton, false);
     }
 
-    addCardButton.addEventListener('click', (event) => handleAddCardClick(event));
 }
 
 function handleAddCardClick(event) {
@@ -253,13 +251,9 @@ function handleAddCardClick(event) {
     const boardId = button.dataset.boardId;
     const board = document.querySelector(`.board[data-board-id="${boardId}"]`);
     let form = board.querySelector('.form');
-    toggleElementDisplay(button);
-    toggleElementDisplay(form);
-    toggleElementActiveState(form);
-
-    const saveButton = board.querySelector('.save-card');
-    saveButton.addEventListener('click', (event) => handleSaveNewCardClick(event, board));
-
+    setElementDisplay(button, true);
+    setElementDisplay(form, false);
+    setElementActiveState(form, true);
 }
 
 function handleSaveNewCardClick(event, board) {
@@ -271,6 +265,8 @@ function handleSaveNewCardClick(event, board) {
 
     dataHandler.createNewCard(cardTitle, board.dataset.boardId, statusId, (card) => {
         dom.showCards([card]); //passed as a length 1 list, in order to use showCards
+        let addCardButton = board.querySelector('button.add-card');
+        setElementDisplay(addCardButton, false);
     });
 
 }
@@ -338,6 +334,7 @@ function renameCard(event) {
     };
     dataHandler.renameCard(cardData, cardData => {
         cardTitleInput.value = cardData.title;
+        cardTitleInput.dataset.cardTitle = cardData.title;
         toggleElementDisplay(saveButton.nextElementSibling);
         toggleElementDisplay(saveButton);
     })
@@ -347,17 +344,36 @@ function renameCard(event) {
 // OBJECT WITH FUNCTIONS FOR EXPORT
 //----------------------------------------------------------------------
 
-function _addEventListenerToRenameBoard() {
-    let boardElements = document.querySelectorAll(".board");
-    for (let board of boardElements) {
-        board.querySelector('.board-title').addEventListener('click', toggleBoardTitleInput)
+function _addEventListenerToBoardTitles(board=null) {
+    let selectionRoot = board ? board : document;
+    let boardTitleInputs = selectionRoot.querySelectorAll('.board-title');
+    for (let boardTitleInput of boardTitleInputs) {
+        boardTitleInput.addEventListener('click', toggleBoardTitleInput);
     }
 }
 
-function _addEventListenerToOpenButtons() {
-    const openButtons = document.querySelectorAll('.open-board');
+function _addEventListenerToOpenButtons(board=null) {
+    let selectionRoot = board ? board : document;
+    let openButtons = selectionRoot.querySelectorAll('.open-board');
     for (let button of openButtons) {
         button.addEventListener('click', handleOpenBoardClick);
+    }
+}
+
+function _addEventListenerToAddCardButtons(board=null) {
+    let selectionRoot = board ? board : document;
+    let addCardButtons = selectionRoot.querySelectorAll('button.add-card');
+    for (let button of addCardButtons) {
+        button.addEventListener('click', (event) => handleAddCardClick(event));
+    }
+}
+
+function _addEventListenerToSaveCardButtons(board=null) {
+    let selectionRoot = board ? board : document;
+    let saveButtons = selectionRoot.querySelectorAll('.save-card');
+    for (let button of saveButtons) {
+        let board = $.getBoardById(button.dataset.boardId);
+        button.addEventListener('click', (event) => handleSaveNewCardClick(event, board));
     }
 }
 
@@ -396,7 +412,9 @@ export let dom = {
         dataHandler.getBoards(function (boards) {
             dom.showBoards(boards);
             _addEventListenerToOpenButtons();
-            _addEventListenerToRenameBoard();
+            _addEventListenerToBoardTitles();
+            _addEventListenerToAddCardButtons();
+            _addEventListenerToSaveCardButtons();
         });
     },
     showBoards: function (boards) {
