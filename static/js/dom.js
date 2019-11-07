@@ -43,6 +43,8 @@ const createCard = function(card){
     const copy = document.importNode(template.content, true);
 
     copy.querySelector('.card-title').textContent = card.title;
+    copy.querySelector('.card').dataset.cardId = card.id;
+    copy.querySelector('.card-delete').cardId = card.id;
 
     return copy;
 };
