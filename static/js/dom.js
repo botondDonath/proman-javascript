@@ -61,6 +61,7 @@ function appendBoard(board) {
 function toggleNewCardInput(board) {
     const form = board.querySelector('.form');
     form.classList.toggle('hidden');
+    return form;
 }
 
 function toggleAddCardButton(board) {
@@ -143,6 +144,7 @@ function handleOutsideClick(event) {
         createBoardInput.value = createBoardInput.dataset.default;
         createBoardInput.blur();
     }
+
     let activeBoardTitleInput = isElementTypeActive('.board-title');
     if (activeBoardTitleInput && event.target !== activeBoardTitleInput) {
         let activeSaveBoardTitleButton = activeBoardTitleInput.nextElementSibling;
@@ -150,6 +152,24 @@ function handleOutsideClick(event) {
             resetBoardTitleInput(activeBoardTitleInput);
         }
     }
+
+    let activeAddCardForm = isElementTypeActive('.form');
+    if (activeAddCardForm) {
+        let addCardButton = activeAddCardForm.previousElementSibling;
+        let boardId = addCardButton.dataset.boardId;
+        let openBoardButton = document.querySelector(`.open-board[data-board-id="${boardId}"]`);
+
+        let activeNewCardInput = activeAddCardForm.querySelector('.new-card');
+        let activeSaveCardButton = activeAddCardForm.querySelector('.save-card');
+
+        let ignoredElements = [addCardButton, openBoardButton, activeNewCardInput, activeSaveCardButton];
+        if (!ignoredElements.includes(event.target)) {
+            toggleElementActiveState(activeAddCardForm);
+            toggleElementDisplay(activeAddCardForm);
+            toggleElementDisplay(addCardButton);
+        }
+    }
+
     resetCardTitleInputIfNecessary(event);
 }
 
@@ -211,11 +231,17 @@ function handleOpenBoardClick() {
 }
 
 function handleAddCardClick(event) {
+    if (isElementTypeActive('.form')) {
+        event.stopPropagation();
+        let clickOutsideActiveForm = new Event('click');
+        window.dispatchEvent(clickOutsideActiveForm);
+    }
     const button = event.target;
     const boardId = button.dataset.boardId;
     const board = document.querySelector(`.board[data-board-id="${boardId}"]`);
     toggleAddCardButton(board);
-    toggleNewCardInput(board);
+    let form = toggleNewCardInput(board);
+    toggleElementActiveState(form);
 
     const saveButton = board.querySelector('.save-card');
     saveButton.addEventListener('click', (event) => handleSaveNewCardClick(event, board));
@@ -269,11 +295,6 @@ function renameBoard(event) {
         boardTitleInput.dataset.boardTitle = responseBoardData.title;
     })
 }
-
-//------------------------------------------------------------
-//------------------------------------------------------------
-//------------------------------------------------------------
-
 
 function deleteCard(event) {
     const button = event.target;
