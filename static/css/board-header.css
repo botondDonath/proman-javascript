@@ -35,6 +35,7 @@
 .rename-board-input {
     width: 200px;
     font-size: 16px;
+    color: white;
     border: black solid 1px;
     border-radius: 5px;
     padding: 3px 8px;
@@ -68,6 +69,16 @@ button.open-board {
 .board-column-title {
     margin: 10px 0;
     padding: 6px;
+    color: black;
+    border: none;
+}
+
+.board-column-title:hover {
+    cursor: default;
+}
+
+.board-column-title:focus {
+    cursor: text;
 }
 
 .card {

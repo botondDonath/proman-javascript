@@ -33,7 +33,7 @@ const createColumns = function(status){
     const template = document.querySelector('#board-column-template');
     const clone = document.importNode(template.content, true);
 
-    clone.querySelector('.board-column-title').textContent = status.title;
+    clone.querySelector('.board-column-title').value = status.title;
     clone.querySelector('.board-column').dataset.statusId = status.id;
     return clone;
 };
@@ -94,7 +94,6 @@ function handleCreateBoardButtonClick(event) {
         focusSelectTextInputElement(input);
     }
 }
-
 
 function resetBoardTitleIfNecessary(event, newTitle=null) {
     const renameBoardInput = document.querySelector('.rename-board-container');
@@ -242,6 +241,10 @@ function renameBoard(event) {
     dataHandler.renameBoard(boardData, boardData => {
         resetBoardTitleIfNecessary(event, boardData.title);
     })
+}
+
+function displayInputToRenameColumn(event) {
+
 }
 
 //----------------------------------------------------------------------
