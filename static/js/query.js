@@ -9,4 +9,5 @@ export let query = {
     getSaveBoardButton: () => document.querySelector('button.save-board'),
     getBoardTemplate: () => document.getElementById('board-template'),
     getBoardsContainer: () => document.getElementById('boards'),
+    getBoardById: (boardId) => document.querySelector(`.board[data-board-id="${boardId}"]`),
 };
