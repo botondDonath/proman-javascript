@@ -32,7 +32,7 @@ function renderBoard(boardData, template) {
     return board
 }
 
-const createColumns = function(status, board){
+const createColumns = function (status, board) {
     const template = document.querySelector('#board-column-template');
     const clone = document.importNode(template.content, true);
 
@@ -67,41 +67,70 @@ function appendBoard(board) {
 // EVENT HANDLERS
 //----------------------------------------------------------------------
 
+function resetBoardTitleInput(activeBoardTitleInput) {
+    let saveBoardTitleButton = activeBoardTitleInput.nextElementSibling;
+    $.toggleElementActiveState(activeBoardTitleInput);
+    $.toggleElementVisibility(saveBoardTitleButton);
+    activeBoardTitleInput.value = activeBoardTitleInput.dataset.boardTitle;
+}
+
+let outsideClick = {
+    handleNewBoard: function () {
+        let createBoardInput = $.getCreateBoardInput();
+        let createBoardButton = $.getCreateBoardButton();
+        let createBoardFormContainer = $.getCreateBoardFormContainer();
+        if (event.target !== createBoardButton || !$.isElementHidden(createBoardFormContainer)) {
+            createBoardInput.value = createBoardInput.dataset.default;
+            createBoardInput.blur();
+        }
+    },
+    handleBoardTitle: function () {
+        let activeBoardTitleInput = $.isElementTypeActive('.board-title');
+        if (activeBoardTitleInput && event.target !== activeBoardTitleInput) {
+            let activeSaveBoardTitleButton = activeBoardTitleInput.nextElementSibling;
+            if (event.target !== activeSaveBoardTitleButton) {
+                resetBoardTitleInput(activeBoardTitleInput);
+            }
+        }
+    },
+    handleNewCard: function (event) {
+        let activeAddCardForm = $.isElementTypeActive('.form');
+        if (activeAddCardForm) {
+            let addCardButton = activeAddCardForm.previousElementSibling;
+            let boardId = addCardButton.dataset.boardId;
+            let openBoardButton = document.querySelector(`.open-board[data-board-id="${boardId}"]`);
+
+            let activeNewCardInput = activeAddCardForm.querySelector('.new-card');
+            let activeSaveCardButton = activeAddCardForm.querySelector('.save-card');
+
+            let ignoredElements = [addCardButton, openBoardButton, activeNewCardInput, activeSaveCardButton];
+            if (!ignoredElements.includes(event.target)) {
+                $.setElementActiveState(activeAddCardForm, false);
+                $.setElementDisplay(activeAddCardForm, true);
+                $.setElementDisplay(addCardButton, false);
+            }
+        }
+    },
+    handleCardTitle: function (event) {
+        let saveCardTitleButton = document.querySelector('.card-save-title');
+        if (!saveCardTitleButton) {
+            return;
+        }
+        let cardTitleInput = document.querySelector('.card-title');
+        let ignoredElements = [saveCardTitleButton, cardTitleInput];
+        if (!ignoredElements.includes(event.target) && !$.isElementHidden(saveCardTitleButton)) {
+            $.toggleElementDisplay(saveCardTitleButton);
+            $.toggleElementDisplay(saveCardTitleButton.nextElementSibling);
+            cardTitleInput.value = cardTitleInput.dataset.cardTitle;
+        }
+    }
+};
+
 function handleOutsideClick(event) {
-    let createBoardInput = $.getCreateBoardInput();
-    let createBoardButton = $.getCreateBoardButton();
-    let createBoardFormContainer = $.getCreateBoardFormContainer();
-    if (event.target !== createBoardButton || !$.isElementHidden(createBoardFormContainer)) {
-        createBoardInput.value = createBoardInput.dataset.default;
-        createBoardInput.blur();
-    }
-
-    let activeBoardTitleInput = $.isElementTypeActive('.board-title');
-    if (activeBoardTitleInput && event.target !== activeBoardTitleInput) {
-        let activeSaveBoardTitleButton = activeBoardTitleInput.nextElementSibling;
-        if (event.target !== activeSaveBoardTitleButton) {
-            resetBoardTitleInput(activeBoardTitleInput);
-        }
-    }
-
-    let activeAddCardForm = $.isElementTypeActive('.form');
-    if (activeAddCardForm) {
-        let addCardButton = activeAddCardForm.previousElementSibling;
-        let boardId = addCardButton.dataset.boardId;
-        let openBoardButton = document.querySelector(`.open-board[data-board-id="${boardId}"]`);
-
-        let activeNewCardInput = activeAddCardForm.querySelector('.new-card');
-        let activeSaveCardButton = activeAddCardForm.querySelector('.save-card');
-
-        let ignoredElements = [addCardButton, openBoardButton, activeNewCardInput, activeSaveCardButton];
-        if (!ignoredElements.includes(event.target)) {
-            $.setElementActiveState(activeAddCardForm, false);
-            $.setElementDisplay(activeAddCardForm, true);
-            $.setElementDisplay(addCardButton, false);
-        }
-    }
-
-    resetCardTitleInputIfNecessary(event);
+    outsideClick.handleNewBoard(event);
+    outsideClick.handleBoardTitle(event);
+    outsideClick.handleNewCard(event);
+    outsideClick.handleCardTitle(event);
 }
 
 //----------------------------------------
@@ -167,13 +196,6 @@ function renameBoard(event) {
         $.toggleElementActiveState(boardTitleInput);
         boardTitleInput.dataset.boardTitle = responseBoardData.title;
     })
-}
-
-function resetBoardTitleInput(activeBoardTitleInput) {
-    let saveBoardTitleButton = activeBoardTitleInput.nextElementSibling;
-    $.toggleElementActiveState(activeBoardTitleInput);
-    $.toggleElementVisibility(saveBoardTitleButton);
-    activeBoardTitleInput.value = activeBoardTitleInput.dataset.boardTitle;
 }
 
 function toggleBoardTitleInput(event) {
@@ -280,20 +302,6 @@ function handleSaveNewCardClick(event, board) {
 // RENAME CARD
 //----------------------------------------
 
-function resetCardTitleInputIfNecessary(event) {
-    let saveCardTitleButton = document.querySelector('.card-save-title');
-    if (!saveCardTitleButton) {
-        return;
-    }
-    let cardTitleInput = document.querySelector('.card-title');
-    let ignoredElements = [saveCardTitleButton, cardTitleInput];
-    if (!ignoredElements.includes(event.target) && !$.isElementHidden(saveCardTitleButton)) {
-        $.toggleElementDisplay(saveCardTitleButton);
-        $.toggleElementDisplay(saveCardTitleButton.nextElementSibling);
-        cardTitleInput.value = cardTitleInput.dataset.cardTitle;
-    }
-}
-
 function toggleCardTitleInput(event) {
     const cardTitleInput = event.target;
     const saveButton = cardTitleInput.nextElementSibling;
@@ -336,7 +344,7 @@ function deleteCard(event) {
 // ADD EVENT HANDLERS WHEN LOADING BOARDS OR ONE BOARD
 //----------------------------------------------------------------------
 
-function _addEventListenerToBoardTitles(board=null) {
+function _addEventListenerToBoardTitles(board = null) {
     let selectionRoot = board ? board : document;
     let boardTitleInputs = selectionRoot.querySelectorAll('.board-title');
     for (let boardTitleInput of boardTitleInputs) {
@@ -344,7 +352,7 @@ function _addEventListenerToBoardTitles(board=null) {
     }
 }
 
-function _addEventListenerToOpenButtons(board=null) {
+function _addEventListenerToOpenButtons(board = null) {
     let selectionRoot = board ? board : document;
     let openButtons = selectionRoot.querySelectorAll('.open-board');
     for (let button of openButtons) {
@@ -352,7 +360,7 @@ function _addEventListenerToOpenButtons(board=null) {
     }
 }
 
-function _addEventListenerToAddCardButtons(board=null) {
+function _addEventListenerToAddCardButtons(board = null) {
     let selectionRoot = board ? board : document;
     let addCardButtons = selectionRoot.querySelectorAll('button.add-card');
     for (let button of addCardButtons) {
@@ -360,7 +368,7 @@ function _addEventListenerToAddCardButtons(board=null) {
     }
 }
 
-function _addEventListenerToSaveCardButtons(board=null) {
+function _addEventListenerToSaveCardButtons(board = null) {
     let selectionRoot = board ? board : document;
     let saveButtons = selectionRoot.querySelectorAll('.save-card');
     for (let button of saveButtons) {
