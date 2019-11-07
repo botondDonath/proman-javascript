@@ -153,7 +153,8 @@ function handleOutsideClick(event) {
 // CREATE BOARD
 //--------------------------------------------------
 
-function handleCreateBoardButtonClick() {
+function handleCreateBoardButtonClick(event) {
+    $.toggleElementActiveState(event.target);
     const createBoardForm = $.getCreateBoardFormContainer();
     createBoardForm.classList.toggle('hidden');
     if (!$.isElementHidden(createBoardForm)) {
