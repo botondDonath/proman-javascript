@@ -95,6 +95,11 @@ export let dataHandler = {
     },
     renameCard: function (cardData, callback) {
         this._api_post(`/cards/${cardData.id}`, {'title': cardData.title}, (cardData) => callback(cardData));
+    },
+    renameColumn: function (columnTitle, columnId) {
+        this._api_post('/rename-column', {'title': columnTitle, 'id': columnId}, (data) => {
+            this._data = data;
+        })
     }
     // here comes more features
 };

@@ -69,6 +69,7 @@ def get_statuses(cursor):
         '''
         SELECT id, title
         FROM statuses
+        ORDER BY id
         '''
     )
     statuses = cursor.fetchall()
@@ -130,4 +131,13 @@ def update_card(cursor, card_data):
         WHERE id = %(id)s
         ''',
         card_data
+    )
+
+
+@connection_handler
+def update_column(cursor, column_data):
+    cursor.execute(
+        '''
+        UPDATE statuses SET title = %(title)s WHERE id = %(id)s;
+        ''', column_data
     )

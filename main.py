@@ -89,6 +89,15 @@ def rename_card(card_id: int):
     return card_data
 
 
+@app.route('/rename-column', methods=['POST'])
+@json_response
+def rename_column():
+    req = request.get_json()
+    print(req)
+    data_manager.update_column(req)
+    return req
+
+
 def main():
     app.run(debug=True)
 
