@@ -118,7 +118,7 @@ function handleOutsideClick(event) {
     createBoardInput.value = createBoardInput.dataset.default;
     createBoardInput.blur();
     resetBoardTitleIfNecessary(event);
-
+    toggleElementDisplay(document.querySelector('.card-edit'));
 }
 
 function handleCreateBoardInputClick(event) {
@@ -251,6 +251,15 @@ function deleteCard(event) {
     cardToDelete.remove();
 }
 
+function toggleCardTitleEdit(event) {
+    event.stopPropagation();
+    const cardTitleInput = event.target;
+    const editButton = cardTitleInput.nextElementSibling;
+    if (isElementHidden(editButton)) {
+        toggleElementDisplay(editButton);
+    }
+}
+
 //----------------------------------------------------------------------
 // OBJECT WITH FUNCTIONS FOR EXPORT
 //----------------------------------------------------------------------
@@ -319,7 +328,9 @@ export let dom = {
         for (const card of cards) {
             const column = board.querySelector(`.board-column[data-status-id="${card.status_id}"]`);
             const cardNode = createCard(card);
+            const cardTitle = cardNode.querySelector('.card-title');
             const deleteButton = cardNode.querySelector('.card-delete');
+            cardTitle.addEventListener('click', toggleCardTitleEdit);
             deleteButton.addEventListener('click', (event) => deleteCard(event));
             column.appendChild(cardNode);
         }

@@ -35,7 +35,7 @@
 .rename-board-input {
     width: 200px;
     font-size: 16px;
-    color: white;
+    color: black;
     border: black solid 1px;
     border-radius: 5px;
     padding: 3px 8px;
@@ -52,23 +52,4 @@ button.add-card {
 
 button.open-board {
     width: 75px;
-}
-
-.board-columns {
-    display: flex;
-}
-
-.board-column-container {
-    margin: 0 6px;
-}
-
-.board-column-title, .card {
-    background-color: rgba(200, 240, 5, .5);
-}
-
-.board-column-title {
-    margin: 10px 0;
-    padding: 6px;
-    color: black;
-    border: none;
 }
