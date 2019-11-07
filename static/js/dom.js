@@ -43,7 +43,9 @@ const createCard = function(card){
     const copy = document.importNode(template.content, true);
 
     copy.querySelector('.card-title').value = card.title;
+    copy.querySelector('.card-title').dataset.cardTitle = card.title;
     copy.querySelector('.card').dataset.cardId = card.id;
+    copy.querySelector('.card-save-title').dataset.cardId = card.id;
     copy.querySelector('.card-delete').dataset.cardId = card.id;
 
     return copy;
@@ -113,12 +115,26 @@ function resetBoardTitleIfNecessary(event, newTitle=null) {
     input.classList.remove('clicked');
 }
 
+function resetCardTitleInputIfNecessary(event) {
+    let saveCardTitleButton = document.querySelector('.card-save-title');
+    if (!saveCardTitleButton) {
+        return;
+    }
+    let cardTitleInput = document.querySelector('.card-title');
+    let ignoredElements = [saveCardTitleButton, cardTitleInput];
+    if (!ignoredElements.includes(event.target) && !isElementHidden(saveCardTitleButton)) {
+        toggleElementDisplay(saveCardTitleButton);
+        toggleElementDisplay(saveCardTitleButton.nextElementSibling);
+        cardTitleInput.value = cardTitleInput.dataset.cardTitle;
+    }
+}
+
 function handleOutsideClick(event) {
     const createBoardInput = $.getCreateBoardInput();
     createBoardInput.value = createBoardInput.dataset.default;
     createBoardInput.blur();
     resetBoardTitleIfNecessary(event);
-    toggleElementDisplay(document.querySelector('.card-edit'));
+    resetCardTitleInputIfNecessary(event);
 }
 
 function handleCreateBoardInputClick(event) {
@@ -251,14 +267,28 @@ function deleteCard(event) {
     cardToDelete.remove();
 }
 
-function toggleCardTitleEdit(event) {
-    event.stopPropagation();
+function toggleCardTitleInput(event) {
     const cardTitleInput = event.target;
-    const editButton = cardTitleInput.nextElementSibling;
-    if (isElementHidden(editButton)) {
-        toggleElementDisplay(editButton);
+    const saveButton = cardTitleInput.nextElementSibling;
+    const deleteButton = saveButton.nextElementSibling;
+    if (isElementHidden(saveButton)) {
+        toggleElementDisplay(saveButton);
+        toggleElementDisplay(deleteButton);
         focusSelectTextInputElement(cardTitleInput)
     }
+}
+
+function renameCard(event) {
+    let saveButton = event.target;
+    let cardTitleInput = saveButton.previousElementSibling;
+    let cardData = {
+        id: saveButton.dataset.cardId,
+        title: cardTitleInput.value
+    };
+    dataHandler.renameCard(cardData, cardData => {
+        cardTitleInput.value = cardData.title;
+        toggleElementDisplay(saveButton);
+    })
 }
 
 //----------------------------------------------------------------------
@@ -330,8 +360,10 @@ export let dom = {
             const column = board.querySelector(`.board-column[data-status-id="${card.status_id}"]`);
             const cardNode = createCard(card);
             const cardTitle = cardNode.querySelector('.card-title');
+            const saveButton = cardNode.querySelector('.card-save-title');
             const deleteButton = cardNode.querySelector('.card-delete');
-            cardTitle.addEventListener('click', toggleCardTitleEdit);
+            cardTitle.addEventListener('click', toggleCardTitleInput);
+            saveButton.addEventListener('click', renameCard);
             deleteButton.addEventListener('click', (event) => deleteCard(event));
             column.appendChild(cardNode);
         }

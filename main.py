@@ -81,6 +81,15 @@ def statuses():
     return statuses
 
 
+@app.route('/cards/<int:card_id>', methods=['POST'])
+@json_response
+def rename_card(card_id: int):
+    card_data = request.get_json()
+    card_data.update({'id': card_id})
+    data_manager.update_card(card_data)
+    return card_data
+
+
 def main():
     app.run(debug=True)
 

@@ -117,3 +117,15 @@ def update_board(cursor, board_data):
         UPDATE boards SET title = %(title)s WHERE id = %(id)s;
         ''', board_data
     )
+
+
+@connection_handler
+def update_card(cursor, card_data):
+    cursor.execute(
+        '''
+        UPDATE cards
+        SET title = %(title)s
+        WHERE id = %(id)s
+        ''',
+        card_data
+    )

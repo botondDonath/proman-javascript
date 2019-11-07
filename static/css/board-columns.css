@@ -4,15 +4,14 @@
 
 .board-column-container {
     margin: 0 6px;
-}
-
-.board-column-title, .card {
-    background-color: rgba(200, 240, 5, .5);
+    flex-basis: 250px;
 }
 
 .board-column-title {
-    margin: 10px 0;
-    padding: 6px;
+    background-color: rgba(200, 240, 5, .5);
     color: black;
     border: none;
+    margin: 10px 0;
+    padding: 6px;
+    text-align: center;
 }

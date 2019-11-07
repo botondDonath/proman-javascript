@@ -92,6 +92,9 @@ export let dataHandler = {
         this._api_post('/delete-card', {'card_id': cardId}, (response) => {
             this._data = response;
         })
+    },
+    renameCard: function (cardData, callback) {
+        this._api_post(`/cards/${cardData.id}`, {'title': cardData.title}, (cardData) => callback(cardData));
     }
     // here comes more features
 };
