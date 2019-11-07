@@ -74,15 +74,6 @@ def get_statuses(cursor):
 
 
 @connection_handler
-def update_board(cursor, board_data):
-    cursor.execute(
-        '''
-        UPDATE boards SET title = %(title)s WHERE id = %(id)s;
-        ''', board_data
-    )
-
-
-@connection_handler
 def new_card(cursor, board_id, title, status_id):
     cursor.execute(
         '''
@@ -117,3 +108,12 @@ def get_new_card_id(cursor):
     )
     _id = cursor.fetchone()
     return _id
+
+
+@connection_handler
+def update_board(cursor, board_data):
+    cursor.execute(
+        '''
+        UPDATE boards SET title = %(title)s WHERE id = %(id)s;
+        ''', board_data
+    )
