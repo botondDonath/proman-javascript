@@ -257,6 +257,7 @@ function toggleCardTitleEdit(event) {
     const editButton = cardTitleInput.nextElementSibling;
     if (isElementHidden(editButton)) {
         toggleElementDisplay(editButton);
+        focusSelectTextInputElement(cardTitleInput)
     }
 }
 
