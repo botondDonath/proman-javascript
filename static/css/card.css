@@ -24,3 +24,12 @@
 .card-title:focus {
     cursor: text;
 }
+
+.card-delete {
+    width: 45px;
+    height: 30px;
+    border: none;
+    background: none;
+    color: black;
+    cursor: pointer;
+}
