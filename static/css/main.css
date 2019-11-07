@@ -25,6 +25,11 @@ body {
     margin-bottom: 20px;
 }
 
+.open-board {
+    display: block;
+    transform: rotate(90deg);
+}
+
 .hidden {
     display: none;
 }

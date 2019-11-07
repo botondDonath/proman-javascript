@@ -223,7 +223,11 @@ function handleOpenBoardClick() {
         dom.loadColumns(board);
     }
 
-    toggleElementDisplay(boardColumns);
+    if (!boardColumns.classList.toggle('hidden')) {
+        button.style.transform = 'rotate('+270+'deg)';
+    } else {
+        button.style.transform = 'rotate('+90+'deg)';
+    }
 
     if (isElementHidden(boardColumns)) {
         setElementDisplay(form, true);
