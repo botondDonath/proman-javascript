@@ -67,9 +67,9 @@ function appendBoard(board) {
 // EVENT HANDLERS
 //----------------------------------------------------------------------
 
-//----------------------------------------
+//--------------------------------------------------
 // HANDLE WINDOW CLICKS
-//----------------------------------------
+//--------------------------------------------------
 
 function resetBoardTitleInput(activeBoardTitleInput) {
     let saveBoardTitleButton = activeBoardTitleInput.nextElementSibling;
@@ -137,9 +137,9 @@ function handleOutsideClick(event) {
     outsideClick.handleCardTitle(event);
 }
 
-//----------------------------------------
+//--------------------------------------------------
 // CREATE BOARD
-//----------------------------------------
+//--------------------------------------------------
 
 function handleCreateBoardButtonClick() {
     const createBoardForm = $.getCreateBoardFormContainer();
@@ -184,9 +184,9 @@ function handleSaveBoardButtonClick(event) {
     });
 }
 
-//----------------------------------------
+//--------------------------------------------------
 // RENAME BOARD
-//----------------------------------------
+//--------------------------------------------------
 
 function renameBoard(event) {
     let saveBoardTitleButton = event.target;
@@ -218,9 +218,9 @@ function toggleBoardTitleInput(event) {
     }
 }
 
-//----------------------------------------
+//--------------------------------------------------
 // OPEN BOARD
-//----------------------------------------
+//--------------------------------------------------
 
 function handleOpenBoardClick(event) {
     const button = event.target;
@@ -249,9 +249,9 @@ function handleOpenBoardClick(event) {
 
 }
 
-//----------------------------------------
+//--------------------------------------------------
 // RENAME COLUMN
-//----------------------------------------
+//--------------------------------------------------
 
 function renameColumn(event) {
     let saveButton = event.target;
@@ -267,9 +267,9 @@ function handleRenameColumnClick(event) {
     saveButton.addEventListener('click', renameColumn);
 }
 
-//----------------------------------------
+//--------------------------------------------------
 // CREATE CARD
-//----------------------------------------
+//--------------------------------------------------
 
 function handleAddCardClick(event) {
     if ($.isElementTypeActive('.form')) {
@@ -302,9 +302,9 @@ function handleSaveNewCardClick(event, board) {
 
 }
 
-//----------------------------------------
+//--------------------------------------------------
 // RENAME CARD
-//----------------------------------------
+//--------------------------------------------------
 
 function toggleCardTitleInput(event) {
     const cardTitleInput = event.target;
@@ -332,9 +332,9 @@ function renameCard(event) {
     })
 }
 
-//----------------------------------------
+//--------------------------------------------------
 // DELETE CARD
-//----------------------------------------
+//--------------------------------------------------
 
 function deleteCard(event) {
     const button = event.target;
