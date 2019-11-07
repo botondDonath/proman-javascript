@@ -257,6 +257,14 @@ function renameBoard(event) {
 
 }
 
+function deleteCard(event) {
+    const button = event.target;
+    const cardId = button.dataset.cardId;
+    dataHandler.deleteCard(cardId);
+    const cardToDelete = button.parentNode;
+    cardToDelete.remove();
+}
+
 //----------------------------------------------------------------------
 // OBJECT WITH FUNCTIONS FOR EXPORT
 //----------------------------------------------------------------------
