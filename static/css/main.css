@@ -6,7 +6,11 @@
 
 .board {
     display: block;
+}
 
+.open-board {
+    display: block;
+    transform: rotate(90deg);
 }
 
 .hidden {
