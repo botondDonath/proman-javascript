@@ -168,7 +168,11 @@ function handleOpenBoardClick() {
     }
 
     toggleAddCardButton(board);
-    boardColumns.classList.toggle('hidden');
+    if (!boardColumns.classList.toggle('hidden')) {
+        button.style.transform = 'rotate('+270+'deg)';
+    } else {
+        button.style.transform = 'rotate('+90+'deg)';
+    }
 
     removeFormOnClose(board);
 
