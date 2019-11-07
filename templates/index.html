@@ -25,15 +25,23 @@
 <template id="board-template">
     <div class="board">
         <div class="board-header">
-            <input class="board-title" data-board-title="" value="">
-            <button class="save-board-title hidden">Save</button>
-            <button type="button" class="add-card hidden">Add card</button>
-            <div class="form add-card hidden">
-                <input type="text" class="new-card" minlength="1" maxlength="100" data-default="New Card"
-                       value="New Card">
-                <button type="button" class="save-card">Save</button>
+            <div class="board-header-left">
+                <div class="board-title-container">
+                    <input class="board-title" data-board-title="" value="">
+                    <button class="save-board-title invisible">Save</button>
+                </div>
+                <div class="add-card-container">
+                    <button type="button" class="add-card hidden">Add card</button>
+                    <div class="form add-card hidden">
+                        <input type="text" class="new-card" minlength="1" maxlength="100" data-default="New Card"
+                               value="New Card">
+                        <button type="button" class="save-card">Save</button>
+                    </div>
+                </div>
             </div>
-            <button type="button" class="open-board">OPEN</button>
+            <div class="board-header-right">
+                <button type="button" class="open-board">OPEN</button>
+            </div>
         </div>
         <div class="board-columns hidden"></div>
     </div>

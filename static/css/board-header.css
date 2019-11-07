@@ -24,11 +24,23 @@
     margin: 3px 6px;
 }
 
+.board-header-left {
+    display: flex;
+    justify-content: space-between;
+}
+
+.board-title-container {
+    width: 270px;
+    display: flex;
+    justify-content: space-between;
+}
+
 .board-title {
     width: 200px;
     border: black solid 1px;
     border-radius: 5px;
     padding: 3px 8px;
+    box-sizing: border-box;
     background-color: rgba(200, 240, 5, .5);
     color: black;
 }
@@ -41,12 +53,14 @@
     cursor: text;
 }
 
-button.save-board-title {
-    width: 60px;
+.add-card-container {
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 10px;
 }
 
-button.add-card {
-    margin-right: 600px;
+button.save-board-title {
+    width: 60px;
 }
 
 button.open-board {

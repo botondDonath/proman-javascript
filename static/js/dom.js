@@ -81,6 +81,14 @@ function isElementHidden(element) {
     return element.classList.contains('hidden');
 }
 
+function isElementVisible(element) {
+    return !element.classList.contains('invisible');
+}
+
+function toggleElementVisibility(element) {
+    element.classList.toggle('invisible');
+}
+
 function hasElementFocus(element) {
     return document.activeElement === element;
 }
@@ -109,7 +117,7 @@ function handleCreateBoardButtonClick(event) {
 function resetBoardTitleInput(activeBoardTitleInput) {
     let saveBoardTitleButton = activeBoardTitleInput.nextElementSibling;
     toggleElementActiveState(activeBoardTitleInput);
-    toggleElementDisplay(saveBoardTitleButton);
+    toggleElementVisibility(saveBoardTitleButton);
     activeBoardTitleInput.value = activeBoardTitleInput.dataset.boardTitle;
 }
 
@@ -240,9 +248,9 @@ function toggleBoardTitleInput(event) {
         window.dispatchEvent(clickOutsideActiveInput);
     }
     let saveBoardTitleButton = boardTitleInput.nextElementSibling;
-    if (isElementHidden(saveBoardTitleButton)) {
+    if (!isElementVisible(saveBoardTitleButton)) {
         focusSelectTextInputElement(boardTitleInput);
-        toggleElementDisplay(saveBoardTitleButton);
+        toggleElementVisibility(saveBoardTitleButton);
         toggleElementActiveState(boardTitleInput);
         saveBoardTitleButton.addEventListener('click', renameBoard);
     }
@@ -256,7 +264,7 @@ function renameBoard(event) {
         title: boardTitleInput.value
     };
     dataHandler.renameBoard(boardData, responseBoardData => {
-        toggleElementDisplay(saveBoardTitleButton);
+        toggleElementVisibility(saveBoardTitleButton);
         toggleElementActiveState(boardTitleInput);
         boardTitleInput.dataset.boardTitle = responseBoardData.title;
     })
