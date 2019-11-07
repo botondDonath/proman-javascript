@@ -67,6 +67,10 @@ function appendBoard(board) {
 // EVENT HANDLERS
 //----------------------------------------------------------------------
 
+//----------------------------------------
+// HANDLE WINDOW CLICKS
+//----------------------------------------
+
 function resetBoardTitleInput(activeBoardTitleInput) {
     let saveBoardTitleButton = activeBoardTitleInput.nextElementSibling;
     $.toggleElementActiveState(activeBoardTitleInput);
