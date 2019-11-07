@@ -107,6 +107,7 @@ function handleSaveBoardButtonClick(event) {
         const boardTemplate = $.getBoardTemplate();
         const board = renderBoard(boardData, boardTemplate);
         appendBoard(board);
+        _addEventListenerToRenameBoard();
 
         input.value = input.dataset.default;
         toggleElementDisplay($.getCreateBoardFormContainer());
@@ -155,9 +156,17 @@ function renameBoard(event) {
 
 }
 
+
+function _addEventListenerToRenameBoard() {
+    let boardElements = document.querySelectorAll(".board");
+    for (let board of boardElements) {
+        board.querySelector('.board-title').addEventListener('click', displayInputToRenameBoard)
+    }
+}
 //----------------------------------------------------------------------
 // OBJECT WITH FUNCTIONS FOR EXPORT
 //----------------------------------------------------------------------
+
 
 export let dom = {
     init: function () {
@@ -179,10 +188,7 @@ export let dom = {
         // retrieves boards and makes showBoards called
         dataHandler.getBoards(function (boards) {
             dom.showBoards(boards);
-            let boardElements = document.querySelectorAll(".board");
-            for (let board of boardElements) {
-                board.querySelector('.board-title').addEventListener('click', displayInputToRenameBoard)
-            }
+            _addEventListenerToRenameBoard();
         });
     },
     showBoards: function (boards) {
@@ -193,6 +199,7 @@ export let dom = {
         for (const boardData of boards) {
             const board = renderBoard(boardData, boardTemplate);
             container.appendChild(board);
+
         }
     },
     loadCards: function (boardId) {
