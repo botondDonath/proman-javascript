@@ -18,6 +18,9 @@
     <script type="module" src="{{ url_for('static', filename='js/main.js') }}" defer></script>
 </head>
 <body>
+<div class="feedback-container hidden">
+    <div class="feedback-message hidden"></div>
+</div>
 <h1 id="main-title">ProMan</h1>
 {% include 'create-board.html' %}
 <div id="boards"></div>

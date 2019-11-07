@@ -32,3 +32,40 @@ body {
 .invisible {
     visibility: hidden;
 }
+
+.feedback-container {
+    position: fixed;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.feedback-message {
+    width: 200px;
+    position: relative;
+    margin: auto;
+    top: 50px;
+    border: black solid 1px;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #eae326;
+    font-weight: bold;
+    animation-name: show-feedback;
+    animation-duration: 4s;
+}
+
+@keyframes show-feedback {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}

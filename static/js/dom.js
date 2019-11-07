@@ -63,6 +63,17 @@ function appendBoard(board) {
     return container.lastElementChild;
 }
 
+function showFeedback(message) {
+    let feedbackContainer = document.querySelector('.feedback-container');
+    let feedbackElement = document.querySelector('.feedback-message');
+    feedbackElement.textContent = message;
+    $.toggleElementDisplay(feedbackContainer);
+    $.toggleElementDisplay(feedbackElement);
+    setTimeout(() => {
+        $.toggleElementDisplay(feedbackElement);
+    }, 4000)
+}
+
 //----------------------------------------------------------------------
 // EVENT HANDLERS
 //----------------------------------------------------------------------
@@ -196,9 +207,10 @@ function renameBoard(event) {
         title: boardTitleInput.value
     };
     dataHandler.renameBoard(boardData, responseBoardData => {
-        $.toggleElementVisibility(saveBoardTitleButton);
         $.toggleElementActiveState(boardTitleInput);
         boardTitleInput.dataset.boardTitle = responseBoardData.title;
+        $.toggleElementVisibility(saveBoardTitleButton);
+        showFeedback('Board renamed!');
     })
 }
 
