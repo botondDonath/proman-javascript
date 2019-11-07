@@ -73,14 +73,6 @@ button.open-board {
     border: none;
 }
 
-.board-column-title:hover {
-    cursor: default;
-}
-
-.board-column-title:focus {
-    cursor: text;
-}
-
 .card {
     margin: 5px 0;
     display: flex;

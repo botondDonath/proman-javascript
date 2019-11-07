@@ -243,10 +243,6 @@ function renameBoard(event) {
     })
 }
 
-function displayInputToRenameColumn(event) {
-
-}
-
 function deleteCard(event) {
     const button = event.target;
     const cardId = button.dataset.cardId;
