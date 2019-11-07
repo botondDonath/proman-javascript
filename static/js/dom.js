@@ -67,36 +67,6 @@ function appendBoard(board) {
 // EVENT HANDLERS
 //----------------------------------------------------------------------
 
-function handleCreateBoardButtonClick() {
-    const createBoardForm = $.getCreateBoardFormContainer();
-    createBoardForm.classList.toggle('hidden');
-    if (!$.isElementHidden(createBoardForm)) {
-        const input = $.getCreateBoardInput();
-        $.focusSelectTextInputElement(input);
-    }
-}
-
-function resetBoardTitleInput(activeBoardTitleInput) {
-    let saveBoardTitleButton = activeBoardTitleInput.nextElementSibling;
-    $.toggleElementActiveState(activeBoardTitleInput);
-    $.toggleElementVisibility(saveBoardTitleButton);
-    activeBoardTitleInput.value = activeBoardTitleInput.dataset.boardTitle;
-}
-
-function resetCardTitleInputIfNecessary(event) {
-    let saveCardTitleButton = document.querySelector('.card-save-title');
-    if (!saveCardTitleButton) {
-        return;
-    }
-    let cardTitleInput = document.querySelector('.card-title');
-    let ignoredElements = [saveCardTitleButton, cardTitleInput];
-    if (!ignoredElements.includes(event.target) && !$.isElementHidden(saveCardTitleButton)) {
-        $.toggleElementDisplay(saveCardTitleButton);
-        $.toggleElementDisplay(saveCardTitleButton.nextElementSibling);
-        cardTitleInput.value = cardTitleInput.dataset.cardTitle;
-    }
-}
-
 function handleOutsideClick(event) {
     let createBoardInput = $.getCreateBoardInput();
     let createBoardButton = $.getCreateBoardButton();
@@ -134,6 +104,19 @@ function handleOutsideClick(event) {
     resetCardTitleInputIfNecessary(event);
 }
 
+//----------------------------------------
+// CREATE BOARD
+//----------------------------------------
+
+function handleCreateBoardButtonClick() {
+    const createBoardForm = $.getCreateBoardFormContainer();
+    createBoardForm.classList.toggle('hidden');
+    if (!$.isElementHidden(createBoardForm)) {
+        const input = $.getCreateBoardInput();
+        $.focusSelectTextInputElement(input);
+    }
+}
+
 function handleCreateBoardInputClick(event) {
     event.stopPropagation();
 }
@@ -168,6 +151,51 @@ function handleSaveBoardButtonClick(event) {
     });
 }
 
+//----------------------------------------
+// RENAME BOARD
+//----------------------------------------
+
+function renameBoard(event) {
+    let saveBoardTitleButton = event.target;
+    let boardTitleInput = saveBoardTitleButton.previousElementSibling;
+    let boardData = {
+        id: saveBoardTitleButton.dataset.boardId,
+        title: boardTitleInput.value
+    };
+    dataHandler.renameBoard(boardData, responseBoardData => {
+        $.toggleElementVisibility(saveBoardTitleButton);
+        $.toggleElementActiveState(boardTitleInput);
+        boardTitleInput.dataset.boardTitle = responseBoardData.title;
+    })
+}
+
+function resetBoardTitleInput(activeBoardTitleInput) {
+    let saveBoardTitleButton = activeBoardTitleInput.nextElementSibling;
+    $.toggleElementActiveState(activeBoardTitleInput);
+    $.toggleElementVisibility(saveBoardTitleButton);
+    activeBoardTitleInput.value = activeBoardTitleInput.dataset.boardTitle;
+}
+
+function toggleBoardTitleInput(event) {
+    let boardTitleInput = event.target;
+    let activeBoardTitleInput = $.isElementTypeActive('.board-title');
+    if (activeBoardTitleInput && activeBoardTitleInput !== event.target) {
+        event.stopPropagation();
+        let clickOutsideActiveInput = new Event('click');
+        window.dispatchEvent(clickOutsideActiveInput);
+    }
+    let saveBoardTitleButton = boardTitleInput.nextElementSibling;
+    if (!$.isElementVisible(saveBoardTitleButton)) {
+        $.focusSelectTextInputElement(boardTitleInput);
+        $.toggleElementVisibility(saveBoardTitleButton);
+        $.toggleElementActiveState(boardTitleInput);
+    }
+}
+
+//----------------------------------------
+// OPEN BOARD
+//----------------------------------------
+
 function handleOpenBoardClick(event) {
     const button = event.target;
     const board = document.querySelector(`.board[data-board-id="${button.dataset.boardId}"]`);
@@ -194,6 +222,28 @@ function handleOpenBoardClick(event) {
     }
 
 }
+
+//----------------------------------------
+// RENAME COLUMN
+//----------------------------------------
+
+function renameColumn(event) {
+    let saveButton = event.target;
+    let columnTitle = saveButton.parentNode.querySelector('.board-column-title');
+    dataHandler.renameColumn(columnTitle.value, columnTitle.dataset.statusId);
+    $.toggleElementDisplay(saveButton);
+}
+
+function handleRenameColumnClick(event) {
+    let input = event.target;
+    let saveButton = input.parentNode.querySelector('.save-column-title');
+    $.toggleElementDisplay(saveButton);
+    saveButton.addEventListener('click', renameColumn);
+}
+
+//----------------------------------------
+// CREATE CARD
+//----------------------------------------
 
 function handleAddCardClick(event) {
     if ($.isElementTypeActive('.form')) {
@@ -226,42 +276,22 @@ function handleSaveNewCardClick(event, board) {
 
 }
 
-function toggleBoardTitleInput(event) {
-    let boardTitleInput = event.target;
-    let activeBoardTitleInput = $.isElementTypeActive('.board-title');
-    if (activeBoardTitleInput && activeBoardTitleInput !== event.target) {
-        event.stopPropagation();
-        let clickOutsideActiveInput = new Event('click');
-        window.dispatchEvent(clickOutsideActiveInput);
-    }
-    let saveBoardTitleButton = boardTitleInput.nextElementSibling;
-    if (!$.isElementVisible(saveBoardTitleButton)) {
-        $.focusSelectTextInputElement(boardTitleInput);
-        $.toggleElementVisibility(saveBoardTitleButton);
-        $.toggleElementActiveState(boardTitleInput);
-    }
-}
+//----------------------------------------
+// RENAME CARD
+//----------------------------------------
 
-function renameBoard(event) {
-    let saveBoardTitleButton = event.target;
-    let boardTitleInput = saveBoardTitleButton.previousElementSibling;
-    let boardData = {
-        id: saveBoardTitleButton.dataset.boardId,
-        title: boardTitleInput.value
-    };
-    dataHandler.renameBoard(boardData, responseBoardData => {
-        $.toggleElementVisibility(saveBoardTitleButton);
-        $.toggleElementActiveState(boardTitleInput);
-        boardTitleInput.dataset.boardTitle = responseBoardData.title;
-    })
-}
-
-function deleteCard(event) {
-    const button = event.target;
-    const cardId = button.dataset.cardId;
-    dataHandler.deleteCard(cardId);
-    const cardToDelete = button.parentNode;
-    cardToDelete.remove();
+function resetCardTitleInputIfNecessary(event) {
+    let saveCardTitleButton = document.querySelector('.card-save-title');
+    if (!saveCardTitleButton) {
+        return;
+    }
+    let cardTitleInput = document.querySelector('.card-title');
+    let ignoredElements = [saveCardTitleButton, cardTitleInput];
+    if (!ignoredElements.includes(event.target) && !$.isElementHidden(saveCardTitleButton)) {
+        $.toggleElementDisplay(saveCardTitleButton);
+        $.toggleElementDisplay(saveCardTitleButton.nextElementSibling);
+        cardTitleInput.value = cardTitleInput.dataset.cardTitle;
+    }
 }
 
 function toggleCardTitleInput(event) {
@@ -290,18 +320,16 @@ function renameCard(event) {
     })
 }
 
-function handleRenameColumnClick(event) {
-    let input = event.target;
-    let saveButton = input.parentNode.querySelector('.save-column-title');
-    $.toggleElementDisplay(saveButton);
-    saveButton.addEventListener('click', renameColumn);
-}
+//----------------------------------------
+// DELETE CARD
+//----------------------------------------
 
-function renameColumn(event) {
-    let saveButton = event.target;
-    let columnTitle = saveButton.parentNode.querySelector('.board-column-title');
-    dataHandler.renameColumn(columnTitle.value, columnTitle.dataset.statusId);
-    $.toggleElementDisplay(saveButton);
+function deleteCard(event) {
+    const button = event.target;
+    const cardId = button.dataset.cardId;
+    dataHandler.deleteCard(cardId);
+    const cardToDelete = button.parentNode;
+    cardToDelete.remove();
 }
 
 //----------------------------------------------------------------------
