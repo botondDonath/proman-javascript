@@ -336,6 +336,7 @@ function renameCard(event) {
     };
     dataHandler.renameCard(cardData, cardData => {
         cardTitleInput.value = cardData.title;
+        cardTitleInput.dataset.cardTitle = cardData.title;
         toggleElementDisplay(saveButton.nextElementSibling);
         toggleElementDisplay(saveButton);
     })
