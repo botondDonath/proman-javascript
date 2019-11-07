@@ -63,64 +63,23 @@ function appendBoard(board) {
     return container.lastElementChild;
 }
 
-function focusSelectTextInputElement(element) {
-    element.focus();
-    element.select();
-}
-
-function toggleElementDisplay(element) {
-    element.classList.toggle('hidden');
-}
-
-function setElementDisplay(element, hide=false) {
-    element.classList.toggle('hidden', hide);
-}
-
-function isElementHidden(element) {
-    return element.classList.contains('hidden');
-}
-
-function isElementVisible(element) {
-    return !element.classList.contains('invisible');
-}
-
-function toggleElementVisibility(element) {
-    element.classList.toggle('invisible');
-}
-
-function hasElementFocus(element) {
-    return document.activeElement === element;
-}
-
-function toggleElementActiveState(element) {
-    element.classList.toggle('active');
-}
-
-function setElementActiveState(element, active=true) {
-    element.classList.toggle('active', active);
-}
-
-function isElementTypeActive(selectors) {
-    return document.querySelector(`${selectors}.active`);
-}
-
 //----------------------------------------------------------------------
 // EVENT HANDLERS
 //----------------------------------------------------------------------
 
-function handleCreateBoardButtonClick(event) {
+function handleCreateBoardButtonClick() {
     const createBoardForm = $.getCreateBoardFormContainer();
     createBoardForm.classList.toggle('hidden');
-    if (!isElementHidden(createBoardForm)) {
+    if (!$.isElementHidden(createBoardForm)) {
         const input = $.getCreateBoardInput();
-        focusSelectTextInputElement(input);
+        $.focusSelectTextInputElement(input);
     }
 }
 
 function resetBoardTitleInput(activeBoardTitleInput) {
     let saveBoardTitleButton = activeBoardTitleInput.nextElementSibling;
-    toggleElementActiveState(activeBoardTitleInput);
-    toggleElementVisibility(saveBoardTitleButton);
+    $.toggleElementActiveState(activeBoardTitleInput);
+    $.toggleElementVisibility(saveBoardTitleButton);
     activeBoardTitleInput.value = activeBoardTitleInput.dataset.boardTitle;
 }
 
@@ -131,9 +90,9 @@ function resetCardTitleInputIfNecessary(event) {
     }
     let cardTitleInput = document.querySelector('.card-title');
     let ignoredElements = [saveCardTitleButton, cardTitleInput];
-    if (!ignoredElements.includes(event.target) && !isElementHidden(saveCardTitleButton)) {
-        toggleElementDisplay(saveCardTitleButton);
-        toggleElementDisplay(saveCardTitleButton.nextElementSibling);
+    if (!ignoredElements.includes(event.target) && !$.isElementHidden(saveCardTitleButton)) {
+        $.toggleElementDisplay(saveCardTitleButton);
+        $.toggleElementDisplay(saveCardTitleButton.nextElementSibling);
         cardTitleInput.value = cardTitleInput.dataset.cardTitle;
     }
 }
@@ -142,12 +101,12 @@ function handleOutsideClick(event) {
     let createBoardInput = $.getCreateBoardInput();
     let createBoardButton = $.getCreateBoardButton();
     let createBoardFormContainer = $.getCreateBoardFormContainer();
-    if (event.target !== createBoardButton || !isElementHidden(createBoardFormContainer)) {
+    if (event.target !== createBoardButton || !$.isElementHidden(createBoardFormContainer)) {
         createBoardInput.value = createBoardInput.dataset.default;
         createBoardInput.blur();
     }
 
-    let activeBoardTitleInput = isElementTypeActive('.board-title');
+    let activeBoardTitleInput = $.isElementTypeActive('.board-title');
     if (activeBoardTitleInput && event.target !== activeBoardTitleInput) {
         let activeSaveBoardTitleButton = activeBoardTitleInput.nextElementSibling;
         if (event.target !== activeSaveBoardTitleButton) {
@@ -155,7 +114,7 @@ function handleOutsideClick(event) {
         }
     }
 
-    let activeAddCardForm = isElementTypeActive('.form');
+    let activeAddCardForm = $.isElementTypeActive('.form');
     if (activeAddCardForm) {
         let addCardButton = activeAddCardForm.previousElementSibling;
         let boardId = addCardButton.dataset.boardId;
@@ -166,9 +125,9 @@ function handleOutsideClick(event) {
 
         let ignoredElements = [addCardButton, openBoardButton, activeNewCardInput, activeSaveCardButton];
         if (!ignoredElements.includes(event.target)) {
-            setElementActiveState(activeAddCardForm, false);
-            setElementDisplay(activeAddCardForm, true);
-            setElementDisplay(addCardButton, false);
+            $.setElementActiveState(activeAddCardForm, false);
+            $.setElementDisplay(activeAddCardForm, true);
+            $.setElementDisplay(addCardButton, false);
         }
     }
 
@@ -181,7 +140,7 @@ function handleCreateBoardInputClick(event) {
 
 function handleCreateBoardInputEscPress(event) {
     const input = event.target;
-    if (event.keyCode === globals.keyCodeEsc && hasElementFocus(input) && !isElementHidden(input)) {
+    if (event.keyCode === globals.keyCodeEsc && $.hasElementFocus(input) && !$.isElementHidden(input)) {
         input.value = input.dataset.default;
         input.blur();
     }
@@ -205,7 +164,7 @@ function handleSaveBoardButtonClick(event) {
         _addEventListenerToSaveBoardTitleButtons(appendedBoard);
 
         input.value = input.dataset.default;
-        toggleElementDisplay($.getCreateBoardFormContainer());
+        $.toggleElementDisplay($.getCreateBoardFormContainer());
     });
 }
 
@@ -226,18 +185,18 @@ function handleOpenBoardClick(event) {
         button.innerHTML = '&#9661';
     }
 
-    if (isElementHidden(boardColumns)) {
-        setElementDisplay(form, true);
-        setElementActiveState(form, false);
-        setElementDisplay(addCardButton, true)
+    if ($.isElementHidden(boardColumns)) {
+        $.setElementDisplay(form, true);
+        $.setElementActiveState(form, false);
+        $.setElementDisplay(addCardButton, true)
     } else {
-        setElementDisplay(addCardButton, false);
+        $.setElementDisplay(addCardButton, false);
     }
 
 }
 
 function handleAddCardClick(event) {
-    if (isElementTypeActive('.form')) {
+    if ($.isElementTypeActive('.form')) {
         event.stopPropagation();
         let clickOutsideActiveForm = new Event('click');
         window.dispatchEvent(clickOutsideActiveForm);
@@ -246,9 +205,9 @@ function handleAddCardClick(event) {
     const boardId = button.dataset.boardId;
     const board = document.querySelector(`.board[data-board-id="${boardId}"]`);
     let form = board.querySelector('.form');
-    setElementDisplay(button, true);
-    setElementDisplay(form, false);
-    setElementActiveState(form, true);
+    $.setElementDisplay(button, true);
+    $.setElementDisplay(form, false);
+    $.setElementActiveState(form, true);
 }
 
 function handleSaveNewCardClick(event, board) {
@@ -256,30 +215,30 @@ function handleSaveNewCardClick(event, board) {
     const cardTitle = input.value;
     const statusId = 1; // as the acceptance criteria asks
     let form = board.querySelector('.form');
-    setElementDisplay(form, true);
+    $.setElementDisplay(form, true);
     resetAddCardInput(board);
 
     dataHandler.createNewCard(cardTitle, board.dataset.boardId, statusId, (card) => {
         dom.showCards([card]); //passed as a length 1 list, in order to use showCards
         let addCardButton = board.querySelector('button.add-card');
-        setElementDisplay(addCardButton, false);
+        $.setElementDisplay(addCardButton, false);
     });
 
 }
 
 function toggleBoardTitleInput(event) {
     let boardTitleInput = event.target;
-    let activeBoardTitleInput = isElementTypeActive('.board-title');
+    let activeBoardTitleInput = $.isElementTypeActive('.board-title');
     if (activeBoardTitleInput && activeBoardTitleInput !== event.target) {
         event.stopPropagation();
         let clickOutsideActiveInput = new Event('click');
         window.dispatchEvent(clickOutsideActiveInput);
     }
     let saveBoardTitleButton = boardTitleInput.nextElementSibling;
-    if (!isElementVisible(saveBoardTitleButton)) {
-        focusSelectTextInputElement(boardTitleInput);
-        toggleElementVisibility(saveBoardTitleButton);
-        toggleElementActiveState(boardTitleInput);
+    if (!$.isElementVisible(saveBoardTitleButton)) {
+        $.focusSelectTextInputElement(boardTitleInput);
+        $.toggleElementVisibility(saveBoardTitleButton);
+        $.toggleElementActiveState(boardTitleInput);
     }
 }
 
@@ -291,8 +250,8 @@ function renameBoard(event) {
         title: boardTitleInput.value
     };
     dataHandler.renameBoard(boardData, responseBoardData => {
-        toggleElementVisibility(saveBoardTitleButton);
-        toggleElementActiveState(boardTitleInput);
+        $.toggleElementVisibility(saveBoardTitleButton);
+        $.toggleElementActiveState(boardTitleInput);
         boardTitleInput.dataset.boardTitle = responseBoardData.title;
     })
 }
@@ -309,10 +268,10 @@ function toggleCardTitleInput(event) {
     const cardTitleInput = event.target;
     const saveButton = cardTitleInput.nextElementSibling;
     const deleteButton = saveButton.nextElementSibling;
-    if (isElementHidden(saveButton)) {
-        toggleElementDisplay(saveButton);
-        toggleElementDisplay(deleteButton);
-        focusSelectTextInputElement(cardTitleInput)
+    if ($.isElementHidden(saveButton)) {
+        $.toggleElementDisplay(saveButton);
+        $.toggleElementDisplay(deleteButton);
+        $.focusSelectTextInputElement(cardTitleInput)
     }
 }
 
@@ -326,8 +285,8 @@ function renameCard(event) {
     dataHandler.renameCard(cardData, cardData => {
         cardTitleInput.value = cardData.title;
         cardTitleInput.dataset.cardTitle = cardData.title;
-        toggleElementDisplay(saveButton.nextElementSibling);
-        toggleElementDisplay(saveButton);
+        $.toggleElementDisplay(saveButton.nextElementSibling);
+        $.toggleElementDisplay(saveButton);
     })
 }
 
@@ -380,13 +339,13 @@ function renameColumn(event) {
     let saveButton = event.target;
     let columnTitle = saveButton.parentNode.querySelector('.board-column-title');
     dataHandler.renameColumn(columnTitle.value, columnTitle.dataset.statusId);
-    toggleElementDisplay(saveButton);
+    $.toggleElementDisplay(saveButton);
 }
 
 function handleRenameColumnClick(event) {
     let input = event.target;
     let saveButton = input.parentNode.querySelector('.save-column-title');
-    toggleElementDisplay(saveButton);
+    $.toggleElementDisplay(saveButton);
     saveButton.addEventListener('click', renameColumn);
 }
 
