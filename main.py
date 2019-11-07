@@ -54,7 +54,6 @@ def add_new_card():
 
 @app.route('/card/<card_id>')
 def get_card(card_id: int):
-    print(card_id)
     card = data_manager.get_card_by_id(card_id)
     return card
 
@@ -79,6 +78,15 @@ def delete_card():
 def statuses():
     statuses = data_manager.get_statuses()
     return statuses
+
+
+@app.route('/rename-column', methods=['POST'])
+@json_response
+def rename_column():
+    req = request.get_json()
+    print(req)
+    data_manager.update_column(req)
+    return req
 
 
 def main():

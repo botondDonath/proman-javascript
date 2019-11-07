@@ -34,12 +34,15 @@ function renderBoard(boardData, template) {
     return board
 }
 
-const createColumns = function(status){
+const createColumns = function(status, board){
     const template = document.querySelector('#board-column-template');
     const clone = document.importNode(template.content, true);
 
-    clone.querySelector('.board-column-title').textContent = status.title;
+    clone.querySelector('.board-column-title').value = status.title;
     clone.querySelector('.board-column').dataset.statusId = status.id;
+    clone.querySelector('.board-column-title').dataset.statusId = status.id;
+    clone.querySelector('.board-column-title').dataset.boardId = board.dataset.boardId;
+
     return clone;
 };
 
@@ -276,6 +279,20 @@ function _addEventListenerToOpenButtons() {
     }
 }
 
+function renameColumn(event) {
+    let saveButton = event.target;
+    let columnTitle = saveButton.parentNode.querySelector('.board-column-title');
+    dataHandler.renameColumn(columnTitle.value, columnTitle.dataset.statusId);
+    toggleElementDisplay(saveButton);
+}
+
+function handleRenameColumnClick(event) {
+    let input = event.target;
+    let saveButton = input.parentNode.querySelector('.save-column-title');
+    toggleElementDisplay(saveButton);
+    saveButton.addEventListener('click', renameColumn);
+}
+
 export let dom = {
     init: function () {
         // This function should run once, when the page is loaded.
@@ -336,12 +353,17 @@ export let dom = {
     loadColumns: function (board) {
         dataHandler.getStatuses(function (statuses) {
             dom.showColumns(board, statuses);
-            dom.loadCards(board)
+            dom.loadCards(board);
+            let columnTitles = document.querySelectorAll('.board-column-title');
+            for (let column of columnTitles) {
+                column.addEventListener('click', handleRenameColumnClick)
+            }
+
         });
     },
     showColumns: function (board, statuses) {
         for (let status of statuses) {
-            const column = createColumns(status);
+            const column = createColumns(status, board);
             const columns = board.querySelector('.board-columns');
             columns.appendChild(column);
         }

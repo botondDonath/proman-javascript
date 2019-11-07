@@ -67,6 +67,7 @@ def get_statuses(cursor):
         '''
         SELECT id, title
         FROM statuses
+        ORDER BY id
         '''
     )
     statuses = cursor.fetchall()
@@ -116,4 +117,13 @@ def update_board(cursor, board_data):
         '''
         UPDATE boards SET title = %(title)s WHERE id = %(id)s;
         ''', board_data
+    )
+
+
+@connection_handler
+def update_column(cursor, column_data):
+    cursor.execute(
+        '''
+        UPDATE statuses SET title = %(title)s WHERE id = %(id)s;
+        ''', column_data
     )

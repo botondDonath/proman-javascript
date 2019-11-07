@@ -92,6 +92,11 @@ export let dataHandler = {
         this._api_post('/delete-card', {'card_id': cardId}, (response) => {
             this._data = response;
         })
+    },
+    renameColumn: function (columnTitle, columnId) {
+        this._api_post('/rename-column', {'title': columnTitle, 'id': columnId}, (data) => {
+            this._data = data;
+        })
     }
     // here comes more features
 };
