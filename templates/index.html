@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>ProMan</title>
 
+    <script src="https://kit.fontawesome.com/b90dba08a8.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.ico') }}">
     <link rel="icon" type="image/png" sizes="32x32"
           href="{{ url_for('static', filename='favicon/favicon-32x32.png') }}">
@@ -31,8 +32,8 @@
                     <button class="save-board-title invisible">Save</button>
                 </div>
                 <div class="add-card-container">
-                    <button type="button" class="add-card hidden">Add card</button>
-                    <div class="form add-card hidden">
+                    <button type="button" class="add-card hidden far fa-plus-square"></button>
+                    <div class="form add-card-form hidden">
                         <input type="text" class="new-card" minlength="1" maxlength="100" data-default="New Card"
                                value="New Card">
                         <button type="button" class="save-card">Save</button>
@@ -59,7 +60,7 @@
     <div class="card">
         <input type="text" class="card-title" value="">
         <button type="button" class="card-save-title hidden">Save</button>
-        <button type="button" class="card-delete"></button>
+        <button type="button" class="card-delete fa fa-trash"></button>
     </div>
 </template>
 </body>
