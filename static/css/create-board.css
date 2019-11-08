@@ -27,3 +27,26 @@ form.create-board
     display: flex;
     align-items: stretch;
 }
+
+button::-moz-focus-inner {
+    border: 0;
+}
+
+button.create-board {
+    box-sizing: border-box;
+    width: 170px;
+    color: #eae326;
+    border: black solid 2px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+button.create-board:hover, button.create-board.active {
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+button.create-board.active:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+    font-weight: normal;
+}
