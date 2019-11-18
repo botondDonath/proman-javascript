@@ -497,6 +497,7 @@ export let dom = {
             _addEventListenerToOpenButtons();
             _addEventListenerToBoardTitles();
             _addEventListenerToAddColumnButtons();
+            _addEventListenerToSaveColumnButtons();
             _addEventListenerToAddCardButtons();
             _addEventListenerToSaveCardButtons();
             _addEventListenerToSaveBoardTitleButtons();
