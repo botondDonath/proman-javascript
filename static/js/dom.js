@@ -475,7 +475,8 @@ export let dom = {
         }
     },
     loadColumns: function (board) {
-        dataHandler.getStatuses(function (statuses) {
+        const boardId = board.dataset.boardId;
+        dataHandler.getStatuses(boardId, function (statuses) {
             dom.showColumns(board, statuses);
             dom.loadCards(board);
             let columnTitles = document.querySelectorAll('.board-column-title');
