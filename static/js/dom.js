@@ -128,16 +128,17 @@ const outsideClick = {
         }
     },
     handleCardTitle: function (event) {
-        const saveCardTitleButton = document.querySelector('.card-save-title');
-        if (!saveCardTitleButton) {
-            return;
-        }
-        const cardTitleInput = document.querySelector('.card-title');
-        const ignoredElements = [saveCardTitleButton, cardTitleInput];
-        if (!ignoredElements.includes(event.target) && !u.isElementHidden(saveCardTitleButton)) {
-            u.toggleElementDisplay(saveCardTitleButton);
-            u.toggleElementDisplay(saveCardTitleButton.nextElementSibling);
-            cardTitleInput.value = cardTitleInput.dataset.cardTitle;
+        const activeCardTitleInput = document.querySelector('.card-title.active');
+        if (activeCardTitleInput) {
+            const saveCardTitleButton = activeCardTitleInput.nextElementSibling;
+            const deleteCardButton = saveCardTitleButton.nextElementSibling;
+            const ignoredElements = [activeCardTitleInput, saveCardTitleButton, deleteCardButton];
+            if (!ignoredElements.includes(event.target)) {
+                u.toggleElementActiveState(activeCardTitleInput);
+                activeCardTitleInput.value = activeCardTitleInput.dataset.cardTitle;
+                u.toggleElementDisplay(saveCardTitleButton);
+                u.toggleElementDisplay(deleteCardButton);
+            }
         }
     }
 };
@@ -325,12 +326,16 @@ function handleSaveNewCardClick(event, board) {
 
 function toggleCardTitleInput(event) {
     const cardTitleInput = event.target;
+    if (!u.isElementActive(cardTitleInput)) {
+        u.searchAndDeactivateElementType(event, 'input.card-title');
+    }
     const saveButton = cardTitleInput.nextElementSibling;
     const deleteButton = saveButton.nextElementSibling;
     if (u.isElementHidden(saveButton)) {
         u.toggleElementDisplay(saveButton);
         u.toggleElementDisplay(deleteButton);
-        u.focusSelectTextInputElement(cardTitleInput)
+        u.focusSelectTextInputElement(cardTitleInput);
+        u.setElementActiveState(cardTitleInput, true);
     }
 }
 

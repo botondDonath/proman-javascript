@@ -32,5 +32,13 @@ export let util = {
     setElementActiveState: (element, active = true) => {
         element.classList.toggle('active', active);
     },
-    isElementTypeActive: (selectors) => document.querySelector(`${selectors}.active`)
+    isElementTypeActive: (selectors) => document.querySelector(`${selectors}.active`),
+    isElementActive: (element) => element.classList.contains('active'),
+    searchAndDeactivateElementType: (event, selectors) => {
+        if (util.isElementTypeActive(selectors)) {
+            event.stopPropagation();
+            const deActivatorClick = new Event('click');
+            window.dispatchEvent(deActivatorClick);
+        }
+    }
 };
