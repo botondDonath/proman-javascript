@@ -49,13 +49,20 @@ export let dataHandler = {
     },
     getStatuses: function (boardId, callback) {
         // the statuses are retrieved and then the callback function is called with the statuses
-        this._api_get(`/statuses/${boardId}`, (response) => {
+        this._api_get(`/statuses/board/${boardId}`, (response) => {
             this._data = response;
             callback(response);
         })
     },
     getStatus: function (statusId, callback) {
         // the status is retrieved and then the callback function is called with the status
+        this._api_get(`statuses/${statusId}`, (status) => callback(status));
+    },
+    addNewStatus: function(statusName, boardId, callback) {
+        // adds a new status/column into the database
+        this._api_post('/statuses', {'status_name': statusName, 'board_id': boardId}, (statusId) => {
+            dataHandler.getStatus(statusId, (status) => callback(status));
+        })
     },
     getCardsByBoardId: function (boardId, callback) {
         // the cards are retrieved and then the callback function is called with the cards
