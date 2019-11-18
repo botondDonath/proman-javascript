@@ -27,7 +27,9 @@ function renderBoard(boardData, template) {
     board.querySelector('.board-title').dataset.boardId = boardData.id;
     board.querySelector('.save-board-title').dataset.boardId = boardData.id;
     board.querySelector('button.add-card').dataset.boardId = boardData.id;
+    board.querySelector('button.add-column').dataset.boardId = boardData.id;
     board.querySelector('.save-card').dataset.boardId = boardData.id;
+    board.querySelector('.save-column').dataset.boardId = boardData.id;
     board.querySelector('.open-board').dataset.boardId = boardData.id;
     return board
 }
@@ -242,8 +244,10 @@ function handleOpenBoardClick(event) {
     const button = event.target;
     const board = document.querySelector(`.board[data-board-id="${button.dataset.boardId}"]`);
     const boardColumns = board.querySelector('.board-columns');
+    const addColumnButton = board.querySelector('button.add-column');
     const addCardButton = board.querySelector('button.add-card');
-    const form = board.querySelector('.add-card-form');
+    const addColumnForm = board.querySelector('.add-column-form');
+    const addCardForm = board.querySelector('.add-card-form');
 
     if (!boardColumns.hasChildNodes()) {
         dom.loadColumns(board);
@@ -256,11 +260,15 @@ function handleOpenBoardClick(event) {
     }
 
     if ($.isElementHidden(boardColumns)) {
-        $.setElementDisplay(form, true);
-        $.setElementActiveState(form, false);
+        $.setElementDisplay(addCardForm, true);
+        $.setElementActiveState(addCardForm, false);
         $.setElementDisplay(addCardButton, true);
+        $.setElementDisplay(addColumnForm, true);
+        $.setElementActiveState(addColumnForm, false);
+        $.setElementDisplay(addColumnButton, true);
     } else {
         $.setElementDisplay(addCardButton, false);
+        $.setElementDisplay(addColumnButton, false);
     }
 
 }
