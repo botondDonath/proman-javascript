@@ -277,7 +277,7 @@ function renameColumn(event) {
 }
 
 function handleRenameColumnClick(event) {
-    let input = event.target;
+    const input = event.target;
     let saveButton = input.parentNode.querySelector('.save-column-title');
     $.toggleElementDisplay(saveButton);
     saveButton.addEventListener('click', renameColumn);
