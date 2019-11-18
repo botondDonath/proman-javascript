@@ -41,8 +41,8 @@
     border-radius: 5px;
     padding: 3px 8px;
     box-sizing: border-box;
-    background-color: rgba(200, 240, 5, .5);
-    color: black;
+    background-color: rgba(0, 0, 0, .5);
+    color: rgba(200, 240, 5, 1);
 }
 
 .board-title:hover {
@@ -51,6 +51,11 @@
 
 .board-title:focus {
     cursor: text;
+}
+
+.board-title::selection {
+    background-color: rgba(200, 240, 5, 1);
+    color: black;
 }
 
 .add-card-container {
