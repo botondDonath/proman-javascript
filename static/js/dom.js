@@ -438,7 +438,7 @@ function _addEventListenerToAddColumnButtons(board = null) {
 
 function _addEventListenerToSaveColumnButtons(board = null) {
     let selectionRoot = board ? board : document;
-    let saveButtons = selectionRoot.querySelectorAll('.save-column');
+    let saveButtons = selectionRoot.querySelectorAll('button.save-column');
     for (let button of saveButtons) {
         let board = $.getBoardById(button.dataset.boardId);
         button.addEventListener('click', (event) => handleSaveNewColumnClick(event, board));
