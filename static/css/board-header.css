@@ -45,6 +45,15 @@
     color: rgba(200, 240, 5, 1);
 }
 
+button.save-board-title {
+    box-sizing: border-box;
+    border: black solid 1px;
+    border-radius: 5px;
+    width: 60px;
+    background-color: rgba(0, 0, 0, .4);
+    color: rgb(200, 240, 5);
+}
+
 .board-title:hover {
     cursor: default;
 }
@@ -58,6 +67,11 @@
     color: black;
 }
 
+button.save-board-title:hover {
+    background-color: rgba(0, 0, 0, .7);
+    font-weight: bold;
+}
+
 .add-card-container {
     display: flex;
     justify-content: flex-start;
@@ -69,10 +83,6 @@
     border: none;
     color: white;
     font-size: x-large;
-}
-
-button.save-board-title {
-    width: 60px;
 }
 
 button.open-board {
