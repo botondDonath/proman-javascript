@@ -91,7 +91,7 @@ function resetBoardTitleInput(activeBoardTitleInput) {
 }
 
 const outsideClick = {
-    handleNewBoard: function () {
+    handleNewBoard: function (event) {
         const createBoardInput = u.getCreateBoardInput();
         const createBoardButton = u.getCreateBoardButton();
         const createBoardFormContainer = u.getCreateBoardFormContainer();
@@ -100,7 +100,7 @@ const outsideClick = {
             createBoardInput.blur();
         }
     },
-    handleBoardTitle: function () {
+    handleBoardTitle: function (event) {
         const activeBoardTitleInput = u.isElementTypeActive('.board-title');
         if (activeBoardTitleInput && event.target !== activeBoardTitleInput) {
             const activeSaveBoardTitleButton = activeBoardTitleInput.nextElementSibling;
