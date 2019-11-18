@@ -191,6 +191,7 @@ function handleSaveBoardButtonClick(event) {
         _addEventListenerToOpenButtons(appendedBoard);
         _addEventListenerToBoardTitles(appendedBoard);
         _addEventListenerToAddColumnButtons(appendedBoard);
+        _addEventListenerToSaveColumnButtons(appendedBoard);
         _addEventListenerToAddCardButtons(appendedBoard);
         _addEventListenerToSaveCardButtons(appendedBoard);
         _addEventListenerToSaveBoardTitleButtons(appendedBoard);
@@ -274,7 +275,7 @@ function handleOpenBoardClick(event) {
 }
 
 //--------------------------------------------------
-// RENAME COLUMN
+// CREATE COLUMN
 //--------------------------------------------------
 
 function handleAddColumnClick(event) {
@@ -291,6 +292,26 @@ function handleAddColumnClick(event) {
     $.setElementDisplay(addColumnForm, false);
     $.setElementActiveState(addColumnForm, true);
 }
+
+
+function handleSaveNewColumnClick(event, board) {
+    const input = board.querySelector(`input.new-column`);
+    const statusName = input.value;
+    let addColumnForm = board.querySelector('.add-column-form');
+    $.setElementDisplay(addColumnForm, true);
+    // reset column title input
+
+    dataHandler.addNewStatus(statusName, board.dataset.boardId, (status) => {
+        dom.showColumns(board, [status]); //passed as a length 1 list, in order to use showColumns
+        let addColumnButton = board.querySelector('button.add-column');
+        $.setElementDisplay(addColumnButton, false);
+        showFeedback('Column created!');
+    });
+
+}
+//--------------------------------------------------
+// RENAME COLUMN
+//--------------------------------------------------
 
 function renameColumn(event) {
     let saveButton = event.target;
@@ -330,7 +351,7 @@ function handleSaveNewCardClick(event, board) {
     const input = board.querySelector(`input.new-card`);
     const cardTitle = input.value;
     const statusId = 1; // as the acceptance criteria asks
-    let form = board.querySelector('.form');
+    let form = board.querySelector('.add-card-form');
     $.setElementDisplay(form, true);
     resetAddCardInput(board);
 
@@ -412,6 +433,15 @@ function _addEventListenerToAddColumnButtons(board = null) {
     const addColumnButtons = selectionRoot.querySelectorAll('button.add-column');
     for (let button of addColumnButtons) {
         button.addEventListener('click', (event) => handleAddColumnClick(event));
+    }
+}
+
+function _addEventListenerToSaveColumnButtons(board = null) {
+    let selectionRoot = board ? board : document;
+    let saveButtons = selectionRoot.querySelectorAll('.save-column');
+    for (let button of saveButtons) {
+        let board = $.getBoardById(button.dataset.boardId);
+        button.addEventListener('click', (event) => handleSaveNewColumnClick(event, board));
     }
 }
 
