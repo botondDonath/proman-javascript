@@ -37,12 +37,27 @@
 
 .board-title {
     width: 200px;
-    border: black solid 1px;
+    border: rgb(200, 240, 5) solid 2px;
     border-radius: 5px;
     padding: 3px 8px;
     box-sizing: border-box;
     background-color: rgba(0, 0, 0, .5);
     color: rgba(200, 240, 5, 1);
+}
+
+.board-title:hover {
+    cursor: default;
+    background-color: rgba(0, 0, 0, .7);
+}
+
+.board-title:focus {
+    cursor: text;
+    background-color: rgba(0, 0, 0, .7);
+}
+
+.board-title::selection {
+    background-color: rgba(200, 240, 5, 1);
+    color: black;
 }
 
 button.save-board-title {
@@ -52,19 +67,6 @@ button.save-board-title {
     width: 60px;
     background-color: rgba(0, 0, 0, .4);
     color: rgb(200, 240, 5);
-}
-
-.board-title:hover {
-    cursor: default;
-}
-
-.board-title:focus {
-    cursor: text;
-}
-
-.board-title::selection {
-    background-color: rgba(200, 240, 5, 1);
-    color: black;
 }
 
 button.save-board-title:hover {
@@ -87,4 +89,13 @@ button.save-board-title:hover {
 
 button.open-board {
     width: 40px;
+    border: rgb(200, 240, 5) solid 1px;
+    border-radius: 7px;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, .5);
+    color: rgb(200, 240, 5);
+}
+
+button.open-board:hover {
+    border: rgb(200, 240, 5) solid 2px;
 }
