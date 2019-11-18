@@ -188,6 +188,7 @@ function handleSaveBoardButtonClick(event) {
         let appendedBoard = appendBoard(board);
         _addEventListenerToOpenButtons(appendedBoard);
         _addEventListenerToBoardTitles(appendedBoard);
+        _addEventListenerToAddColumnButtons(appendedBoard);
         _addEventListenerToAddCardButtons(appendedBoard);
         _addEventListenerToSaveCardButtons(appendedBoard);
         _addEventListenerToSaveBoardTitleButtons(appendedBoard);
@@ -242,7 +243,7 @@ function handleOpenBoardClick(event) {
     const board = document.querySelector(`.board[data-board-id="${button.dataset.boardId}"]`);
     const boardColumns = board.querySelector('.board-columns');
     const addCardButton = board.querySelector('button.add-card');
-    const form = board.querySelector('.form');
+    const form = board.querySelector('.add-card-form');
 
     if (!boardColumns.hasChildNodes()) {
         dom.loadColumns(board);
@@ -257,7 +258,7 @@ function handleOpenBoardClick(event) {
     if ($.isElementHidden(boardColumns)) {
         $.setElementDisplay(form, true);
         $.setElementActiveState(form, false);
-        $.setElementDisplay(addCardButton, true)
+        $.setElementDisplay(addCardButton, true);
     } else {
         $.setElementDisplay(addCardButton, false);
     }
@@ -267,6 +268,21 @@ function handleOpenBoardClick(event) {
 //--------------------------------------------------
 // RENAME COLUMN
 //--------------------------------------------------
+
+function handleAddColumnClick(event) {
+    if ($.isElementTypeActive('.add-column-form')) {
+        event.stopPropagation();
+        let clickOutsideActiveForm = new Event('click');
+        window.dispatchEvent(clickOutsideActiveForm);
+    }
+    const button = event.target;
+    const boardId = button.dataset.boardId;
+    const board = document.querySelector(`.board[data-board-id="${boardId}"]`);
+    let addColumnForm = board.querySelector('.add-column-form');
+    $.setElementDisplay(button, true);
+    $.setElementDisplay(addColumnForm, false);
+    $.setElementActiveState(addColumnForm, true);
+}
 
 function renameColumn(event) {
     let saveButton = event.target;
@@ -288,7 +304,7 @@ function handleRenameColumnClick(event) {
 //--------------------------------------------------
 
 function handleAddCardClick(event) {
-    if ($.isElementTypeActive('.form')) {
+    if ($.isElementTypeActive('.add-card-form')) {
         event.stopPropagation();
         let clickOutsideActiveForm = new Event('click');
         window.dispatchEvent(clickOutsideActiveForm);
@@ -296,10 +312,10 @@ function handleAddCardClick(event) {
     const button = event.target;
     const boardId = button.dataset.boardId;
     const board = document.querySelector(`.board[data-board-id="${boardId}"]`);
-    let form = board.querySelector('.form');
+    let addCardForm = board.querySelector('.add-card-form');
     $.setElementDisplay(button, true);
-    $.setElementDisplay(form, false);
-    $.setElementActiveState(form, true);
+    $.setElementDisplay(addCardForm, false);
+    $.setElementActiveState(addCardForm, true);
 }
 
 function handleSaveNewCardClick(event, board) {
@@ -383,6 +399,14 @@ function _addEventListenerToOpenButtons(board = null) {
     }
 }
 
+function _addEventListenerToAddColumnButtons(board = null) {
+    let selectionRoot = board ? board : document;
+    const addColumnButtons = selectionRoot.querySelectorAll('button.add-column');
+    for (let button of addColumnButtons) {
+        button.addEventListener('click', (event) => handleAddColumnClick(event));
+    }
+}
+
 function _addEventListenerToAddCardButtons(board = null) {
     let selectionRoot = board ? board : document;
     let addCardButtons = selectionRoot.querySelectorAll('button.add-card');
@@ -434,6 +458,7 @@ export let dom = {
             dom.showBoards(boards);
             _addEventListenerToOpenButtons();
             _addEventListenerToBoardTitles();
+            _addEventListenerToAddColumnButtons();
             _addEventListenerToAddCardButtons();
             _addEventListenerToSaveCardButtons();
             _addEventListenerToSaveBoardTitleButtons();
