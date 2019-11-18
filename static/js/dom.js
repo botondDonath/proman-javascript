@@ -96,8 +96,7 @@ const outsideClick = {
     handleNewBoard: function (event) {
         const createBoardInput = u.getCreateBoardInput();
         const createBoardButton = u.getCreateBoardButton();
-        const createBoardFormContainer = u.getCreateBoardFormContainer();
-        if (event.target !== createBoardButton || !u.isElementHidden(createBoardFormContainer)) {
+        if (event.target !== createBoardButton) {
             createBoardInput.value = createBoardInput.dataset.default;
             createBoardInput.blur();
         }
@@ -172,10 +171,12 @@ function handleOutsideClick(event) {
 function handleCreateBoardButtonClick(event) {
     u.toggleElementActiveState(event.target);
     const createBoardForm = u.getCreateBoardFormContainer();
+    const input = u.getCreateBoardInput();
     createBoardForm.classList.toggle('hidden');
     if (!u.isElementHidden(createBoardForm)) {
-        const input = u.getCreateBoardInput();
         u.focusSelectTextInputElement(input);
+    } else {
+        input.value = input.dataset.default;
     }
 }
 
