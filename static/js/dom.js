@@ -169,14 +169,17 @@ function handleOutsideClick(event) {
 //--------------------------------------------------
 
 function handleCreateBoardButtonClick(event) {
-    u.toggleElementActiveState(event.target);
+    const button = event.target;
+    u.toggleElementActiveState(button);
     const createBoardForm = u.getCreateBoardFormContainer();
     const input = u.getCreateBoardInput();
     createBoardForm.classList.toggle('hidden');
     if (!u.isElementHidden(createBoardForm)) {
         u.focusSelectTextInputElement(input);
+        button.textContent = "Cancel";
     } else {
         input.value = input.dataset.default;
+        button.textContent = "Create new board";
     }
 }
 

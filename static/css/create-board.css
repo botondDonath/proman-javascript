@@ -3,7 +3,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 450px;
+    width: 475px;
     padding: 10px 10px 10px 0;
 }
 
@@ -35,12 +35,27 @@ button.create-board {
     background-color: rgba(0, 0, 0, 0.4);
 }
 
-button.create-board:hover, button.create-board.active {
+button.create-board:hover {
     font-weight: bold;
     background-color: rgba(0, 0, 0, 0.7);
 }
 
-button.create-board.active:hover {
-    background-color: rgba(0, 0, 0, 0.4);
-    font-weight: normal;
+input.create-board {
+    background-color: rgba(0, 0, 0, .7);
+    color: rgb(200, 240, 5);
+    border: none;
+    box-sizing: border-box;
+    padding-left: 10px;
+}
+
+input.create-board::selection {
+    background-color: rgba(200, 240, 5, 1);
+    color: black;
+}
+
+button.save-board {
+    border: none;
+    border-left: black solid 1px;
+    background-color: rgba(0, 0, 0, .9);
+    color: rgb(200, 240, 5);
 }
