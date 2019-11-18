@@ -14,7 +14,7 @@
     min-width: 0;
     box-sizing: border-box;
     background-color: rgba(0, 0, 0, 0);
-    color: rgb(200, 240, 5);
+    color: rgb(255, 244, 33);
 }
 
 .card-title:hover {
@@ -26,7 +26,7 @@
 }
 
 .card-title::selection {
-    background-color: rgba(200, 240, 5, 1);
+    background-color: rgb(255, 244, 33);
     color: black;
 }
 
@@ -35,7 +35,7 @@
     border: none;
     border-left: black solid 1px;
     background-color: rgba(0, 0, 0, .4);
-    color: rgb(200, 240, 5);
+    color: rgb(255, 244, 33);
 }
 
 .card-delete {
@@ -43,10 +43,10 @@
     height: 30px;
     border: none;
     background: none;
-    color: rgba(200, 240, 5, .5);
+    color: rgba(255, 244, 33, .5);
     cursor: pointer;
 }
 
 .card-delete:hover {
-    color: rgb(200, 240, 5);
+    color: rgb(255, 244, 33);
 }

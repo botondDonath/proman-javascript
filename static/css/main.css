@@ -54,7 +54,7 @@ body {
     border-radius: 8px;
     padding: 20px;
     background-color: rgba(0, 0, 0, 0.6);
-    color: #eae326;
+    color: rgb(255, 244, 33);
     font-weight: bold;
     animation-name: show-feedback;
     animation-duration: 4s;

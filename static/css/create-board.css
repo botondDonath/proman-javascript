@@ -29,7 +29,7 @@ button::-moz-focus-inner {
 button.create-board {
     box-sizing: border-box;
     width: 170px;
-    color: #eae326;
+    color: rgb(255, 244, 33);
     border: black solid 2px;
     border-radius: 5px;
     background-color: rgba(0, 0, 0, 0.4);
@@ -42,14 +42,14 @@ button.create-board:hover {
 
 input.create-board {
     background-color: rgba(0, 0, 0, .7);
-    color: rgb(200, 240, 5);
+    color: rgb(255, 244, 33);
     border: none;
     box-sizing: border-box;
     padding-left: 10px;
 }
 
 input.create-board::selection {
-    background-color: rgba(200, 240, 5, 1);
+    background-color: rgb(255, 244, 33);
     color: black;
 }
 
@@ -57,5 +57,5 @@ button.save-board {
     border: none;
     border-left: black solid 1px;
     background-color: rgba(0, 0, 0, .9);
-    color: rgb(200, 240, 5);
+    color: rgb(255, 244, 33);
 }
