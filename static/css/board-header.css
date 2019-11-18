@@ -113,6 +113,11 @@ input.new-card {
     color: rgb(255, 244, 33);
 }
 
+input.new-card::selection {
+    background-color: rgb(255, 244, 33);
+    color: black;
+}
+
 button.save-card {
     box-sizing: border-box;
     width: 50px;
@@ -131,7 +136,7 @@ button.save-card:hover {
 
 button.open-board {
     width: 40px;
-    border: rgb(200, 240, 5) solid 1px;
+    border: rgb(255, 244, 33) solid 1px;
     border-radius: 7px;
     padding: 5px;
     background-color: rgba(0, 0, 0, .5);
@@ -139,5 +144,5 @@ button.open-board {
 }
 
 button.open-board:hover {
-    border: rgb(200, 240, 5) solid 2px;
+    border: rgb(255, 244, 33) solid 2px;
 }

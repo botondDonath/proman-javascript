@@ -312,18 +312,16 @@ function handleColumnTitleInputClick(event) {
 //--------------------------------------------------
 
 function handleAddCardClick(event) {
-    if (u.isElementTypeActive('.form')) {
-        event.stopPropagation();
-        const clickOutsideActiveForm = new Event('click');
-        window.dispatchEvent(clickOutsideActiveForm);
-    }
+    u.searchAndDeactivateElementType(event, '.add-card-form');
     const button = event.target;
     const boardId = button.dataset.boardId;
     const board = document.querySelector(`.board[data-board-id="${boardId}"]`);
-    const form = board.querySelector('.form');
+    const addCardForm = board.querySelector('.add-card-form');
+    const addCardInput = addCardForm.querySelector('input');
     u.setElementDisplay(button, true);
-    u.setElementDisplay(form, false);
-    u.setElementActiveState(form, true);
+    u.setElementDisplay(addCardForm, false);
+    u.setElementActiveState(addCardForm, true);
+    u.focusSelectTextInputElement(addCardInput);
 }
 
 function handleSaveNewCardClick(event, board) {
