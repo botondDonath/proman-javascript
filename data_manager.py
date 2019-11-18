@@ -64,13 +64,18 @@ def get_newest_board(cursor):
 
 
 @connection_handler
-def get_statuses(cursor):
+def get_statuses(cursor, board_id):
     cursor.execute(
         '''
         SELECT id, title
         FROM statuses
+        WHERE id IN (SELECT status_id
+                     FROM boards_statuses
+                     WHERE board_id = %(board_id)s
+                     ORDER BY status_id)
         ORDER BY id
-        '''
+        ''',
+        {'board_id': board_id}
     )
     statuses = cursor.fetchall()
     return statuses

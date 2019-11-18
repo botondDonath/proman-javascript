@@ -73,10 +73,10 @@ def delete_card():
     data_manager.delete_card(req['card_id'])
 
 
-@app.route('/statuses')
+@app.route('/statuses/<int:board_id>')
 @json_response
-def statuses():
-    statuses = data_manager.get_statuses()
+def statuses(board_id: int):
+    statuses = data_manager.get_statuses(board_id)
     return statuses
 
 
