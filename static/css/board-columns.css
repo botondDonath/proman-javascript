@@ -17,3 +17,11 @@
     padding: 6px;
     text-align: center;
 }
+
+.board-column-title:hover {
+    cursor: default;
+}
+
+.board-column-title:focus {
+    cursor: text;
+}

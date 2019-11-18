@@ -35,11 +35,13 @@ function renderBoard(boardData, template) {
 const createColumns = function (status, board) {
     const template = document.querySelector('#board-column-template');
     const clone = document.importNode(template.content, true);
+    const columnTitleInput = clone.querySelector('.board-column-title');
 
-    clone.querySelector('.board-column-title').value = status.title;
+    columnTitleInput.value = status.title;
+    columnTitleInput.dataset.title = status.title;
+    columnTitleInput.dataset.statusId = status.id;
+    columnTitleInput.dataset.boardId = board.dataset.boardId;
     clone.querySelector('.board-column').dataset.statusId = status.id;
-    clone.querySelector('.board-column-title').dataset.statusId = status.id;
-    clone.querySelector('.board-column-title').dataset.boardId = board.dataset.boardId;
 
     return clone;
 };
@@ -140,6 +142,18 @@ const outsideClick = {
                 u.toggleElementDisplay(deleteCardButton);
             }
         }
+    },
+    handleColumnTitle: function (event) {
+        const activeColumnTitleInput = document.querySelector('.board-column-title.active');
+        if (activeColumnTitleInput) {
+            const activeSaveColumnTitleButton = activeColumnTitleInput.nextElementSibling;
+            const ignoredElements = [activeColumnTitleInput, activeSaveColumnTitleButton];
+            if (!ignoredElements.includes(event.target)) {
+                u.toggleElementActiveState(activeColumnTitleInput);
+                activeColumnTitleInput.value = activeColumnTitleInput.dataset.title;
+                u.toggleElementDisplay(activeSaveColumnTitleButton);
+            }
+        }
     }
 };
 
@@ -148,6 +162,7 @@ function handleOutsideClick(event) {
     outsideClick.handleBoardTitle(event);
     outsideClick.handleNewCard(event);
     outsideClick.handleCardTitle(event);
+    outsideClick.handleColumnTitle(event);
 }
 
 //--------------------------------------------------
@@ -269,19 +284,26 @@ function handleOpenBoardClick(event) {
 // RENAME COLUMN
 //--------------------------------------------------
 
-function renameColumn(event) {
+function handleSaveColumnTitleButtonClick(event) {
     const saveButton = event.target;
-    const columnTitle = saveButton.parentNode.querySelector('.board-column-title');
-    dataHandler.renameColumn(columnTitle.value, columnTitle.dataset.statusId);
-    u.toggleElementDisplay(saveButton);
-    showFeedback('Column renamed!');
+    const columnTitleInput = saveButton.parentNode.querySelector('.board-column-title');
+    dataHandler.renameColumn(columnTitleInput.value, columnTitleInput.dataset.statusId, () => {
+        u.toggleElementActiveState(columnTitleInput);
+        columnTitleInput.dataset.title = columnTitleInput.value;
+        u.toggleElementDisplay(saveButton);
+        showFeedback('Column renamed!');
+    });
 }
 
-function handleRenameColumnClick(event) {
+function handleColumnTitleInputClick(event) {
     const input = event.target;
-    const saveButton = input.parentNode.querySelector('.save-column-title');
-    u.toggleElementDisplay(saveButton);
-    saveButton.addEventListener('click', renameColumn);
+    if (!u.isElementActive(input)) {
+        u.searchAndDeactivateElementType(event, 'input.board-column-title');
+        u.setElementActiveState(input, true);
+        u.focusSelectTextInputElement(input);
+        const saveButton = input.nextElementSibling;
+        u.toggleElementDisplay(saveButton);
+    }
 }
 
 //--------------------------------------------------
@@ -483,16 +505,15 @@ export const dom = {
         dataHandler.getStatuses(function (statuses) {
             dom.showColumns(board, statuses);
             dom.loadCards(board);
-            const columnTitles = document.querySelectorAll('.board-column-title');
-            for (const column of columnTitles) {
-                column.addEventListener('click', handleRenameColumnClick)
-            }
-
         });
     },
     showColumns: function (board, statuses) {
         for (const status of statuses) {
             const column = createColumns(status, board);
+            const columnTitleInput = column.querySelector('.board-column-title');
+            const saveColumnTitleButton = column.querySelector('.save-column-title');
+            columnTitleInput.addEventListener('click', handleColumnTitleInputClick);
+            saveColumnTitleButton.addEventListener('click', handleSaveColumnTitleButtonClick);
             const columns = board.querySelector('.board-columns');
             columns.appendChild(column);
         }
