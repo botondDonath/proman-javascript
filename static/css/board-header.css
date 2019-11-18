@@ -30,18 +30,23 @@
 }
 
 .board-title-container {
-    width: 270px;
+    width: 240px;
+    margin-right: 30px;
     display: flex;
     justify-content: space-between;
+    background-color: rgba(0, 0, 0, .5);
+    border: rgb(200, 240, 5) solid 2px;
+    border-radius: 5px;
 }
 
 .board-title {
-    width: 200px;
-    border: rgb(200, 240, 5) solid 2px;
+    min-width: 0;
+    flex-basis: 270px;
+    border: none;
     border-radius: 5px;
     padding: 3px 8px;
     box-sizing: border-box;
-    background-color: rgba(0, 0, 0, .5);
+    background-color: rgba(0, 0, 0, 0);
     color: rgba(200, 240, 5, 1);
 }
 
@@ -62,15 +67,17 @@
 
 button.save-board-title {
     box-sizing: border-box;
-    border: black solid 1px;
-    border-radius: 5px;
-    width: 60px;
-    background-color: rgba(0, 0, 0, .4);
+    border: none;
+    border-left: rgb(200, 240, 5) solid 2px;
+    border-radius: 0 5px 5px 0;
+    width: 70px;
+    padding: 2px;
+    background-color: rgba(0, 0, 0, .7);
     color: rgb(200, 240, 5);
 }
 
 button.save-board-title:hover {
-    background-color: rgba(0, 0, 0, .7);
+    background-color: rgba(0, 0, 0, .9);
     font-weight: bold;
 }
 

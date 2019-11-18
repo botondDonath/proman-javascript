@@ -88,7 +88,7 @@ function showFeedback(message) {
 function resetBoardTitleInput(activeBoardTitleInput) {
     const saveBoardTitleButton = activeBoardTitleInput.nextElementSibling;
     u.toggleElementActiveState(activeBoardTitleInput);
-    u.toggleElementVisibility(saveBoardTitleButton);
+    u.toggleElementDisplay(saveBoardTitleButton);
     activeBoardTitleInput.value = activeBoardTitleInput.dataset.boardTitle;
 }
 
@@ -103,9 +103,11 @@ const outsideClick = {
     },
     handleBoardTitle: function (event) {
         const activeBoardTitleInput = u.isElementTypeActive('.board-title');
-        if (activeBoardTitleInput && event.target !== activeBoardTitleInput) {
+        if (activeBoardTitleInput) {
+            console.log(activeBoardTitleInput);
             const activeSaveBoardTitleButton = activeBoardTitleInput.nextElementSibling;
-            if (event.target !== activeSaveBoardTitleButton) {
+            const ignoredElements = [activeBoardTitleInput, activeSaveBoardTitleButton];
+            if (!ignoredElements.includes(event.target)) {
                 resetBoardTitleInput(activeBoardTitleInput);
             }
         }
@@ -232,24 +234,19 @@ function renameBoard(event) {
     dataHandler.renameBoard(boardData, responseBoardData => {
         u.toggleElementActiveState(boardTitleInput);
         boardTitleInput.dataset.boardTitle = responseBoardData.title;
-        u.toggleElementVisibility(saveBoardTitleButton);
+        u.toggleElementDisplay(saveBoardTitleButton);
         showFeedback('Board renamed!');
     })
 }
 
 function toggleBoardTitleInput(event) {
     const boardTitleInput = event.target;
-    const activeBoardTitleInput = u.isElementTypeActive('.board-title');
-    if (activeBoardTitleInput && activeBoardTitleInput !== event.target) {
-        event.stopPropagation();
-        const clickOutsideActiveInput = new Event('click');
-        window.dispatchEvent(clickOutsideActiveInput);
-    }
-    const saveBoardTitleButton = boardTitleInput.nextElementSibling;
-    if (!u.isElementVisible(saveBoardTitleButton)) {
-        u.focusSelectTextInputElement(boardTitleInput);
-        u.toggleElementVisibility(saveBoardTitleButton);
+    if (!u.isElementActive(boardTitleInput)) {
+        u.searchAndDeactivateElementType(event, '.board-title');
         u.toggleElementActiveState(boardTitleInput);
+        u.focusSelectTextInputElement(boardTitleInput);
+        const saveBoardTitleButton = boardTitleInput.nextElementSibling;
+        u.toggleElementDisplay(saveBoardTitleButton);
     }
 }
 
