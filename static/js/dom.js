@@ -176,11 +176,11 @@ function handleCreateBoardInputEscPress(event) {
     }
 }
 
-function handleSaveBoardButtonClick(event) {
-    event.preventDefault();
+function handleSaveBoardButtonClick() {
     const input = u.getCreateBoardInput();
     const boardTitle = input.value;
     if (!boardTitle) {
+        showFeedback('Board title cannot be empty!');
         return;
     }
     dataHandler.createNewBoard(boardTitle, (boardData) => {
