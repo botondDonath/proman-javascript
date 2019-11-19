@@ -370,18 +370,22 @@ function handleAddCardClick(event) {
 }
 
 function handleSaveNewCardClick(event, board) {
-    const input = board.querySelector(`input.new-card`);
-    const cardTitle = input.value;
-    const statusId = 1; // as the acceptance criteria asks
-    let form = board.querySelector('.add-card-form');
-    u.setElementDisplay(form, true);
-    resetAddCardInput(board);
+    const FIRST_COLUMN = 0;
+    const boardId = board.dataset.boardId;
+    dataHandler.getStatuses(boardId, (statuses)=>{
+        const statusId = statuses[FIRST_COLUMN]['id'];
+        const input = board.querySelector(`input.new-card`);
+        const cardTitle = input.value;
+        let form = board.querySelector('.add-card-form');
+        u.setElementDisplay(form, true);
+        resetAddCardInput(board);
 
-    dataHandler.createNewCard(cardTitle, board.dataset.boardId, statusId, (card) => {
-        dom.showCards([card]); //passed as a length 1 list, in order to use showCards
-        const addCardButton = board.querySelector('button.add-card');
-        u.setElementDisplay(addCardButton, false);
-        showFeedback('Card created!');
+        dataHandler.createNewCard(cardTitle, boardId, statusId, (card) => {
+            dom.showCards([card]); //passed as a length 1 list, in order to use showCards
+            const addCardButton = board.querySelector('button.add-card');
+            u.setElementDisplay(addCardButton, false);
+            showFeedback('Card created!');
+        });
     });
 
 }
