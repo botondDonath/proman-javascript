@@ -112,7 +112,7 @@ let outsideClick = {
         }
     },
     handleNewCard: function (event) {
-        let activeAddCardForm = $.isElementTypeActive('.form');
+        let activeAddCardForm = $.isElementTypeActive('add-card-form');
         if (activeAddCardForm) {
             let addCardButton = activeAddCardForm.previousElementSibling;
             let boardId = addCardButton.dataset.boardId;
@@ -148,7 +148,7 @@ function handleOutsideClick(event) {
     outsideClick.handleNewBoard(event);
     outsideClick.handleBoardTitle(event);
     outsideClick.handleNewCard(event);
-    outsideClick.handleCardTitle(event);
+    // outsideClick.handleCardTitle(event);
 }
 
 //--------------------------------------------------
