@@ -15,6 +15,10 @@
 /*    border: yellow dashed 1px;*/
 /*}*/
 
+/*.board-header-left {*/
+/*    border: black solid 1px;*/
+/*}*/
+
 /*Real stuff*/
 
 .board-header {
@@ -29,6 +33,12 @@
 .board-header-left {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+
+.board-header-right {
+    display: flex;
+    justify-content: flex-end;
     align-items: center;
 }
 
@@ -91,18 +101,38 @@ button.save-board-title:hover {
     padding-left: 1px;
 }
 
+.add-column-container {
+    margin-right: 30px;
+}
+
 .add-card-container {
     display: flex;
     justify-content: flex-start;
 }
 
-button.add-card {
-    background: none;
-    border: none;
-    margin: 0;
-    padding: 0;
-    color: white;
+button.add-card, button.add-column {
+    box-sizing: border-box;
+    border: black solid 2px;
+    background-color: rgba(0, 0, 0, .5);
+    color: var(--soft-grey);
+    padding: 3px 0 3px 3px;
+    width: 96px;
+}
+
+.add-card-button-inner, .add-column-button-inner {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+}
+
+.plus-sign {
     font-size: x-large;
+    margin-right: 6px;
+}
+
+button.add-card:hover .plus-sign, button.add-column:hover .plus-sign {
+    color: var(--nice-blue);
 }
 
 .add-card-form {
@@ -130,7 +160,7 @@ button.save-card {
     box-sizing: border-box;
     width: 50px;
     border: none;
-    border-radius: 0;
+    border-radius: 0 5px 5px 0;
     border-left: var(--soft-grey) solid 1px;
     padding: 4px;
     margin-left: 0;
