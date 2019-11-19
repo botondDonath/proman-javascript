@@ -395,11 +395,10 @@ function deleteCard(event) {
 
 function closeRegistrationModal(event) {
     const modalContainer = document.querySelector('.registration-outer');
-    if (event.target === modalContainer) {
-        const inputs = modalContainer.getElementsByTagName('input');
-        for (const input of inputs) {
-            input.value = '';
-        }
+    const closeButton = modalContainer.querySelector('.close-registration-button');
+    if ([modalContainer, closeButton].includes(event.target)) {
+        const form = modalContainer.querySelector('form');
+        form.reset();
         u.toggleElementDisplay(modalContainer);
     }
 }
@@ -409,16 +408,33 @@ function openRegistrationModal() {
     u.toggleElementDisplay(modalContainer);
 }
 
+function processServerResponseForRegistration(response) {
+    if ('error' in response) {
+        const usernameInput = document.getElementById('username');
+        usernameInput.setCustomValidity(response['error']);
+        usernameInput.reportValidity();
+        usernameInput.setCustomValidity('');
+    } else {
+        const messageContainer = document.querySelector('.registration-success');
+        const registerButton = document.getElementById('register');
+        u.setElementVisibility(messageContainer, true);
+        registerButton.disabled = true;
+        setTimeout(function () {
+            u.setElementVisibility(messageContainer, false);
+            registerButton.disabled = false;
+        }, 2000);
+    }
+}
+
 function submitRegistration(event) {
     if (event.target === this.querySelector('#register')) {
         const validInputs = this.checkValidity();
         if (validInputs) {
-            const username = document.getElementById('username').value;
+            const usernameInput = document.getElementById('username');
+            const username = usernameInput.value;
             const password = document.getElementById('password').value;
             const userData = {username: username, password: password};
-            dataHandler.register(userData, response => {
-                alert(JSON.stringify(response));
-            });
+            dataHandler.register(userData, processServerResponseForRegistration)
         }
     }
 }
