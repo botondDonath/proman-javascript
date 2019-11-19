@@ -425,6 +425,7 @@ function renameCard(event) {
         cardTitleInput.dataset.cardTitle = cardData.title;
         u.toggleElementDisplay(saveButton.nextElementSibling);
         u.toggleElementDisplay(saveButton);
+        u.toggleElementActiveState(cardTitleInput);
         showFeedback('Card renamed!');
     })
 }
