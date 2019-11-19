@@ -47,17 +47,18 @@
     justify-content: space-between;
     align-items: stretch;
     background-color: rgba(0, 0, 0, .5);
-    border: var(--nice-blue) solid 2px;
-    border-radius: 5px;
-    padding: 1px;
+    border: black solid 1px;
+    border-left: var(--nice-blue) solid 2px;
+    border-radius: 12px 0 0 12px;
+    padding-left: 2px;
 }
 
 .board-title {
     min-width: 0;
     flex-basis: 270px;
     border: none;
-    border-radius: 5px;
-    padding: 3px 8px;
+    border-radius: 12px 0 0 12px;
+    padding: 6px 8px;
     box-sizing: border-box;
     background-color: rgba(0, 0, 0, 0);
     color: var(--soft-grey);
@@ -68,8 +69,12 @@
 }
 
 .board-title-container:hover, .board-title-container:focus-within {
-    border-width: 3px;
-    padding: 0;
+    border-left-width: 3px;
+    padding-left: 1px;
+}
+
+.board-title-container:hover .board-title {
+    color: var(--nice-blue);
 }
 
 .board-title:focus {
@@ -78,25 +83,25 @@
 }
 
 .board-title::selection {
-    background-color: var(--soft-grey);
+    background-color: var(--nice-blue);
     color: black;
 }
 
 button.save-board-title {
     box-sizing: border-box;
     border: none;
-    border-left: var(--nice-blue) solid 2px;
-    border-radius: 0 5px 5px 0;
+    border-left: black solid 2px;
+    border-radius: 0;
     width: 70px;
-    padding: 2px;
+    padding: 3px;
     background-color: rgba(0, 0, 0, .7);
     color: var(--soft-grey);
 }
 
 button.save-board-title:hover {
     color: var(--nice-blue);
-    border-left-width: 3px;
-    padding-left: 1px;
+    border-right: var(--nice-blue) solid 2px;
+    padding-right: 1px;
 }
 
 .add-column-container {
