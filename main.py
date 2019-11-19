@@ -101,7 +101,7 @@ def rename_column():
 @json_response
 def register_user():
     user_data = request.get_json()
-    return user_data
+    return data_manager.insert_user(user_data)
 
 
 def main():

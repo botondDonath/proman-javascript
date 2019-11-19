@@ -417,7 +417,7 @@ function submitRegistration(event) {
             const password = document.getElementById('password').value;
             const userData = {username: username, password: password};
             dataHandler.register(userData, response => {
-                alert('Username: ' + response.username + '\nPassword: ' + response.password);
+                alert(JSON.stringify(response));
             });
         }
     }

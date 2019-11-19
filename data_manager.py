@@ -1,4 +1,5 @@
 from connection import connection_handler
+from psycopg2 import IntegrityError
 
 
 @connection_handler
@@ -141,3 +142,20 @@ def update_column(cursor, column_data):
         UPDATE statuses SET title = %(title)s WHERE id = %(id)s;
         ''', column_data
     )
+
+
+@connection_handler
+def insert_user(cursor, user_data):
+    try:
+        cursor.execute(
+            '''
+            INSERT INTO users (username, password)
+            VALUES (%(username)s, %(password)s)
+            RETURNING id, username
+            ''',
+            user_data
+        )
+    except IntegrityError:
+        return {'error': 'Username already exists!'}
+    else:
+        return cursor.fetchone()
