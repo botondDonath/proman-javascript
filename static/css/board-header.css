@@ -177,7 +177,7 @@ button.save-card:hover, button.save-column:hover {
 
 button.open-board {
     width: 40px;
-    border: var(--soft-grey) solid 1px;
+    border: var(--soft-grey) solid 2px;
     border-radius: 7px;
     padding: 5px;
     background-color: rgba(0, 0, 0, .5);
@@ -186,4 +186,5 @@ button.open-board {
 
 button.open-board:hover {
     border: var(--nice-blue) solid 2px;
+    color: var(--nice-blue);
 }
