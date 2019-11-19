@@ -327,6 +327,7 @@ function handleAddColumnClick(event) {
     u.setElementDisplay(button, true);
     u.setElementDisplay(addColumnForm, false);
     u.setElementActiveState(addColumnForm, true);
+    u.focusSelectTextInputElement(addColumnForm.querySelector('input'));
 }
 
 
