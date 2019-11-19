@@ -1,5 +1,6 @@
 from connection import connection_handler
 from psycopg2 import IntegrityError
+import util
 
 
 @connection_handler
@@ -146,6 +147,7 @@ def update_column(cursor, column_data):
 
 @connection_handler
 def insert_user(cursor, user_data):
+    user_data['password'] = util.hash_password(user_data['password'])
     try:
         cursor.execute(
             '''
