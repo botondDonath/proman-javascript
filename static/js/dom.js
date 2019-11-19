@@ -113,7 +113,7 @@ const outsideClick = {
         }
     },
     handleNewCard: function (event) {
-        const activeAddCardForm = u.isElementTypeActive('.form');
+        const activeAddCardForm = u.isElementTypeActive('.add-card-form');
         if (activeAddCardForm) {
             const addCardButton = activeAddCardForm.previousElementSibling;
             const boardId = addCardButton.dataset.boardId;
