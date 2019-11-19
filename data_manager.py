@@ -66,16 +66,63 @@ def get_newest_board(cursor):
 
 
 @connection_handler
-def get_statuses(cursor):
+def get_statuses(cursor, board_id):
     cursor.execute(
         '''
         SELECT id, title
         FROM statuses
+        WHERE id IN (SELECT status_id
+                     FROM boards_statuses
+                     WHERE board_id = %(board_id)s
+                     ORDER BY status_id)
         ORDER BY id
-        '''
+        ''',
+        {'board_id': board_id}
     )
     statuses = cursor.fetchall()
     return statuses
+
+
+@connection_handler
+def get_status_by_status_id(cursor, status_id):
+    cursor.execute(
+        '''
+        SELECT id, title
+        FROM statuses
+        WHERE id = %(status_id)s
+        ''',
+        {'status_id': status_id}
+    )
+    status = cursor.fetchone()
+    return status
+
+
+@connection_handler
+def add_new_status(cursor, status_name, board_id):
+    cursor.execute(
+        '''
+        INSERT INTO statuses (title)
+        VALUES (%(status_name)s)
+        ''',
+        {'status_name': status_name}
+    )
+    cursor.execute(
+        '''
+        SELECT id
+        FROM statuses
+        ORDER BY id DESC
+        LIMIT 1
+        '''
+    )
+    status_id = cursor.fetchone()
+    cursor.execute(
+        '''
+        INSERT INTO boards_statuses (board_id, status_id)
+        VALUES (%(board_id)s, %(status_id)s)
+        ''',
+        {'board_id': board_id, 'status_id': status_id['id']}
+    )
+    return status_id
 
 
 @connection_handler
