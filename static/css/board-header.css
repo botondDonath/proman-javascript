@@ -105,7 +105,7 @@ button.save-board-title:hover {
     margin-right: 30px;
 }
 
-.add-card-container {
+.add-card-container, .add-column-container {
     display: flex;
     justify-content: flex-start;
 }
@@ -135,13 +135,13 @@ button.add-card:hover .plus-sign, button.add-column:hover .plus-sign {
     color: var(--nice-blue);
 }
 
-.add-card-form {
+.add-card-form, .add-column-form {
     border: var(--soft-grey) solid 1px;
     border-radius: 5px;
     background: none;
 }
 
-input.new-card {
+input.new-card, input.new-column {
     border: none;
     box-sizing: border-box;
     border-radius: 5px 0 0 5px;
@@ -151,12 +151,12 @@ input.new-card {
     color: var(--soft-grey);
 }
 
-input.new-card::selection {
+input.new-card::selection, input.new-column::selection {
     background-color: var(--nice-blue);
     color: black;
 }
 
-button.save-card {
+button.save-card, button.save-column {
     box-sizing: border-box;
     width: 50px;
     border: none;
@@ -168,8 +168,9 @@ button.save-card {
     color: var(--soft-grey);
 }
 
-button.save-card:hover {
+button.save-card:hover, button.save-column:hover {
     border-left-width: 2px;
+    padding-left: 3px;
     color: var(--nice-blue);
 }
 
