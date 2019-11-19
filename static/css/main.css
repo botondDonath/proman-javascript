@@ -28,6 +28,7 @@ body {
     border: black solid 4px;
     border-bottom-left-radius: 20px;
     padding: 10px 10px;
+    min-width: 440px;
 }
 
 .hidden {
