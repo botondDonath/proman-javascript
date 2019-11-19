@@ -175,6 +175,8 @@ const outsideClick = {
                 u.toggleElementActiveState(activeAddColumnForm);
                 u.toggleElementDisplay(activeAddColumnForm);
                 u.toggleElementDisplay(addColumnButton);
+                const activeInput =  activeAddColumnForm.querySelector('input');
+                activeInput.value = activeInput.dataset.default;
             }
         }
     }
