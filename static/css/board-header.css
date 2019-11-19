@@ -41,6 +41,7 @@
     background-color: rgba(0, 0, 0, .5);
     border: var(--nice-blue) solid 2px;
     border-radius: 5px;
+    padding: 1px;
 }
 
 .board-title {
@@ -58,17 +59,18 @@
     cursor: default;
 }
 
-.board-title-container:hover {
+.board-title-container:hover, .board-title-container:focus-within {
     border-width: 3px;
+    padding: 0;
 }
 
-.board-title:focus, .board-title-container:focus-within {
+.board-title:focus {
     cursor: text;
     border-width: 3px;
 }
 
 .board-title::selection {
-    background-color: var(--heavy-yellow);
+    background-color: var(--soft-grey);
     color: black;
 }
 
