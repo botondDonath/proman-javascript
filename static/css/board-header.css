@@ -1,3 +1,5 @@
+@import "colors.css";
+
 /*Add borders for testing purposes*/
 
 /*.board {*/
@@ -27,42 +29,129 @@
 .board-header-left {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .board-title-container {
-    width: 270px;
+    width: 240px;
+    margin-right: 30px;
     display: flex;
     justify-content: space-between;
+    align-items: stretch;
+    background-color: rgba(0, 0, 0, .5);
+    border: var(--nice-blue) solid 2px;
+    border-radius: 5px;
+    padding: 1px;
 }
 
 .board-title {
-    width: 200px;
-    border: black solid 1px;
+    min-width: 0;
+    flex-basis: 270px;
+    border: none;
     border-radius: 5px;
     padding: 3px 8px;
     box-sizing: border-box;
-    background-color: rgba(200, 240, 5, .5);
-    color: black;
+    background-color: rgba(0, 0, 0, 0);
+    color: var(--soft-grey);
 }
 
 .board-title:hover {
     cursor: default;
 }
 
+.board-title-container:hover, .board-title-container:focus-within {
+    border-width: 3px;
+    padding: 0;
+}
+
 .board-title:focus {
     cursor: text;
+    border-width: 3px;
+}
+
+.board-title::selection {
+    background-color: var(--soft-grey);
+    color: black;
+}
+
+button.save-board-title {
+    box-sizing: border-box;
+    border: none;
+    border-left: var(--nice-blue) solid 2px;
+    border-radius: 0 5px 5px 0;
+    width: 70px;
+    padding: 2px;
+    background-color: rgba(0, 0, 0, .7);
+    color: var(--soft-grey);
+}
+
+button.save-board-title:hover {
+    color: var(--nice-blue);
+    border-left-width: 3px;
+    padding-left: 1px;
 }
 
 .add-card-container {
     display: flex;
     justify-content: flex-start;
-    padding-left: 10px;
 }
 
-button.save-board-title {
-    width: 60px;
+button.add-card {
+    background: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+    color: white;
+    font-size: x-large;
+}
+
+.add-card-form {
+    border: var(--soft-grey) solid 1px;
+    border-radius: 5px;
+    background: none;
+}
+
+input.new-card {
+    border: none;
+    box-sizing: border-box;
+    border-radius: 5px 0 0 5px;
+    padding: 4px 8px;
+    width: 220px;
+    background-color: rgba(0, 0, 0, .5);
+    color: var(--soft-grey);
+}
+
+input.new-card::selection {
+    background-color: var(--nice-blue);
+    color: black;
+}
+
+button.save-card {
+    box-sizing: border-box;
+    width: 50px;
+    border: none;
+    border-radius: 0;
+    border-left: var(--soft-grey) solid 1px;
+    padding: 4px;
+    margin-left: 0;
+    background-color: rgba(0, 0, 0, .5);
+    color: var(--soft-grey);
+}
+
+button.save-card:hover {
+    border-left-width: 2px;
+    color: var(--nice-blue);
 }
 
 button.open-board {
     width: 40px;
+    border: var(--soft-grey) solid 1px;
+    border-radius: 7px;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, .5);
+    color: var(--soft-grey);
+}
+
+button.open-board:hover {
+    border: var(--nice-blue) solid 2px;
 }
