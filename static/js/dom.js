@@ -389,6 +389,26 @@ function deleteCard(event) {
     showFeedback('Card deleted!');
 }
 
+//--------------------------------------------------
+// REGISTRATION MODAL
+//--------------------------------------------------
+
+function closeRegistrationModal(event) {
+    const modalContainer = document.querySelector('.registration-outer');
+    if (event.target === modalContainer) {
+        const inputs = modalContainer.getElementsByTagName('input');
+        for (const input of inputs) {
+            input.value = '';
+        }
+        u.toggleElementDisplay(modalContainer);
+    }
+}
+
+function openRegistrationModal() {
+    const modalContainer = document.querySelector('.registration-outer');
+    u.toggleElementDisplay(modalContainer);
+}
+
 //----------------------------------------------------------------------
 // ADD EVENT HANDLERS WHEN LOADING BOARDS OR ONE BOARD
 //----------------------------------------------------------------------
@@ -446,6 +466,8 @@ export const dom = {
         const createBoardButton = u.getCreateBoardButton();
         const saveBoardButton = u.getSaveBoardButton();
         const createBoardInput = u.getCreateBoardInput();
+        const registrationModalContainer = document.querySelector('.registration-outer');
+        const registrationButton = document.querySelector('.registration-button');
 
         // Add event listeners
         window.addEventListener('click', handleOutsideClick);
@@ -453,6 +475,8 @@ export const dom = {
         saveBoardButton.addEventListener('click', handleSaveBoardButtonClick);
         createBoardInput.addEventListener('click', handleCreateBoardInputClick);
         createBoardInput.addEventListener('keyup', handleCreateBoardInputEscPress);
+        registrationModalContainer.addEventListener('click', closeRegistrationModal);
+        registrationButton.addEventListener('click', openRegistrationModal);
     },
     loadBoards: function () {
         // retrieves boards and makes showBoards called

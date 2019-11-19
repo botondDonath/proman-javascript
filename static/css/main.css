@@ -2,6 +2,7 @@
 @import "board-header.css";
 @import "board-columns.css";
 @import "card.css";
+@import "registration.css";
 
 * {
     font-family: inherit;

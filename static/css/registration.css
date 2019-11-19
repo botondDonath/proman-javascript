@@ -1,0 +1,68 @@
+@import "colors.css";
+
+.registration-button-container {
+    height: 60px;
+}
+
+.registration-button {
+    display: block;
+    box-sizing: border-box;
+    border: var(--soft-grey) solid 2px;
+    padding: 6px;
+    background-color: rgba(0, 0, 0, .5);
+    color: var(--soft-grey);
+}
+
+.registration-button:hover {
+    border-width: 3px;
+    padding: 5px;
+}
+
+.registration-outer {
+    position: fixed;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, .5);
+}
+
+.registration-modal {
+    border: white solid 2px;
+    position: relative;
+    width: 700px;
+    height: 400px;
+    margin: 100px auto 0 auto;
+    background-color: rgba(0, 0, 0, .7);
+}
+
+.registration-content {
+    width: 80%;
+    margin: auto;
+}
+
+.registration-heading {
+    color: var(--soft-grey);
+    text-align: left;
+    margin: 50px 0;
+}
+
+.registration-form {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.registration-form label {
+    color: var(--soft-grey);
+    font-size: large;
+}
+
+.registration-form input {
+    margin: 5px 0 10px 0;
+    width: 250px;
+    height: 24px;
+    font-size: 20px;
+}
