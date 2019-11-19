@@ -106,7 +106,6 @@ const outsideClick = {
     handleBoardTitle: function (event) {
         const activeBoardTitleInput = u.isElementTypeActive('.board-title');
         if (activeBoardTitleInput) {
-            console.log(activeBoardTitleInput);
             const activeSaveBoardTitleButton = activeBoardTitleInput.nextElementSibling;
             const ignoredElements = [activeBoardTitleInput, activeSaveBoardTitleButton];
             if (!ignoredElements.includes(event.target)) {
