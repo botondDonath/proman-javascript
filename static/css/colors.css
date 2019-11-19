@@ -1,0 +1,8 @@
+:root {
+    --heavy-yellow: rgb(255, 244, 33);
+    --heavy-yellow-opaque: rgba(255, 244, 33, .5);
+    --heavy-grey: rgb(68, 68, 68);
+    --soft-grey: rgb(254, 249, 249);
+    --soft-grey-opaque: rgba(254, 249, 249, .5);
+    --nice-blue: rgb(42, 203, 129);
+}

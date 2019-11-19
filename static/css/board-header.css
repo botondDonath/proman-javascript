@@ -1,3 +1,5 @@
+@import "colors.css";
+
 /*Add borders for testing purposes*/
 
 /*.board {*/
@@ -37,7 +39,7 @@
     justify-content: space-between;
     align-items: stretch;
     background-color: rgba(0, 0, 0, .5);
-    border: rgb(255, 244, 33) solid 2px;
+    border: var(--nice-blue) solid 2px;
     border-radius: 5px;
 }
 
@@ -49,38 +51,42 @@
     padding: 3px 8px;
     box-sizing: border-box;
     background-color: rgba(0, 0, 0, 0);
-    color: rgb(255, 244, 33);
+    color: var(--soft-grey);
 }
 
 .board-title:hover {
     cursor: default;
-    background-color: rgba(0, 0, 0, .7);
 }
 
-.board-title:focus {
+.board-title-container:hover {
+    border-width: 3px;
+}
+
+.board-title:focus, .board-title-container:focus-within {
     cursor: text;
-    background-color: rgba(0, 0, 0, .7);
+    border-width: 3px;
 }
 
 .board-title::selection {
-    background-color: rgb(255, 244, 33);
+    background-color: var(--heavy-yellow);
     color: black;
 }
 
 button.save-board-title {
     box-sizing: border-box;
     border: none;
-    border-left: rgb(255, 244, 33) solid 2px;
+    border-left: var(--nice-blue) solid 2px;
     border-radius: 0 5px 5px 0;
     width: 70px;
     padding: 2px;
     background-color: rgba(0, 0, 0, .7);
-    color: rgb(255, 244, 33);
+    color: var(--soft-grey);
 }
 
 button.save-board-title:hover {
-    background-color: rgba(0, 0, 0, .9);
-    font-weight: bold;
+    color: var(--nice-blue);
+    border-left-width: 3px;
+    padding-left: 1px;
 }
 
 .add-card-container {
@@ -98,7 +104,7 @@ button.add-card {
 }
 
 .add-card-form {
-    border: rgb(255, 244, 33) solid 2px;
+    border: var(--soft-grey) solid 1px;
     border-radius: 5px;
     background: none;
 }
@@ -110,11 +116,11 @@ input.new-card {
     padding: 4px 8px;
     width: 220px;
     background-color: rgba(0, 0, 0, .5);
-    color: rgb(255, 244, 33);
+    color: var(--soft-grey);
 }
 
 input.new-card::selection {
-    background-color: rgb(255, 244, 33);
+    background-color: var(--nice-blue);
     color: black;
 }
 
@@ -123,26 +129,27 @@ button.save-card {
     width: 50px;
     border: none;
     border-radius: 0;
-    border-left: rgb(255, 244, 33) solid 2px;
+    border-left: var(--soft-grey) solid 1px;
     padding: 4px;
     margin-left: 0;
     background-color: rgba(0, 0, 0, .5);
-    color: rgb(255, 244, 33);
+    color: var(--soft-grey);
 }
 
 button.save-card:hover {
-    font-weight: bold;
+    border-left-width: 2px;
+    color: var(--nice-blue);
 }
 
 button.open-board {
     width: 40px;
-    border: rgb(255, 244, 33) solid 1px;
+    border: var(--soft-grey) solid 1px;
     border-radius: 7px;
     padding: 5px;
     background-color: rgba(0, 0, 0, .5);
-    color: rgb(255, 244, 33);
+    color: var(--soft-grey);
 }
 
 button.open-board:hover {
-    border: rgb(255, 244, 33) solid 2px;
+    border: var(--nice-blue) solid 2px;
 }

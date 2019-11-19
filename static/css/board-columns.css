@@ -19,7 +19,7 @@
 
 .board-column-title {
     background-color: rgba(0, 0, 0, .5);
-    color: rgb(255, 244, 33);
+    color: var(--soft-grey);
     font-weight: bold;
     border: none;
     text-align: center;
@@ -30,21 +30,31 @@
 
 .board-column-title:hover {
     cursor: default;
+    color: var(--nice-blue);
 }
 
 .board-column-title:focus {
     cursor: text;
+    color: var(--nice-blue);
 }
 
 .board-column-title::selection {
-    background-color: rgb(255, 244, 33);
+    background-color: var(--nice-blue);
     color: black;
 }
 
 .save-column-title {
     box-sizing: border-box;
+    width: 66px;
+    padding: 6px;
     border: none;
     border-left: black solid 1px;
     background-color: rgba(0, 0, 0, .7);
-    color: rgb(255, 244, 33);
+    color: var(--soft-grey);
+}
+
+.save-column-title:hover {
+    border-right: var(--nice-blue) solid 2px;
+    padding-right: 4px;
+    color: var(--nice-blue);
 }

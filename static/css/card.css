@@ -14,11 +14,12 @@
     min-width: 0;
     box-sizing: border-box;
     background-color: rgba(0, 0, 0, 0);
-    color: rgb(255, 244, 33);
+    color: var(--soft-grey);
 }
 
 .card-title:hover {
     cursor: default;
+    color: var(--heavy-yellow);
 }
 
 .card-title:focus {
@@ -26,16 +27,23 @@
 }
 
 .card-title::selection {
-    background-color: rgb(255, 244, 33);
+    background-color: var(--heavy-yellow);
     color: black;
 }
 
 .card-save-title {
     box-sizing: border-box;
     border: none;
+    padding: 5px;
     border-left: black solid 1px;
     background-color: rgba(0, 0, 0, .4);
-    color: rgb(255, 244, 33);
+    color: var(--soft-grey);
+}
+
+.card-save-title:hover {
+    border-right: var(--heavy-yellow) solid 1px;
+    color: var(--heavy-yellow);
+    padding-right: 4px;
 }
 
 .card-delete {
@@ -43,10 +51,10 @@
     height: 30px;
     border: none;
     background: none;
-    color: rgba(255, 244, 33, .5);
+    color: var(--soft-grey-opaque);
     cursor: pointer;
 }
 
 .card-delete:hover {
-    color: rgb(255, 244, 33);
+    color: var(--soft-grey);
 }
