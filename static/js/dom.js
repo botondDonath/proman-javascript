@@ -123,8 +123,13 @@ const outsideClick = {
             const activeNewCardInput = activeAddCardForm.querySelector('.new-card');
             const activeSaveCardButton = activeAddCardForm.querySelector('.save-card');
 
-            const ignoredElements = [addCardButton, openBoardButton, activeNewCardInput, activeSaveCardButton];
-            if (!ignoredElements.includes(event.target)) {
+            const ignoredElements = [
+                addCardButton,
+                openBoardButton,
+                activeNewCardInput,
+                activeSaveCardButton
+            ];
+            if (!ignoredElements.includes(event.target) && !addCardButton.contains(event.target)) {
                 u.setElementActiveState(activeAddCardForm, false);
                 u.setElementDisplay(activeAddCardForm, true);
                 u.setElementDisplay(addCardButton, false);
@@ -295,12 +300,8 @@ function handleOpenBoardClick(event) {
 //--------------------------------------------------
 
 function handleAddColumnClick(event) {
-    if (u.isElementTypeActive('.add-column-form')) {
-        event.stopPropagation();
-        let clickOutsideActiveForm = new Event('click');
-        window.dispatchEvent(clickOutsideActiveForm);
-    }
-    const button = event.target;
+    u.searchAndDeactivateElementType(event, '.add-column-form');
+    const button = event.currentTarget;
     const boardId = button.dataset.boardId;
     const board = document.querySelector(`.board[data-board-id="${boardId}"]`);
     let addColumnForm = board.querySelector('.add-column-form');
@@ -356,11 +357,11 @@ function handleColumnTitleInputClick(event) {
 //--------------------------------------------------
 
 function handleAddCardClick(event) {
-    const button = event.target;
+    const button = event.currentTarget;
     const boardId = button.dataset.boardId;
     const board = document.querySelector(`.board[data-board-id="${boardId}"]`);
     const columns = board.querySelectorAll('.board-column-container');
-    if (columns.length ===0) {
+    if (columns.length === 0) {
         showFeedback('Must add columns first!');
         return
     }
@@ -534,7 +535,7 @@ function _addEventListenerToAddCardButtons(board = null) {
     const selectionRoot = board ? board : document;
     const addCardButtons = selectionRoot.querySelectorAll('button.add-card');
     for (const button of addCardButtons) {
-        button.addEventListener('click', (event) => handleAddCardClick(event));
+        button.addEventListener('click', handleAddCardClick);
     }
 }
 
