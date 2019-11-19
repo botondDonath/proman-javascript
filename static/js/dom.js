@@ -53,6 +53,7 @@ const createCard = function (card) {
     copy.querySelector('.card-title').value = card.title;
     copy.querySelector('.card-title').dataset.cardTitle = card.title;
     copy.querySelector('.card').dataset.cardId = card.id;
+    copy.querySelector('.card').dataset.order = card.order;
     copy.querySelector('.card-save-title').dataset.cardId = card.id;
     copy.querySelector('.card-delete').dataset.cardId = card.id;
 
