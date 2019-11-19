@@ -161,6 +161,22 @@ const outsideClick = {
                 u.toggleElementDisplay(activeSaveColumnTitleButton);
             }
         }
+    },
+    handleNewColumn: function (event) {
+        const activeAddColumnForm = u.isElementTypeActive('.add-column-form');
+        if (activeAddColumnForm) {
+            const container = activeAddColumnForm.parentNode;
+            const addColumnButton = container.querySelector('button.add-column');
+            if (event.target === window || (
+                ![activeAddColumnForm, addColumnButton].includes(event.target) &&
+                !activeAddColumnForm.contains(event.target) &&
+                !addColumnButton.contains(event.target)
+            )) {
+                u.toggleElementActiveState(activeAddColumnForm);
+                u.toggleElementDisplay(activeAddColumnForm);
+                u.toggleElementDisplay(addColumnButton);
+            }
+        }
     }
 };
 
@@ -170,6 +186,7 @@ function handleOutsideClick(event) {
     outsideClick.handleNewCard(event);
     outsideClick.handleCardTitle(event);
     outsideClick.handleColumnTitle(event);
+    outsideClick.handleNewColumn(event);
 }
 
 //--------------------------------------------------
@@ -300,11 +317,13 @@ function handleOpenBoardClick(event) {
 //--------------------------------------------------
 
 function handleAddColumnClick(event) {
-    u.searchAndDeactivateElementType(event, '.add-column-form');
     const button = event.currentTarget;
     const boardId = button.dataset.boardId;
     const board = document.querySelector(`.board[data-board-id="${boardId}"]`);
-    let addColumnForm = board.querySelector('.add-column-form');
+    const addColumnForm = board.querySelector('.add-column-form');
+    if (!u.isElementActive(addColumnForm)) {
+        u.searchAndDeactivateElementType(event, '.add-column-form');
+    }
     u.setElementDisplay(button, true);
     u.setElementDisplay(addColumnForm, false);
     u.setElementActiveState(addColumnForm, true);
@@ -326,6 +345,7 @@ function handleSaveNewColumnClick(event, board) {
     });
 
 }
+
 //--------------------------------------------------
 // RENAME COLUMN
 //--------------------------------------------------
@@ -365,8 +385,10 @@ function handleAddCardClick(event) {
         showFeedback('Must add columns first!');
         return
     }
-    u.searchAndDeactivateElementType(event, '.add-card-form');
     const addCardForm = board.querySelector('.add-card-form');
+    if (!u.isElementActive(addCardForm)) {
+        u.searchAndDeactivateElementType(event, '.add-card-form');
+    }
     const addCardInput = addCardForm.querySelector('input');
     u.setElementDisplay(button, true);
     u.setElementDisplay(addCardForm, false);
@@ -377,7 +399,7 @@ function handleAddCardClick(event) {
 function handleSaveNewCardClick(event, board) {
     const FIRST_COLUMN = 0;
     const boardId = board.dataset.boardId;
-    dataHandler.getStatuses(boardId, (statuses)=>{
+    dataHandler.getStatuses(boardId, (statuses) => {
         const statusId = statuses[FIRST_COLUMN]['id'];
         const input = board.querySelector(`input.new-card`);
         const cardTitle = input.value;
