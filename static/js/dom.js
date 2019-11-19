@@ -357,10 +357,15 @@ function handleColumnTitleInputClick(event) {
 //--------------------------------------------------
 
 function handleAddCardClick(event) {
-    u.searchAndDeactivateElementType(event, '.add-card-form');
     const button = event.target;
     const boardId = button.dataset.boardId;
     const board = document.querySelector(`.board[data-board-id="${boardId}"]`);
+    const columns = board.querySelectorAll('.board-column-container');
+    if (columns.length ===0) {
+        showFeedback('Must add columns first!');
+        return
+    }
+    u.searchAndDeactivateElementType(event, '.add-card-form');
     const addCardForm = board.querySelector('.add-card-form');
     const addCardInput = addCardForm.querySelector('input');
     u.setElementDisplay(button, true);
