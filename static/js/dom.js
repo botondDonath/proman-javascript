@@ -338,6 +338,7 @@ function handleSaveNewColumnClick(event, board) {
     const statusName = input.value;
     let addColumnForm = board.querySelector('.add-column-form');
     u.setElementDisplay(addColumnForm, true);
+    u.setElementActiveState(addColumnForm, false);
     // reset column title input
 
     dataHandler.addNewStatus(statusName, board.dataset.boardId, (status) => {
