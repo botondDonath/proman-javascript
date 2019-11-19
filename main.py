@@ -93,7 +93,6 @@ def rename_card(card_id: int):
 @json_response
 def rename_column():
     req = request.get_json()
-    print(req)
     data_manager.update_column(req)
     return req
 

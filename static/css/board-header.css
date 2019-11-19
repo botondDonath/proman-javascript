@@ -27,49 +27,122 @@
 .board-header-left {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .board-title-container {
-    width: 270px;
+    width: 240px;
+    margin-right: 30px;
     display: flex;
     justify-content: space-between;
+    align-items: stretch;
+    background-color: rgba(0, 0, 0, .5);
+    border: rgb(255, 244, 33) solid 2px;
+    border-radius: 5px;
 }
 
 .board-title {
-    width: 200px;
-    border: black solid 1px;
+    min-width: 0;
+    flex-basis: 270px;
+    border: none;
     border-radius: 5px;
     padding: 3px 8px;
     box-sizing: border-box;
-    background-color: rgba(200, 240, 5, .5);
-    color: black;
+    background-color: rgba(0, 0, 0, 0);
+    color: rgb(255, 244, 33);
 }
 
 .board-title:hover {
     cursor: default;
+    background-color: rgba(0, 0, 0, .7);
 }
 
 .board-title:focus {
     cursor: text;
+    background-color: rgba(0, 0, 0, .7);
+}
+
+.board-title::selection {
+    background-color: rgb(255, 244, 33);
+    color: black;
+}
+
+button.save-board-title {
+    box-sizing: border-box;
+    border: none;
+    border-left: rgb(255, 244, 33) solid 2px;
+    border-radius: 0 5px 5px 0;
+    width: 70px;
+    padding: 2px;
+    background-color: rgba(0, 0, 0, .7);
+    color: rgb(255, 244, 33);
+}
+
+button.save-board-title:hover {
+    background-color: rgba(0, 0, 0, .9);
+    font-weight: bold;
 }
 
 .add-card-container {
     display: flex;
     justify-content: flex-start;
-    padding-left: 10px;
 }
 
-.add-card {
+button.add-card {
     background: none;
     border: none;
+    margin: 0;
+    padding: 0;
     color: white;
     font-size: x-large;
 }
 
-button.save-board-title {
-    width: 60px;
+.add-card-form {
+    border: rgb(255, 244, 33) solid 2px;
+    border-radius: 5px;
+    background: none;
+}
+
+input.new-card {
+    border: none;
+    box-sizing: border-box;
+    border-radius: 5px 0 0 5px;
+    padding: 4px 8px;
+    width: 220px;
+    background-color: rgba(0, 0, 0, .5);
+    color: rgb(255, 244, 33);
+}
+
+input.new-card::selection {
+    background-color: rgb(255, 244, 33);
+    color: black;
+}
+
+button.save-card {
+    box-sizing: border-box;
+    width: 50px;
+    border: none;
+    border-radius: 0;
+    border-left: rgb(255, 244, 33) solid 2px;
+    padding: 4px;
+    margin-left: 0;
+    background-color: rgba(0, 0, 0, .5);
+    color: rgb(255, 244, 33);
+}
+
+button.save-card:hover {
+    font-weight: bold;
 }
 
 button.open-board {
     width: 40px;
+    border: rgb(255, 244, 33) solid 1px;
+    border-radius: 7px;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, .5);
+    color: rgb(255, 244, 33);
+}
+
+button.open-board:hover {
+    border: rgb(255, 244, 33) solid 2px;
 }

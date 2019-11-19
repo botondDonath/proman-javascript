@@ -8,7 +8,7 @@
 }
 
 html {
-    background-image: url("../images/chill01.jpg");
+    background-image: url("../images/chill01-edit.jpg");
     background-attachment: fixed;
     background-size: cover;
     background-repeat: no-repeat;
@@ -23,6 +23,9 @@ body {
     flex-direction: column;
     background-color: rgba(0, 0, 0, .4);
     margin-bottom: 20px;
+    border: black solid 4px;
+    border-radius: 10px;
+    padding: 10px 10px;
 }
 
 .hidden {
@@ -52,7 +55,7 @@ body {
     border-radius: 8px;
     padding: 20px;
     background-color: rgba(0, 0, 0, 0.6);
-    color: #eae326;
+    color: rgb(255, 244, 33);
     font-weight: bold;
     animation-name: show-feedback;
     animation-duration: 4s;
