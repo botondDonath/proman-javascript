@@ -13,13 +13,13 @@
         <div class="registration-modal">
             <div class="registration-content">
                 <h1 class="registration-heading">Registration</h1>
-                <div class="registration-form">
+                <form class="registration-form" action="#">
                     <label for="username">Username:</label>
-                    <input id="username" type="text" name="username" minlength="3" maxlength="20">
+                    <input id="username" type="text" minlength="3" maxlength="20" required>
                     <label for="password">Password:</label>
-                    <input id="password" type="password" name="password" minlength="6" maxlength="20">
-                    <button type="button">Register</button>
-                </div>
+                    <input id="password" type="password" minlength="6" maxlength="20" required>
+                    <button id="register" type="submit">Register</button>
+                </form>
             </div>
         </div>
     </div>

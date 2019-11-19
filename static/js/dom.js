@@ -409,6 +409,20 @@ function openRegistrationModal() {
     u.toggleElementDisplay(modalContainer);
 }
 
+function submitRegistration(event) {
+    if (event.target === this.querySelector('#register')) {
+        const validInputs = this.checkValidity();
+        if (validInputs) {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const userData = {username: username, password: password};
+            dataHandler.register(userData, response => {
+                alert('Username: ' + response.username + '\nPassword: ' + response.password);
+            });
+        }
+    }
+}
+
 //----------------------------------------------------------------------
 // ADD EVENT HANDLERS WHEN LOADING BOARDS OR ONE BOARD
 //----------------------------------------------------------------------
@@ -466,8 +480,9 @@ export const dom = {
         const createBoardButton = u.getCreateBoardButton();
         const saveBoardButton = u.getSaveBoardButton();
         const createBoardInput = u.getCreateBoardInput();
+        const openRegistrationModalButton = document.querySelector('.registration-button');
         const registrationModalContainer = document.querySelector('.registration-outer');
-        const registrationButton = document.querySelector('.registration-button');
+        const registrationForm = registrationModalContainer.querySelector('.registration-form');
 
         // Add event listeners
         window.addEventListener('click', handleOutsideClick);
@@ -475,8 +490,9 @@ export const dom = {
         saveBoardButton.addEventListener('click', handleSaveBoardButtonClick);
         createBoardInput.addEventListener('click', handleCreateBoardInputClick);
         createBoardInput.addEventListener('keyup', handleCreateBoardInputEscPress);
+        openRegistrationModalButton.addEventListener('click', openRegistrationModal);
         registrationModalContainer.addEventListener('click', closeRegistrationModal);
-        registrationButton.addEventListener('click', openRegistrationModal);
+        registrationForm.addEventListener('click', submitRegistration);
     },
     loadBoards: function () {
         // retrieves boards and makes showBoards called

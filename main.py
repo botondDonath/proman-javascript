@@ -97,6 +97,13 @@ def rename_column():
     return req
 
 
+@app.route('/users', methods=['POST'])
+@json_response
+def register_user():
+    user_data = request.get_json()
+    return user_data
+
+
 def main():
     app.run(debug=True)
 

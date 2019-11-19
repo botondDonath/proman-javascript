@@ -101,6 +101,11 @@ export let dataHandler = {
             this._data = data;
             callback();
         })
+    },
+    register: function (userData, callback) {
+        this._api_post('/users', userData, (response) => {
+            callback(response);
+        })
     }
     // here comes more features
 };
