@@ -593,12 +593,14 @@ const pageHeader = {
         u.toggleElementDisplay(loginForm);
         loginForm.reset();
         u.toggleElementDisplay(document.getElementById('logged-in-container'));
+        u.toggleElementDisplay(document.querySelector('.registration-button'));
     },
     switchToLoggedOut: function (loggedInContainer) {
         localStorage.removeItem('userId');
         localStorage.removeItem('username');
         u.toggleElementDisplay(loggedInContainer);
         u.toggleElementDisplay(document.getElementById('login-form'));
+        u.toggleElementDisplay(document.querySelector('.registration-button'));
     }
 };
 

@@ -8,10 +8,10 @@
             <input id="login-password" type="password" placeholder="Your password" required maxlength="20">
             <button id="login-button" type="submit">Log in</button>
         </form>
+        <button class="registration-button {{ 'hidden' if session else '' }}">Register</button>
         <div id="logged-in-container" class="{{ 'hidden' if not session else '' }}">
             <div id="logged-in-message">Logged in as <span id="logged-in-as">{{ session.username }}</span></div>
             <button id="logout-button" type="button">Log out</button>
         </div>
-        <button class="registration-button">Register</button>
     </div>
 </div>

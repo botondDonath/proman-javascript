@@ -54,8 +54,6 @@
     align-self: stretch;
     align-items: center;
     flex: 0 1 480px;
-    border-right: var(--soft-grey-opaque) solid 2px;
-    padding-right: 20px;
 }
 
 #login-form {
@@ -64,7 +62,6 @@
 
 #logged-in-container {
     justify-content: flex-end;
-    padding-right: 20px;
 }
 
 #logged-in-message {
@@ -122,7 +119,7 @@
     border: var(--heavy-grey) solid 2px;
     border-right-color: var(--nice-blue);
     padding: 8px;
-    margin-left: 20px;
+    margin-left: 30px;
     background-color: var(--black-opaque7);
     color: var(--soft-grey);
 }
