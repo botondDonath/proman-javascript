@@ -69,16 +69,38 @@ function appendBoard(board) {
     return container.lastElementChild;
 }
 
+function setOpacity(element, opacity) {
+    element.style.opacity = opacity ? opacity + '%' : '0';
+}
+
+function isFading(element) {
+    return element.classList.contains('fade');
+}
+
 function showFeedback(message) {
     const feedbackContainer = document.querySelector('.feedback-container');
-    const feedbackElement = document.querySelector('.feedback-message');
-    feedbackElement.textContent = message;
+    const feedbackMessage = document.querySelector('.feedback-message');
+    feedbackMessage.textContent = message;
+    let opacity = 0;
     u.toggleElementDisplay(feedbackContainer);
-    u.toggleElementDisplay(feedbackElement);
-    setTimeout(() => {
-        u.toggleElementDisplay(feedbackElement);
-        u.toggleElementDisplay(feedbackContainer);
-    }, 4000)
+    const feedbackAnimation = setInterval(function () {
+        if (isFading(feedbackContainer)) {
+            if (opacity > 0) {
+                setOpacity(feedbackContainer, --opacity);
+            } else {
+                feedbackContainer.classList.remove('fade');
+                u.toggleElementDisplay(feedbackContainer);
+                clearInterval(feedbackAnimation);
+            }
+        } else {
+            if (opacity < 100) {
+                setOpacity(feedbackContainer, ++opacity);
+            } else {
+                feedbackContainer.classList.add('fade');
+                setOpacity(feedbackContainer, --opacity);
+            }
+        }
+    }, 20);
 }
 
 //----------------------------------------------------------------------
