@@ -220,3 +220,17 @@ def update_cards_order(cursor, cards_data):
             WHERE id = %(id)s
             """, {'id': card['id'], 'order': card['order']}
         )
+
+
+@connection_handler
+def authenticate_user(cursor, user_data):
+    cursor.execute(
+        '''
+        SELECT id, username, password FROM users
+        WHERE username = %(username)s
+        ''',
+        {'username': user_data['username']}
+    )
+    result = cursor.fetchone()
+    authenticated = util.verify_password(user_data['password'], result.pop('password')) if result is not None else False
+    return result if authenticated else {'error': 'Invalid username or password!'}
