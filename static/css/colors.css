@@ -5,4 +5,6 @@
     --soft-grey: rgb(254, 249, 249);
     --soft-grey-opaque: rgba(254, 249, 249, .5);
     --nice-blue: rgb(42, 203, 129);
+    --black-opaque5: rgba(0, 0, 0, .5);
+    --black-opaque7: rgba(0, 0, 0, .7);
 }

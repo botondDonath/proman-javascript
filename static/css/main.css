@@ -4,6 +4,7 @@
 @import "board-columns.css";
 @import "card.css";
 @import "registration.css";
+@import "page-header.css";
 
 * {
     font-family: inherit;

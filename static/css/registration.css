@@ -1,21 +1,3 @@
-.registration-button-container {
-    height: 60px;
-}
-
-.registration-button {
-    display: block;
-    box-sizing: border-box;
-    border: var(--soft-grey) solid 2px;
-    padding: 6px;
-    background-color: rgba(0, 0, 0, .5);
-    color: var(--soft-grey);
-}
-
-.registration-button:hover {
-    border-width: 3px;
-    padding: 5px;
-}
-
 .registration-outer {
     position: fixed;
     text-align: center;

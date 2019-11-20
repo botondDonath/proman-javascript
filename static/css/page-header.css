@@ -1,0 +1,98 @@
+/*.page-header,*/
+/*.page-header-left,*/
+/*.page-header-right,*/
+/*#login-form {*/
+/*    border: white solid 1px;*/
+/*}*/
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    box-sizing: border-box;
+    width: 133%;
+    height: 80px;
+    background-color: var(--black-opaque7);
+    margin-left: -11%;
+    color: var(--soft-grey);
+    padding: 0 30px;
+    margin-bottom: 40px;
+}
+
+.page-header-left {
+    flex: 0 1 300px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.page-header-right {
+    flex: 0 1 700px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+#main-title {
+    margin: 0;
+    padding: 0;
+}
+
+#login-form {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-self: stretch;
+    align-items: center;
+    flex: 0 1 480px;
+    border-right: var(--soft-grey-opaque) solid 2px;
+    padding-right: 20px;
+}
+
+#login-form input, #login-form button {
+    margin: 0;
+}
+
+#login-form input {
+    box-sizing: content-box;
+    flex: 0 1 170px;
+    align-self: center;
+    height: 34px;
+    min-width: 0;
+    border: none;
+    padding-left: 6px;
+}
+
+#login-form button {
+    box-sizing: content-box;
+    flex: 0 0 80px;
+    align-self: center;
+    padding: 8px;
+    background-color: var(--black-opaque7);
+    color: var(--soft-grey);
+    border: var(--heavy-grey) solid 2px;
+    border-right-color: var(--nice-blue);
+}
+
+#login-form button:hover {
+    border-right-width: 3px;
+    padding-right: 7px;
+    color: var(--nice-blue);
+}
+
+.registration-button {
+    box-sizing: content-box;
+    flex: 0 0 100px;
+    border: var(--heavy-grey) solid 2px;
+    border-right-color: var(--heavy-yellow);
+    padding: 6px;
+    margin-left: 20px;
+    background-color: rgba(0, 0, 0, .5);
+    color: var(--soft-grey);
+}
+
+.registration-button:hover {
+    border-right-width: 3px;
+    padding-right: 5px;
+    color: var(--heavy-yellow);
+}

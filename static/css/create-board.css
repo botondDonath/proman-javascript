@@ -4,8 +4,8 @@
     justify-content: flex-start;
     align-items: center;
     /*width: 475px;*/
-    padding: 10px 10px 10px 0;
-    margin-bottom: 20px;
+    padding: 0;
+    margin-bottom: 30px;
 }
 
 .button-container.create-board,
