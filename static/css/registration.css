@@ -12,28 +12,37 @@
 .registration-modal {
     border: white solid 2px;
     position: relative;
-    width: 500px;
-    height: 470px;
+    width: 550px;
+    height: 460px;
     margin: 100px auto 0 auto;
     background-color: rgba(0, 0, 0, .7);
+    display: flex;
+    align-items: center;
 }
 
 .registration-content {
     width: 80%;
+    height: 430px;
     margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: stretch;
 }
 
 .registration-heading {
     color: var(--soft-grey);
     text-align: left;
-    margin-top: 50px;
-    margin-bottom: 30px;
+    margin: 0;
+    padding: 0;
 }
 
 .registration-form {
     display: flex;
     flex-direction: column;
     align-items: start;
+    height: 280px;
+    justify-content: flex-start;
 }
 
 .registration-form label {
@@ -42,19 +51,25 @@
 }
 
 .registration-form input {
-    margin: 5px 0 10px 0;
     width: 250px;
     height: 24px;
     font-size: 20px;
+    margin-bottom: 15px;
 }
 
-input#username {
-    margin-bottom: 20px;
+#password, #password-confirm {
+    width: 200px;
+}
+
+.modal-buttons {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-self: stretch;
 }
 
 #register:enabled, #register:disabled {
     box-sizing: border-box;
-    margin-top: 30px;
     padding: 6px;
     width: 100px;
     background-color: var(--black-opaque7);
@@ -80,10 +95,25 @@ input#username {
 }
 
 .registration-footer {
-    margin-top: 20px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
+}
+
+.close-registration-button {
+    box-sizing: border-box;
+    padding: 6px;
+    width: 100px;
+    background-color: var(--black-opaque7);
+    border: var(--heavy-grey) solid 2px;
+    border-right-color: var(--heavy-yellow);
+    color: var(--soft-grey);
+}
+
+.close-registration-button:hover {
+    border-right-width: 3px;
+    padding-right: 5px;
+    color: var(--heavy-yellow);
 }
 
 @keyframes activate {
