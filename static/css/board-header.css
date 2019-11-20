@@ -62,6 +62,7 @@
     box-sizing: border-box;
     background-color: rgba(0, 0, 0, 0);
     color: var(--soft-grey);
+    box-shadow: 2px 0 5px var(--nice-blue);
 }
 
 .board-title:hover {

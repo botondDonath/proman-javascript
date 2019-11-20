@@ -3,7 +3,9 @@
 }
 
 .board-column-container {
-    margin: 0 6px;
+    margin: 10px 6px;
+    border: var(--soft-grey-opaque) solid 1px;
+    box-shadow: 0 0 4px var(--nice-blue);
     flex-basis: 250px;
     min-width: 60px;
     flex-shrink: 1;
@@ -15,7 +17,7 @@
 .board-column-header {
     display: flex;
     height: 40px;
-    margin: 10px 0;
+    margin-bottom: 10px;
     max-width: 250px;
 }
 
