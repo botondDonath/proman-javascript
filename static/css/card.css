@@ -5,7 +5,7 @@
     height: 30px;
     max-width: 230px;
     background-color: rgba(0, 0, 0, .5);
-    box-shadow: 0 0 2px var(--soft-grey);
+    border: var(--soft-grey) solid 1px;
 }
 
 .card-title {
