@@ -118,6 +118,10 @@ export let dataHandler = {
         this._api_post('/reorder-cards', cardData, (response) => {
            this._data = response;
         })
+    },
+    login: function (userData, callback) {
+        this._api_post('/session', userData, (response) => {
+            callback(response);
+        })
     }
-    // here comes more features
 };
