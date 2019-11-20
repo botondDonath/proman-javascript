@@ -109,12 +109,12 @@
 
 .registration-button {
     box-sizing: content-box;
-    flex: 0 0 100px;
+    flex: 0 0 80px;
     border: var(--heavy-grey) solid 2px;
     border-right-color: var(--heavy-yellow);
-    padding: 6px;
+    padding: 8px;
     margin-left: 20px;
-    background-color: rgba(0, 0, 0, .5);
+    background-color: var(--black-opaque7);
     color: var(--soft-grey);
 }
 
