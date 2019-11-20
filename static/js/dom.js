@@ -471,6 +471,29 @@ function deleteCard(event) {
     showFeedback('Card deleted!');
 }
 
+
+//--------------------------------------------------
+// REORDER CARDS
+//--------------------------------------------------
+
+function reorderCards(column) {
+        console.log(column);
+        let sortableCards = dragula([column]);
+        console.log(sortableCards);
+        let cards = column.children;
+        let nodeListForEach = function (array, callback, scope) {
+            for (let i = 0; i < array.length; i++) {
+                callback.call(scope, i, array[i]);
+            }
+        };
+        sortableCards.on('dragend', function () {
+            nodeListForEach(cards, function(index, row) {
+                row.dataset.order = index + 1;
+            console.log(column);
+                });
+            });
+}
+
 //--------------------------------------------------
 // REGISTRATION MODAL
 //--------------------------------------------------
@@ -656,22 +679,7 @@ export const dom = {
             deleteButton.addEventListener('click', (event) => deleteCard(event));
             column.appendChild(cardNode);
 
-
-        console.log(column);
-        let sortableCards = dragula([column]);
-        console.log(sortableCards);
-        let cards = column.children;
-        let nodeListForEach = function (array, callback, scope) {
-            for (let i = 0; i < array.length; i++) {
-                callback.call(scope, i, array[i]);
-            }
-        };
-        sortableCards.on('dragend', function () {
-            nodeListForEach(cards, function(index, row) {
-                row.dataset.order = index;
-            console.log(column);
-                });
-            });
+            reorderCards(column);
 
 
         }
