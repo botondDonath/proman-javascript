@@ -10,14 +10,13 @@
 
 {% block content %}
 
-    <div class="feedback-container hidden">
-        <div class="feedback-message"></div>
-    </div>
-
+    <!--Modals (hidden by default)-->
+    {% include 'feedback.html' %}
     {% include 'registration.html' %}
+
+    <!--Base content-->
     {% include 'header.html' %}
     {% include 'create-board.html' %}
-
     <div id="boards"></div>
 
     <!--Templates-->
