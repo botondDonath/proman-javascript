@@ -129,6 +129,6 @@
 
 .registration-button:hover {
     border-right-width: 3px;
-    padding-right: 5px;
+    padding-right: 7px;
     color: var(--heavy-yellow);
 }
