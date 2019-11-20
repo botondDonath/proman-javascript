@@ -1,9 +1,10 @@
-from flask import Flask, render_template, url_for, request
+from flask import Flask, render_template, url_for, request, session
 from util import json_response
 
 import data_manager
 
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 
 @app.route("/")
@@ -11,7 +12,7 @@ def index():
     """
     This is a one-pager which shows all the boards and cards
     """
-    return render_template('index.html')
+    return render_template('index.html', session=session)
 
 
 @app.route("/get-boards")
@@ -128,6 +129,16 @@ def reorder_cards():
     data_manager.update_cards_order(cards_data)
     updated_cards = data_manager.get_cards_for_board(board_id)
     return updated_cards
+
+
+@app.route('/session', methods=['POST'])
+@json_response
+def log_user_in():
+    user_data = request.get_json()
+    authentication_result = data_manager.authenticate_user(user_data)
+    if 'error' not in authentication_result:
+        session.update(authentication_result)
+    return authentication_result
 
 
 def main():
