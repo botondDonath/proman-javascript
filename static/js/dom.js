@@ -575,6 +575,23 @@ function submitRegistration(event) {
 // LOGIN, LOGOUT
 //--------------------------------------------------
 
+const pageHeader = {
+    switchToLoggedIn: function (loginForm, userData) {
+        localStorage.setItem('userId', userData.id);
+        localStorage.setItem('username', userData.username);
+        document.getElementById('logged-in-as').textContent = localStorage.getItem('username');
+        u.toggleElementDisplay(loginForm);
+        loginForm.reset();
+        u.toggleElementDisplay(document.getElementById('logged-in-container'));
+    },
+    switchToLoggedOut: function (loggedInContainer) {
+        localStorage.removeItem('userId');
+        localStorage.removeItem('username');
+        u.toggleElementDisplay(loggedInContainer);
+        u.toggleElementDisplay(document.getElementById('login-form'));
+    }
+};
+
 function handleLogin(event) {
     const passwordInput = this.querySelector('input#login-password');
     passwordInput.setCustomValidity('');
@@ -584,12 +601,7 @@ function handleLogin(event) {
         const userData = {'username': usernameInput.value, 'password': passwordInput.value};
         dataHandler.login(userData, response => {
             if (!('error' in response)) {
-                localStorage.setItem('userId', userData.id);
-                localStorage.setItem('username', userData.username);
-                document.getElementById('logged-in-as').textContent = localStorage.getItem('username');
-                u.toggleElementDisplay(this);
-                this.reset();
-                u.toggleElementDisplay(document.getElementById('logged-in-container'));
+                pageHeader.switchToLoggedIn(this, userData);
             } else {
                 passwordInput.setCustomValidity(response.error);
                 passwordInput.reportValidity();
@@ -601,10 +613,7 @@ function handleLogin(event) {
 function handleLogout(event) {
     if (event.target === document.getElementById('logout-button')) {
         dataHandler.logout(response => {
-            localStorage.removeItem('userId');
-            localStorage.removeItem('username');
-            u.toggleElementDisplay(this);
-            u.toggleElementDisplay(document.getElementById('login-form'));
+            pageHeader.switchToLoggedOut(this);
             showFeedback('Successful logout!');
         });
     }
