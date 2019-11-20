@@ -120,7 +120,7 @@
     box-sizing: content-box;
     flex: 0 0 80px;
     border: var(--heavy-grey) solid 2px;
-    border-right-color: var(--heavy-yellow);
+    border-right-color: var(--nice-blue);
     padding: 8px;
     margin-left: 20px;
     background-color: var(--black-opaque7);
@@ -130,5 +130,5 @@
 .registration-button:hover {
     border-right-width: 3px;
     padding-right: 7px;
-    color: var(--heavy-yellow);
+    color: var(--nice-blue);
 }
