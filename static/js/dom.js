@@ -587,6 +587,7 @@ function handleLogin(event) {
                 localStorage.setItem('username', userData.username);
                 document.getElementById('logged-in-as').textContent = localStorage.getItem('username');
                 u.toggleElementDisplay(this);
+                this.reset();
                 u.toggleElementDisplay(document.getElementById('logged-in-container'));
             } else {
                 passwordInput.setCustomValidity(response.error);
@@ -603,6 +604,7 @@ function handleLogout(event) {
             localStorage.removeItem('username');
             u.toggleElementDisplay(this);
             u.toggleElementDisplay(document.getElementById('login-form'));
+            showFeedback('Successful logout!');
         });
     }
 }
