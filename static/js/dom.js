@@ -685,14 +685,14 @@ export const dom = {
                 };
                 drake.on('dragend', function () {
                     let cardsData = [];
-                    nodeListForEach(cards, function(newStatusId, row) {
-                        let statusOfCard = row.dataset.statusId = newStatusId;
+                    nodeListForEach(cards, function(newStatusId, card) {
                         cardsData.push({
-                            id: parseInt(row.dataset.cardId),
-                            status_id: statusOfCard,
-                            board_id: row.dataset.boardId
+                            id: parseInt(card.dataset.cardId),
+                            status_id: parseInt(newStatusId),
+                            board_id: parseInt(card.dataset.boardId)
                         });
                         console.log(cardsData);
+                        // DATA.Handler
                         });
             })
 
