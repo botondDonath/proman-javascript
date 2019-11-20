@@ -550,7 +550,7 @@ function submitRegistration(event) {
 }
 
 //--------------------------------------------------
-// LOGIN
+// LOGIN, LOGOUT
 //--------------------------------------------------
 
 function handleLogin(event) {
@@ -571,6 +571,17 @@ function handleLogin(event) {
                 passwordInput.reportValidity();
             }
         })
+    }
+}
+
+function handleLogout(event) {
+    if (event.target === document.getElementById('logout-button')) {
+        dataHandler.logout(response => {
+            localStorage.removeItem('userId');
+            localStorage.removeItem('username');
+            u.toggleElementDisplay(this);
+            u.toggleElementDisplay(document.getElementById('login-form'));
+        });
     }
 }
 
@@ -649,6 +660,7 @@ export const dom = {
         const saveBoardButton = u.getSaveBoardButton();
         const createBoardInput = u.getCreateBoardInput();
         const loginForm = document.getElementById('login-form');
+        const loggedInContainer = document.getElementById('logged-in-container');
         const openRegistrationModalButton = document.querySelector('.registration-button');
         const registrationModalContainer = document.querySelector('.registration-outer');
         const registrationForm = registrationModalContainer.querySelector('.registration-form');
@@ -660,6 +672,7 @@ export const dom = {
         createBoardInput.addEventListener('click', handleCreateBoardInputClick);
         createBoardInput.addEventListener('keyup', handleCreateBoardInputEscPress);
         loginForm.addEventListener('click', handleLogin);
+        loggedInContainer.addEventListener('click', handleLogout);
         openRegistrationModalButton.addEventListener('click', openRegistrationModal);
         registrationModalContainer.addEventListener('click', closeRegistrationModal);
         registrationForm.addEventListener('click', submitRegistration);

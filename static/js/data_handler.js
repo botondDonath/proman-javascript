@@ -32,7 +32,13 @@ export let dataHandler = {
         .then(json_response => callback(json_response));
 
     },
-    init: function () {
+    _api_delete: function (url, callback) {
+        fetch(url, {
+            method: 'DELETE',
+            credentials: "same-origin"
+        })
+            .then(response => response.json())
+            .then(json_response => callback(json_response))
     },
     getBoards: function (callback) {
         // the boards are retrieved and then the callback function is called with the boards
@@ -121,6 +127,11 @@ export let dataHandler = {
     },
     login: function (userData, callback) {
         this._api_post('/session', userData, (response) => {
+            callback(response);
+        })
+    },
+    logout: function (callback) {
+        this._api_delete('/session', (response) => {
             callback(response);
         })
     }

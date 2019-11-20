@@ -141,6 +141,13 @@ def log_user_in():
     return authentication_result
 
 
+@app.route('/session', methods=['DELETE'])
+@json_response
+def log_user_out():
+    session.clear()
+    return '', 200
+
+
 def main():
     app.run(debug=True)
 
