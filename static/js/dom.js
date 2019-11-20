@@ -644,6 +644,8 @@ export const dom = {
         // shows the cards of a board
         // it adds necessary event listeners also
         const board = document.querySelector(`.board[data-board-id="${cards[0].board_id}"]`);
+
+
         for (const card of cards) {
             const column = board.querySelector(`.board-column[data-status-id="${card.status_id}"]`);
             const cardNode = createCard(card);
@@ -654,7 +656,49 @@ export const dom = {
             saveButton.addEventListener('click', renameCard);
             deleteButton.addEventListener('click', (event) => deleteCard(event));
             column.appendChild(cardNode);
+
         }
+
+        changeCardStatus(board);
+
+
+        function changeCardStatus(board) {
+            let columns = board.querySelectorAll('.board-column');
+            let drake = dragula({
+                  copy: false
+                });
+            for (let column of columns) {
+                drake.containers.push(column);
+
+                }
+
+            let columnIds = [];
+            for (let column of columns) {
+                columnIds.push(parseInt(column.dataset.statusId));
+                let cards = column.children;
+                let nodeListForEach = function (array, callback, scope) {
+                    for (let i = 0; i < array.length; i++) {
+                        let newStatusId = column.dataset.statusId;
+                        callback.call(scope, newStatusId, array[i]);
+                    }
+                };
+                drake.on('dragend', function () {
+                    let cardsData = [];
+                    nodeListForEach(cards, function(newStatusId, row) {
+                        let statusOfCard = row.dataset.statusId = newStatusId;
+                        cardsData.push({
+                            id: parseInt(row.dataset.cardId),
+                            status_id: statusOfCard,
+                            board_id: row.dataset.boardId
+                        });
+                        console.log(cardsData);
+                        });
+            })
+
+            }
+        }
+
+
     },
     loadColumns: function (board) {
         const boardId = board.dataset.boardId;
