@@ -36,6 +36,16 @@
 #main-title {
     margin: 0;
     padding: 0;
+    color: var(--soft-grey);
+}
+
+#main-title:hover {
+    cursor: default;
+}
+
+#main-title::selection {
+    background: none;
+    color: var(--soft-grey);
 }
 
 #login-form {
