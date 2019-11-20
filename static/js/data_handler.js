@@ -117,7 +117,7 @@ export let dataHandler = {
     },
     register: function (userData, callback) {
         this._api_post('/users', userData, (response) => {
-            callback(response);
+            callback(response, userData);
         })
     },
     reorderCards: function (cardData) {

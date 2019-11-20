@@ -540,21 +540,21 @@ function openRegistrationModal() {
     u.toggleElementDisplay(modalContainer);
 }
 
-function processServerResponseForRegistration(response) {
+function processServerResponseForRegistration(response, originalInput) {
     if ('error' in response) {
         const usernameInput = document.getElementById('username');
         usernameInput.setCustomValidity(response['error']);
         usernameInput.reportValidity();
         usernameInput.setCustomValidity('');
     } else {
-        const messageContainer = document.querySelector('.registration-success');
-        const registerButton = document.getElementById('register');
-        u.setElementVisibility(messageContainer, true);
-        registerButton.disabled = true;
-        setTimeout(function () {
-            u.setElementVisibility(messageContainer, false);
-            registerButton.disabled = false;
-        }, 2000);
+        const registrationModalContainer = document.querySelector('.registration-outer');
+        const closeEvent = new Event('click');
+        registrationModalContainer.dispatchEvent(closeEvent);
+        const loginForm = document.getElementById('login-form');
+        dataHandler.login(originalInput, response => {
+            pageHeader.switchToLoggedIn(loginForm, originalInput);
+            showFeedback('Successful registration!');
+        })
     }
 }
 
@@ -781,7 +781,4 @@ export const dom = {
             columns.appendChild(column);
         }
     }
-    // here comes more features
 };
-
-
