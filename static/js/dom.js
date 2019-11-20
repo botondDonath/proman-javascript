@@ -576,10 +576,11 @@ function submitRegistration(event) {
 //--------------------------------------------------
 
 function handleLogin(event) {
+    const passwordInput = this.querySelector('input#login-password');
+    passwordInput.setCustomValidity('');
     const loginButton = document.getElementById('login-button');
     if (event.target === loginButton) {
         const usernameInput = this.querySelector('input#login-username');
-        const passwordInput = this.querySelector('input#login-password');
         const userData = {'username': usernameInput.value, 'password': passwordInput.value};
         dataHandler.login(userData, response => {
             if (!('error' in response)) {
