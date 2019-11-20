@@ -48,15 +48,27 @@
     color: var(--soft-grey);
 }
 
-#login-form {
+#login-form, .logged-in-container {
     box-sizing: border-box;
     display: flex;
-    justify-content: space-between;
     align-self: stretch;
     align-items: center;
     flex: 0 1 480px;
     border-right: var(--soft-grey-opaque) solid 2px;
     padding-right: 20px;
+}
+
+#login-form {
+    justify-content: space-between;
+}
+
+.logged-in-container {
+    justify-content: flex-end;
+    padding-right: 20px;
+}
+
+.logged-in-message {
+    margin-right: 20px;
 }
 
 #login-form input, #login-form button {
@@ -73,7 +85,7 @@
     padding-left: 6px;
 }
 
-#login-form button {
+#login-form button, #logout-button {
     box-sizing: content-box;
     flex: 0 0 80px;
     align-self: center;
@@ -84,7 +96,7 @@
     border-right-color: var(--nice-blue);
 }
 
-#login-form button:hover {
+#login-form button:hover, #logout-button:hover {
     border-right-width: 3px;
     padding-right: 7px;
     color: var(--nice-blue);
