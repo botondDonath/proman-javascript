@@ -52,9 +52,47 @@ input#username {
     margin-bottom: 20px;
 }
 
+#register:enabled, #register:disabled {
+    box-sizing: border-box;
+    margin-top: 30px;
+    padding: 6px;
+    width: 100px;
+    background-color: var(--black-opaque7);
+}
+
+#register:disabled {
+    border: var(--heavy-grey) solid 2px;
+    color: var(--heavy-grey);
+}
+
+#register:enabled {
+    color: var(--soft-grey);
+    border: var(--heavy-grey) solid 2px;
+    border-left-color: var(--nice-blue);
+    animation-name: activate;
+    animation-duration: .7s;
+}
+
+#register:enabled:hover {
+    border-left-width: 3px;
+    padding-left: 5px;
+    color: var(--nice-blue);
+}
+
 .registration-footer {
     margin-top: 20px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
+}
+
+@keyframes activate {
+    0% {
+        border: var(--heavy-grey) solid 2px;
+        color: var(--heavy-grey);
+    }
+    100% {
+        border-left-color: var(--nice-blue);
+        color: var(--soft-grey);
+    }
 }
