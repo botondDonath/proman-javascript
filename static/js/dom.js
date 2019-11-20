@@ -531,6 +531,7 @@ function closeRegistrationModal(event) {
     if ([modalContainer, closeButton].includes(event.target)) {
         const form = modalContainer.querySelector('form');
         form.reset();
+        document.getElementById('register').disabled = true;
         u.toggleElementDisplay(modalContainer);
     }
 }
