@@ -1,36 +1,28 @@
 {% extends 'layout.html' %}
+
 {% block head %}
     {{ super() }}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
     <script type="module" src="{{ url_for('static', filename='js/main.js') }}" defer></script>
 {% endblock %}
+
 {% block title %}Homepage{% endblock %}
+
 {% block content %}
+
     <div class="feedback-container hidden">
         <div class="feedback-message"></div>
     </div>
+
     {% include 'registration.html' %}
     {% include 'header.html' %}
     {% include 'create-board.html' %}
+
     <div id="boards"></div>
 
     <!--Templates-->
     {% include 'board.html' %}
-    <template id="board-column-template">
-        <div class="board-column-container">
-            <div class="board-column-header">
-                <input class="board-column-title" value="">
-                <button class="save-column-title hidden" type="button">Save</button>
-            </div>
-            <div class="board-column"></div>
-        </div>
-    </template>
+    {% include 'board-column.html' %}
+    {% include 'card.html' %}
 
-    <template id="card-template">
-        <div class="card">
-            <input type="text" class="card-title" value="">
-            <button type="button" class="card-save-title hidden">Save</button>
-            <button type="button" class="card-delete fa fa-trash"></button>
-        </div>
-    </template>
 {% endblock %}
