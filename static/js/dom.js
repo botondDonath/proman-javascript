@@ -56,6 +56,7 @@ const createCard = function (card) {
     copy.querySelector('.card-title').dataset.cardTitle = card.title;
     copy.querySelector('.card').dataset.cardId = card.id;
     copy.querySelector('.card').dataset.order = card.order;
+    copy.querySelector('.card').dataset.boardId = card.board_id;
     copy.querySelector('.card-save-title').dataset.cardId = card.id;
     copy.querySelector('.card-delete').dataset.cardId = card.id;
 
@@ -477,9 +478,7 @@ function deleteCard(event) {
 //--------------------------------------------------
 
 function reorderCards(column) {
-        //console.log(column);
         let sortableCards = dragula([column]);
-        //console.log(sortableCards);
         let cards = column.children;
         let nodeListForEach = function (array, callback, scope) {
             for (let i = 0; i < array.length; i++) {
@@ -491,15 +490,13 @@ function reorderCards(column) {
             nodeListForEach(cards, function(index, row) {
                 let orderOfCard = row.dataset.order = index + 1;
                 orderOfCards.push({
-                    id: row.dataset.cardId,
-                    order: orderOfCard
+                    id: parseInt(row.dataset.cardId),
+                    order: orderOfCard,
+                    board_id: row.dataset.boardId
                 });
-            //console.log(column);
                 });
-        console.log(orderOfCards);
+            dataHandler.reorderCards(orderOfCards);
             });
-       
-
 }
 
 //--------------------------------------------------
