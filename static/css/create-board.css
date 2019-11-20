@@ -1,11 +1,9 @@
-@import "colors.css";
-
 .container.create-board
 {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
-    width: 475px;
+    /*width: 475px;*/
     padding: 10px 10px 10px 0;
     margin-bottom: 20px;
 }
@@ -35,12 +33,13 @@ button.create-board {
     font-weight: bold;
     color: var(--soft-grey);
     border: black solid 4px;
-    border-radius: 5px;
+    border-radius: 26px 0 0 0;
     background-color: rgba(0, 0, 0, 0.5);
 }
 
 button.create-board:hover, button.create-board.active {
     border-color: var(--nice-blue);
+    /*border-right-color: black;*/
     color: var(--soft-grey);
 }
 

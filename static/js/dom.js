@@ -27,7 +27,9 @@ function renderBoard(boardData, template) {
     board.querySelector('.board-title').dataset.boardId = boardData.id;
     board.querySelector('.save-board-title').dataset.boardId = boardData.id;
     board.querySelector('button.add-card').dataset.boardId = boardData.id;
+    board.querySelector('button.add-column').dataset.boardId = boardData.id;
     board.querySelector('.save-card').dataset.boardId = boardData.id;
+    board.querySelector('.save-column').dataset.boardId = boardData.id;
     board.querySelector('.open-board').dataset.boardId = boardData.id;
     return board
 }
@@ -105,7 +107,6 @@ const outsideClick = {
     handleBoardTitle: function (event) {
         const activeBoardTitleInput = u.isElementTypeActive('.board-title');
         if (activeBoardTitleInput) {
-            console.log(activeBoardTitleInput);
             const activeSaveBoardTitleButton = activeBoardTitleInput.nextElementSibling;
             const ignoredElements = [activeBoardTitleInput, activeSaveBoardTitleButton];
             if (!ignoredElements.includes(event.target)) {
@@ -114,7 +115,7 @@ const outsideClick = {
         }
     },
     handleNewCard: function (event) {
-        const activeAddCardForm = u.isElementTypeActive('.form');
+        const activeAddCardForm = u.isElementTypeActive('.add-card-form');
         if (activeAddCardForm) {
             const addCardButton = activeAddCardForm.previousElementSibling;
             const boardId = addCardButton.dataset.boardId;
@@ -123,8 +124,13 @@ const outsideClick = {
             const activeNewCardInput = activeAddCardForm.querySelector('.new-card');
             const activeSaveCardButton = activeAddCardForm.querySelector('.save-card');
 
-            const ignoredElements = [addCardButton, openBoardButton, activeNewCardInput, activeSaveCardButton];
-            if (!ignoredElements.includes(event.target)) {
+            const ignoredElements = [
+                addCardButton,
+                openBoardButton,
+                activeNewCardInput,
+                activeSaveCardButton
+            ];
+            if (!ignoredElements.includes(event.target) && !addCardButton.contains(event.target)) {
                 u.setElementActiveState(activeAddCardForm, false);
                 u.setElementDisplay(activeAddCardForm, true);
                 u.setElementDisplay(addCardButton, false);
@@ -156,6 +162,24 @@ const outsideClick = {
                 u.toggleElementDisplay(activeSaveColumnTitleButton);
             }
         }
+    },
+    handleNewColumn: function (event) {
+        const activeAddColumnForm = u.isElementTypeActive('.add-column-form');
+        if (activeAddColumnForm) {
+            const container = activeAddColumnForm.parentNode;
+            const addColumnButton = container.querySelector('button.add-column');
+            if (event.target === window || (
+                ![activeAddColumnForm, addColumnButton].includes(event.target) &&
+                !activeAddColumnForm.contains(event.target) &&
+                !addColumnButton.contains(event.target)
+            )) {
+                u.toggleElementActiveState(activeAddColumnForm);
+                u.toggleElementDisplay(activeAddColumnForm);
+                u.toggleElementDisplay(addColumnButton);
+                const activeInput =  activeAddColumnForm.querySelector('input');
+                activeInput.value = activeInput.dataset.default;
+            }
+        }
     }
 };
 
@@ -165,6 +189,7 @@ function handleOutsideClick(event) {
     outsideClick.handleNewCard(event);
     outsideClick.handleCardTitle(event);
     outsideClick.handleColumnTitle(event);
+    outsideClick.handleNewColumn(event);
 }
 
 //--------------------------------------------------
@@ -211,6 +236,8 @@ function handleSaveBoardButtonClick() {
         const appendedBoard = appendBoard(board);
         _addEventListenerToOpenButtons(appendedBoard);
         _addEventListenerToBoardTitles(appendedBoard);
+        _addEventListenerToAddColumnButtons(appendedBoard);
+        _addEventListenerToSaveColumnButtons(appendedBoard);
         _addEventListenerToAddCardButtons(appendedBoard);
         _addEventListenerToSaveCardButtons(appendedBoard);
         _addEventListenerToSaveBoardTitleButtons(appendedBoard);
@@ -259,8 +286,10 @@ function handleOpenBoardClick(event) {
     const button = event.target;
     const board = document.querySelector(`.board[data-board-id="${button.dataset.boardId}"]`);
     const boardColumns = board.querySelector('.board-columns');
+    const addColumnButton = board.querySelector('button.add-column');
     const addCardButton = board.querySelector('button.add-card');
-    const form = board.querySelector('.form');
+    const addColumnForm = board.querySelector('.add-column-form');
+    const addCardForm = board.querySelector('.add-card-form');
 
     if (!boardColumns.hasChildNodes()) {
         dom.loadColumns(board);
@@ -273,12 +302,52 @@ function handleOpenBoardClick(event) {
     }
 
     if (u.isElementHidden(boardColumns)) {
-        u.setElementDisplay(form, true);
-        u.setElementActiveState(form, false);
-        u.setElementDisplay(addCardButton, true)
+        u.setElementDisplay(addCardForm, true);
+        u.setElementActiveState(addCardForm, false);
+        u.setElementDisplay(addCardButton, true);
+        u.setElementDisplay(addColumnForm, true);
+        u.setElementActiveState(addColumnForm, false);
+        u.setElementDisplay(addColumnButton, true);
     } else {
         u.setElementDisplay(addCardButton, false);
+        u.setElementDisplay(addColumnButton, false);
     }
+
+}
+
+//--------------------------------------------------
+// CREATE COLUMN
+//--------------------------------------------------
+
+function handleAddColumnClick(event) {
+    const button = event.currentTarget;
+    const boardId = button.dataset.boardId;
+    const board = document.querySelector(`.board[data-board-id="${boardId}"]`);
+    const addColumnForm = board.querySelector('.add-column-form');
+    if (!u.isElementActive(addColumnForm)) {
+        u.searchAndDeactivateElementType(event, '.add-column-form');
+    }
+    u.setElementDisplay(button, true);
+    u.setElementDisplay(addColumnForm, false);
+    u.setElementActiveState(addColumnForm, true);
+    u.focusSelectTextInputElement(addColumnForm.querySelector('input'));
+}
+
+
+function handleSaveNewColumnClick(event, board) {
+    const input = board.querySelector(`input.new-column`);
+    const statusName = input.value;
+    let addColumnForm = board.querySelector('.add-column-form');
+    u.setElementDisplay(addColumnForm, true);
+    u.setElementActiveState(addColumnForm, false);
+    // reset column title input
+
+    dataHandler.addNewStatus(statusName, board.dataset.boardId, (status) => {
+        dom.showColumns(board, [status]); //passed as a length 1 list, in order to use showColumns
+        let addColumnButton = board.querySelector('button.add-column');
+        u.setElementDisplay(addColumnButton, false);
+        showFeedback('Column created!');
+    });
 
 }
 
@@ -313,11 +382,18 @@ function handleColumnTitleInputClick(event) {
 //--------------------------------------------------
 
 function handleAddCardClick(event) {
-    u.searchAndDeactivateElementType(event, '.add-card-form');
-    const button = event.target;
+    const button = event.currentTarget;
     const boardId = button.dataset.boardId;
     const board = document.querySelector(`.board[data-board-id="${boardId}"]`);
+    const columns = board.querySelectorAll('.board-column-container');
+    if (columns.length === 0) {
+        showFeedback('Must add columns first!');
+        return
+    }
     const addCardForm = board.querySelector('.add-card-form');
+    if (!u.isElementActive(addCardForm)) {
+        u.searchAndDeactivateElementType(event, '.add-card-form');
+    }
     const addCardInput = addCardForm.querySelector('input');
     u.setElementDisplay(button, true);
     u.setElementDisplay(addCardForm, false);
@@ -326,18 +402,22 @@ function handleAddCardClick(event) {
 }
 
 function handleSaveNewCardClick(event, board) {
-    const input = board.querySelector(`input.new-card`);
-    const cardTitle = input.value;
-    const statusId = 1; // as the acceptance criteria asks
-    const form = board.querySelector('.form');
-    u.setElementDisplay(form, true);
-    resetAddCardInput(board);
+    const FIRST_COLUMN = 0;
+    const boardId = board.dataset.boardId;
+    dataHandler.getStatuses(boardId, (statuses) => {
+        const statusId = statuses[FIRST_COLUMN]['id'];
+        const input = board.querySelector(`input.new-card`);
+        const cardTitle = input.value;
+        let form = board.querySelector('.add-card-form');
+        u.setElementDisplay(form, true);
+        resetAddCardInput(board);
 
-    dataHandler.createNewCard(cardTitle, board.dataset.boardId, statusId, (card) => {
-        dom.showCards([card]); //passed as a length 1 list, in order to use showCards
-        const addCardButton = board.querySelector('button.add-card');
-        u.setElementDisplay(addCardButton, false);
-        showFeedback('Card created!');
+        dataHandler.createNewCard(cardTitle, boardId, statusId, (card) => {
+            dom.showCards([card]); //passed as a length 1 list, in order to use showCards
+            const addCardButton = board.querySelector('button.add-card');
+            u.setElementDisplay(addCardButton, false);
+            showFeedback('Card created!');
+        });
     });
 
 }
@@ -373,6 +453,7 @@ function renameCard(event) {
         cardTitleInput.dataset.cardTitle = cardData.title;
         u.toggleElementDisplay(saveButton.nextElementSibling);
         u.toggleElementDisplay(saveButton);
+        u.toggleElementActiveState(cardTitleInput);
         showFeedback('Card renamed!');
     })
 }
@@ -388,6 +469,56 @@ function deleteCard(event) {
     const cardToDelete = button.parentNode;
     cardToDelete.remove();
     showFeedback('Card deleted!');
+}
+
+//--------------------------------------------------
+// REGISTRATION MODAL
+//--------------------------------------------------
+
+function closeRegistrationModal(event) {
+    const modalContainer = document.querySelector('.registration-outer');
+    const closeButton = modalContainer.querySelector('.close-registration-button');
+    if ([modalContainer, closeButton].includes(event.target)) {
+        const form = modalContainer.querySelector('form');
+        form.reset();
+        u.toggleElementDisplay(modalContainer);
+    }
+}
+
+function openRegistrationModal() {
+    const modalContainer = document.querySelector('.registration-outer');
+    u.toggleElementDisplay(modalContainer);
+}
+
+function processServerResponseForRegistration(response) {
+    if ('error' in response) {
+        const usernameInput = document.getElementById('username');
+        usernameInput.setCustomValidity(response['error']);
+        usernameInput.reportValidity();
+        usernameInput.setCustomValidity('');
+    } else {
+        const messageContainer = document.querySelector('.registration-success');
+        const registerButton = document.getElementById('register');
+        u.setElementVisibility(messageContainer, true);
+        registerButton.disabled = true;
+        setTimeout(function () {
+            u.setElementVisibility(messageContainer, false);
+            registerButton.disabled = false;
+        }, 2000);
+    }
+}
+
+function submitRegistration(event) {
+    if (event.target === this.querySelector('#register')) {
+        const validInputs = this.checkValidity();
+        if (validInputs) {
+            const usernameInput = document.getElementById('username');
+            const username = usernameInput.value;
+            const password = document.getElementById('password').value;
+            const userData = {username: username, password: password};
+            dataHandler.register(userData, processServerResponseForRegistration)
+        }
+    }
 }
 
 //----------------------------------------------------------------------
@@ -410,11 +541,28 @@ function _addEventListenerToOpenButtons(board = null) {
     }
 }
 
+function _addEventListenerToAddColumnButtons(board = null) {
+    let selectionRoot = board ? board : document;
+    const addColumnButtons = selectionRoot.querySelectorAll('button.add-column');
+    for (let button of addColumnButtons) {
+        button.addEventListener('click', (event) => handleAddColumnClick(event));
+    }
+}
+
+function _addEventListenerToSaveColumnButtons(board = null) {
+    let selectionRoot = board ? board : document;
+    let saveButtons = selectionRoot.querySelectorAll('button.save-column');
+    for (let button of saveButtons) {
+        let board = u.getBoardById(button.dataset.boardId);
+        button.addEventListener('click', (event) => handleSaveNewColumnClick(event, board));
+    }
+}
+
 function _addEventListenerToAddCardButtons(board = null) {
     const selectionRoot = board ? board : document;
     const addCardButtons = selectionRoot.querySelectorAll('button.add-card');
     for (const button of addCardButtons) {
-        button.addEventListener('click', (event) => handleAddCardClick(event));
+        button.addEventListener('click', handleAddCardClick);
     }
 }
 
@@ -447,6 +595,9 @@ export const dom = {
         const createBoardButton = u.getCreateBoardButton();
         const saveBoardButton = u.getSaveBoardButton();
         const createBoardInput = u.getCreateBoardInput();
+        const openRegistrationModalButton = document.querySelector('.registration-button');
+        const registrationModalContainer = document.querySelector('.registration-outer');
+        const registrationForm = registrationModalContainer.querySelector('.registration-form');
 
         // Add event listeners
         window.addEventListener('click', handleOutsideClick);
@@ -454,6 +605,9 @@ export const dom = {
         saveBoardButton.addEventListener('click', handleSaveBoardButtonClick);
         createBoardInput.addEventListener('click', handleCreateBoardInputClick);
         createBoardInput.addEventListener('keyup', handleCreateBoardInputEscPress);
+        openRegistrationModalButton.addEventListener('click', openRegistrationModal);
+        registrationModalContainer.addEventListener('click', closeRegistrationModal);
+        registrationForm.addEventListener('click', submitRegistration);
     },
     loadBoards: function () {
         // retrieves boards and makes showBoards called
@@ -461,6 +615,8 @@ export const dom = {
             dom.showBoards(boards);
             _addEventListenerToOpenButtons();
             _addEventListenerToBoardTitles();
+            _addEventListenerToAddColumnButtons();
+            _addEventListenerToSaveColumnButtons();
             _addEventListenerToAddCardButtons();
             _addEventListenerToSaveCardButtons();
             _addEventListenerToSaveBoardTitleButtons();
@@ -521,7 +677,8 @@ export const dom = {
         }
     },
     loadColumns: function (board) {
-        dataHandler.getStatuses(function (statuses) {
+        const boardId = board.dataset.boardId;
+        dataHandler.getStatuses(boardId, function (statuses) {
             dom.showColumns(board, statuses);
             dom.loadCards(board);
         });

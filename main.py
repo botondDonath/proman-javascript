@@ -73,11 +73,26 @@ def delete_card():
     data_manager.delete_card(req['card_id'])
 
 
-@app.route('/statuses')
+@app.route('/statuses/board/<int:board_id>')
 @json_response
-def statuses():
-    statuses = data_manager.get_statuses()
+def statuses(board_id: int):
+    statuses = data_manager.get_statuses(board_id)
     return statuses
+
+
+@app.route('/statuses/<int:status_id>')
+@json_response
+def handle_status(status_id: int):
+    status = data_manager.get_status_by_status_id(status_id)
+    return status
+
+
+@app.route('/statuses', methods=['POST'])
+@json_response
+def add_new_status():
+    status_data = request.get_json()
+    status_id = data_manager.add_new_status(status_data['status_name'], status_data['board_id'])
+    return status_id['id']
 
 
 @app.route('/cards/<int:card_id>', methods=['POST'])
@@ -95,6 +110,13 @@ def rename_column():
     req = request.get_json()
     data_manager.update_column(req)
     return req
+
+
+@app.route('/users', methods=['POST'])
+@json_response
+def register_user():
+    user_data = request.get_json()
+    return data_manager.insert_user(user_data)
 
 
 def main():

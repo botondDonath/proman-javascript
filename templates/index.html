@@ -9,44 +9,80 @@
     <div class="feedback-container hidden">
         <div class="feedback-message hidden"></div>
     </div>
+    <div class="registration-outer hidden">
+        <div class="registration-modal">
+            <div class="registration-content">
+                <h1 class="registration-heading">Registration</h1>
+                <form class="registration-form" action="#">
+                    <label for="username">Username:</label>
+                    <input id="username" type="text" minlength="3" maxlength="20" required>
+                    <label for="password">Password:</label>
+                    <input id="password" type="password" minlength="6" maxlength="20" required>
+                    <button id="register" type="submit">Register</button>
+                </form>
+                <div class="registration-footer">
+                    <div class="registration-success invisible">Successful registration!</div>
+                    <button class="close-registration-button" type="button">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <h1 id="main-title">ProMan</h1>
+    <div class="registration-button-container">
+        <button class="registration-button">Registration</button>
+    </div>
     {% include 'create-board.html' %}
     <div id="boards"></div>
 
-<template id="board-template">
-    <div class="board">
-        <div class="board-header">
-            <div class="board-header-left">
-                <div class="board-title-container">
-                    <input class="board-title" data-board-title="" value="">
-                    <button class="save-board-title hidden">Save</button>
-                </div>
-                <div class="add-card-container">
-                    <button type="button" class="add-card hidden far fa-plus-square"></button>
-                    <div class="form add-card-form hidden">
-                        <input type="text" class="new-card" minlength="1" maxlength="100" data-default="New Card"
-                               value="New Card"
-                        ><button type="button" class="save-card">Save</button>
+    <template id="board-template">
+        <div class="board">
+            <div class="board-header">
+                <div class="board-header-left">
+                    <div class="board-title-container">
+                        <input class="board-title" data-board-title="" value="">
+                        <button class="save-board-title hidden">Save</button>
+                    </div>
+                    <div class="add-card-container">
+                        <button type="button" class="add-card hidden">
+                            <span class="add-card-button-inner">
+                                <span class="plus-sign fas fa-plus-square"></span><span>Card</span>
+                            </span>
+                        </button>
+                        <div class="add-card-form hidden">
+                            <input type="text" class="new-card" minlength="1" maxlength="100" data-default="New Card"
+                                   value="New Card"
+                            ><button type="button" class="save-card">Save</button>
+                        </div>
                     </div>
                 </div>
+                <div class="board-header-right">
+                    <div class="add-column-container">
+                        <button type="button" class="add-column hidden">
+                            <span class="add-column-button-inner">
+                                <span class="plus-sign fas fa-plus-square"></span><span>Column</span>
+                            </span>
+                        </button>
+                        <div class="add-column-form hidden">
+                            <input type="text" class="new-column" minlength="1" maxlength="100" value="New status"
+                            data-default="New status"><button type="button" class="save-column">Save</button>
+                        </div>
+                    </div>
+                    <button type="button" class="open-board">&#9661;</button>
+                </div>
             </div>
-            <div class="board-header-right">
-                <button type="button" class="open-board">&#9661;</button>
-            </div>
+            <div class="board-columns hidden"></div>
         </div>
-        <div class="board-columns hidden"></div>
-    </div>
-</template>
+    </template>
 
-<template id="board-column-template">
-    <div class="board-column-container">
-        <div class="board-column-header">
-            <input class="board-column-title" value="">
-            <button class="save-column-title hidden" type="button">Save</button>
+    <template id="board-column-template">
+        <div class="board-column-container">
+            <div class="board-column-header">
+                <input class="board-column-title" value="">
+                <button class="save-column-title hidden" type="button">Save</button>
+            </div>
+            <div class="board-column"></div>
         </div>
-        <div class="board-column"></div>
-    </div>
-</template>
+    </template>
 
     <template id="card-template">
         <div class="card">

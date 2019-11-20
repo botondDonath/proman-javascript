@@ -25,6 +25,9 @@ export let util = {
     toggleElementVisibility: (element) => {
         element.classList.toggle('invisible');
     },
+    setElementVisibility: (element, visible) => {
+        element.classList.toggle('invisible', !visible);
+    },
     hasElementFocus: (element) => document.activeElement === element,
     toggleElementActiveState: (element) => {
         element.classList.toggle('active');
