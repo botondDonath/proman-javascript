@@ -76,6 +76,15 @@
     font-weight: bold;
 }
 
+#logged-in-message:hover, #logged-in-as:hover {
+    cursor: default;
+}
+
+#logged-in-message::selection, #logged-in-as::selection {
+    background-color: var(--nice-blue);
+    color: black;
+}
+
 #login-form input, #login-form button {
     margin: 0;
 }
