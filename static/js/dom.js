@@ -177,7 +177,7 @@ const outsideClick = {
                 u.toggleElementActiveState(activeAddColumnForm);
                 u.toggleElementDisplay(activeAddColumnForm);
                 u.toggleElementDisplay(addColumnButton);
-                const activeInput =  activeAddColumnForm.querySelector('input');
+                const activeInput = activeAddColumnForm.querySelector('input');
                 activeInput.value = activeInput.dataset.default;
             }
         }
@@ -478,25 +478,25 @@ function deleteCard(event) {
 //--------------------------------------------------
 
 function reorderCards(column) {
-        let sortableCards = dragula([column]);
-        let cards = column.children;
-        let nodeListForEach = function (array, callback, scope) {
-            for (let i = 0; i < array.length; i++) {
-                callback.call(scope, i, array[i]);
-            }
-        };
-        sortableCards.on('dragend', function () {
-            let orderOfCards = [];
-            nodeListForEach(cards, function(index, row) {
-                let orderOfCard = row.dataset.order = index + 1;
-                orderOfCards.push({
-                    id: parseInt(row.dataset.cardId),
-                    order: orderOfCard,
-                    board_id: row.dataset.boardId
-                });
-                });
-            dataHandler.reorderCards(orderOfCards);
+    let sortableCards = dragula([column]);
+    let cards = column.children;
+    let nodeListForEach = function (array, callback, scope) {
+        for (let i = 0; i < array.length; i++) {
+            callback.call(scope, i, array[i]);
+        }
+    };
+    sortableCards.on('dragend', function () {
+        let orderOfCards = [];
+        nodeListForEach(cards, function (index, row) {
+            let orderOfCard = row.dataset.order = index + 1;
+            orderOfCards.push({
+                id: parseInt(row.dataset.cardId),
+                order: orderOfCard,
+                board_id: row.dataset.boardId
             });
+        });
+        dataHandler.reorderCards(orderOfCards);
+    });
 }
 
 //--------------------------------------------------
@@ -546,6 +546,31 @@ function submitRegistration(event) {
             const userData = {username: username, password: password};
             dataHandler.register(userData, processServerResponseForRegistration)
         }
+    }
+}
+
+//--------------------------------------------------
+// LOGIN
+//--------------------------------------------------
+
+function handleLogin(event) {
+    const loginButton = document.getElementById('login-button');
+    if (event.target === loginButton) {
+        const usernameInput = this.querySelector('input#login-username');
+        const passwordInput = this.querySelector('input#login-password');
+        const userData = {'username': usernameInput.value, 'password': passwordInput.value};
+        dataHandler.login(userData, response => {
+            if (!('error' in response)) {
+                localStorage.setItem('userId', userData.id);
+                localStorage.setItem('username', userData.username);
+                document.getElementById('logged-in-as').textContent = localStorage.getItem('username');
+                u.toggleElementDisplay(this);
+                u.toggleElementDisplay(document.getElementById('logged-in-container'));
+            } else {
+                passwordInput.setCustomValidity(response.error);
+                passwordInput.reportValidity();
+            }
+        })
     }
 }
 
@@ -623,6 +648,7 @@ export const dom = {
         const createBoardButton = u.getCreateBoardButton();
         const saveBoardButton = u.getSaveBoardButton();
         const createBoardInput = u.getCreateBoardInput();
+        const loginForm = document.getElementById('login-form');
         const openRegistrationModalButton = document.querySelector('.registration-button');
         const registrationModalContainer = document.querySelector('.registration-outer');
         const registrationForm = registrationModalContainer.querySelector('.registration-form');
@@ -633,6 +659,7 @@ export const dom = {
         saveBoardButton.addEventListener('click', handleSaveBoardButtonClick);
         createBoardInput.addEventListener('click', handleCreateBoardInputClick);
         createBoardInput.addEventListener('keyup', handleCreateBoardInputEscPress);
+        loginForm.addEventListener('click', handleLogin);
         openRegistrationModalButton.addEventListener('click', openRegistrationModal);
         registrationModalContainer.addEventListener('click', closeRegistrationModal);
         registrationForm.addEventListener('click', submitRegistration);
