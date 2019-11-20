@@ -477,9 +477,9 @@ function deleteCard(event) {
 //--------------------------------------------------
 
 function reorderCards(column) {
-        console.log(column);
+        //console.log(column);
         let sortableCards = dragula([column]);
-        console.log(sortableCards);
+        //console.log(sortableCards);
         let cards = column.children;
         let nodeListForEach = function (array, callback, scope) {
             for (let i = 0; i < array.length; i++) {
@@ -487,11 +487,19 @@ function reorderCards(column) {
             }
         };
         sortableCards.on('dragend', function () {
+            let orderOfCards = [];
             nodeListForEach(cards, function(index, row) {
-                row.dataset.order = index + 1;
-            console.log(column);
+                let orderOfCard = row.dataset.order = index + 1;
+                orderOfCards.push({
+                    id: row.dataset.cardId,
+                    order: orderOfCard
                 });
+            //console.log(column);
+                });
+        console.log(orderOfCards);
             });
+       
+
 }
 
 //--------------------------------------------------
