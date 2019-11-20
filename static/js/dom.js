@@ -559,15 +559,24 @@ function processServerResponseForRegistration(response, originalInput) {
 }
 
 function submitRegistration(event) {
-    if (event.target === this.querySelector('#register')) {
-        const validInputs = this.checkValidity();
-        if (validInputs) {
-            const usernameInput = document.getElementById('username');
-            const username = usernameInput.value;
-            const password = document.getElementById('password').value;
-            const userData = {username: username, password: password};
-            dataHandler.register(userData, processServerResponseForRegistration)
-        }
+    if (event.target === document.getElementById('register')) {
+        const userData = {
+            username: document.getElementById('username').value,
+            password: document.getElementById('password').value
+        };
+        dataHandler.register(userData, processServerResponseForRegistration)
+    }
+}
+
+function validateRegistrationFormInRealTime(event) {
+    const passwordInput = document.getElementById('password');
+    const confirmedPasswordInput = document.getElementById('password-confirm');
+    if ([passwordInput, confirmedPasswordInput].includes(event.target)) {
+        const submitButton = document.getElementById('register');
+        submitButton.disabled = !(
+            this.checkValidity() &&
+            passwordInput.value === confirmedPasswordInput.value
+        );
     }
 }
 
@@ -710,6 +719,7 @@ export const dom = {
         openRegistrationModalButton.addEventListener('click', openRegistrationModal);
         registrationModalContainer.addEventListener('click', closeRegistrationModal);
         registrationForm.addEventListener('click', submitRegistration);
+        registrationForm.addEventListener('input', validateRegistrationFormInRealTime)
     },
     loadBoards: function () {
         // retrieves boards and makes showBoards called
