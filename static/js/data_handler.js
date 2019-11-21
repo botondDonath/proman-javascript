@@ -115,14 +115,14 @@ export let dataHandler = {
         })
     },
     reorderCards: function (cardData) {
-        this._api_post('/cards/order', cardData, (response) => {
+        this._api_post('/cards/order-and-status', cardData, (response) => {
            this._data = response;
         })
     },
-    changeColumnOfCards: function (cardData) {
-        this._api_post('/cards/status', cardData, (response) => {
-            this._data = response;
-        })
-    }
+    // changeColumnOfCards: function (cardData) {
+    //     this._api_post('/cards/status', cardData, (response) => {
+    //         this._data = response;
+    //     })
+    // }
     // here comes more features
 };

@@ -476,25 +476,43 @@ function deleteCard(event) {
 // REORDER CARDS
 //--------------------------------------------------
 
-function reorderCards(column) {
+function reorderCards(board, column) {
+        let columns = board.querySelectorAll('.board-column');
+        let drake = dragula({
+          copy: false
+        });
+        for (let column of columns) {
+        drake.containers.push(column);
+        }
+
         let sortableCards = dragula([column]);
         let cards = column.children;
         let nodeListForEach = function (array, callback, scope) {
             for (let i = 0; i < array.length; i++) {
-                callback.call(scope, i, array[i]);
+                let newStatusId = column.dataset.statusId;
+                callback.call(scope, i, array[i], newStatusId);
+
+                //change card status
+
+                //console.log(newStatusId);
+                //callback.call(scope, i, array[i], newStatusId);
+                // end
             }
         };
-        sortableCards.on('dragend', function () {
-            let orderOfCards = [];
-            nodeListForEach(cards, function(index, row) {
-                let orderOfCard = row.dataset.order = index + 1;
-                orderOfCards.push({
-                    id: parseInt(row.dataset.cardId),
+        drake.on('dragend', function () {
+            let cardsData = [];
+            nodeListForEach(cards, function(index, card, newStatusId) {
+                console.log(newStatusId);
+                let orderOfCard = card.dataset.order = index + 1;
+                cardsData.push({
+                    id: parseInt(card.dataset.cardId),
                     order: orderOfCard,
-                    board_id: row.dataset.boardId
+                    status_id: parseInt(newStatusId),
+                    board_id: parseInt(card.dataset.boardId)
                 });
+                console.log(cardsData);
                 });
-            dataHandler.reorderCards(orderOfCards);
+            dataHandler.reorderCards(cardsData);
             });
 }
 
@@ -512,16 +530,16 @@ function changeCardStatus(board) {
 
         }
 
-    let columnIds = [];
+    //let columnIds = [];
     for (let column of columns) {
-        columnIds.push(parseInt(column.dataset.statusId));
+        //columnIds.push(parseInt(column.dataset.statusId));
         let cards = column.children;
-        let nodeListForEach = function (array, callback, scope) {
-            for (let i = 0; i < array.length; i++) {
-                let newStatusId = column.dataset.statusId;
-                callback.call(scope, newStatusId, array[i]);
-            }
-        };
+        // let nodeListForEach = function (array, callback, scope) {
+        //     for (let i = 0; i < array.length; i++) {
+        //         let newStatusId = column.dataset.statusId;
+        //         callback.call(scope, newStatusId, array[i]);
+        //     }
+        // };
         drake.on('dragend', function () {
             let cardsData = [];
             nodeListForEach(cards, function(newStatusId, card) {
@@ -724,9 +742,9 @@ export const dom = {
             saveButton.addEventListener('click', renameCard);
             deleteButton.addEventListener('click', (event) => deleteCard(event));
             column.appendChild(cardNode);
-            reorderCards(column);
+            reorderCards(board, column);
         }
-        changeCardStatus(board);
+        //changeCardStatus(board);
     },
     loadColumns: function (board) {
         const boardId = board.dataset.boardId;
