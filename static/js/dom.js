@@ -571,9 +571,10 @@ function submitRegistration(event) {
 }
 
 function validateRegistrationFormInRealTime(event) {
+    const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
     const confirmedPasswordInput = document.getElementById('password-confirm');
-    if ([passwordInput, confirmedPasswordInput].includes(event.target)) {
+    if ([usernameInput, passwordInput, confirmedPasswordInput].includes(event.target)) {
         const submitButton = document.getElementById('register');
         submitButton.disabled = !(
             this.checkValidity() &&
