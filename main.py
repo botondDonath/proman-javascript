@@ -124,6 +124,8 @@ def register_user():
 def move_cards():
     BOARD_ID = 0
     cards_data = request.get_json()
+    if not cards_data:
+        return cards_data
     board_id = cards_data[BOARD_ID]['board_id']
     data_manager.update_cards_order_and_status(cards_data)
     updated_cards = data_manager.get_cards_for_board(board_id)
