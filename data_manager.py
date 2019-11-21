@@ -19,6 +19,21 @@ def get_boards(cursor):
 
 
 @connection_handler
+def get_private_boards(cursor, username):
+    cursor.execute(
+        '''
+        SELECT id, title
+        FROM boards
+        WHERE id IN (SELECT board_id
+                     FROM users_boards
+                     JOIN users u on users_boards.user_id = u.id
+                     WHERE u.username = %(username)s)
+        ORDER BY id;
+        ''',
+        {'username': username}
+    )
+
+@connection_handler
 def get_cards_for_board(cursor, board_id):
     cursor.execute(
         '''
