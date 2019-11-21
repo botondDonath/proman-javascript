@@ -696,7 +696,7 @@ export const dom = {
             deleteButton.addEventListener('click', (event) => deleteCard(event));
             column.appendChild(cardNode);
         }
-        //changeCardStatus(board);
+        moveCards(board);
     },
     loadColumns: function (board) {
         const boardId = board.dataset.boardId;
