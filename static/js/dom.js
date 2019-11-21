@@ -266,7 +266,8 @@ function handleSaveBoardButtonClick() {
         _addEventListenerToSaveBoardTitleButtons(appendedBoard);
 
         input.value = input.dataset.default;
-        u.toggleElementDisplay(u.getCreateBoardFormContainer());
+        const pseudoClick = new Event('click');
+        document.querySelector('button.create-board').dispatchEvent(pseudoClick);
         showFeedback('Board created!');
     });
 }
