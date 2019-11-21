@@ -214,6 +214,47 @@ function handleOutsideClick(event) {
     outsideClick.handleColumnTitle(event);
     outsideClick.handleNewColumn(event);
 }
+//--------------------------------------------------
+// GET PRIVATE BOARDS
+//--------------------------------------------------
+function handleTogglePrivate(event) {
+    const privateButton = event.currentTarget;
+    u.setElementActiveState(privateButton, true);
+    privateButton.disabled = true;
+    document.querySelector('button.toggle-public').disabled = false;
+    const publicBoards = document.querySelectorAll('.board');
+    for (const board of publicBoards) {
+        if (!u.isElementHidden(board)) {
+            u.toggleElementDisplay(board) }
+    }
+    dataHandler.getPrivateBoards( (boards)=> {
+        dom.showBoards(boards);
+        _addEventListenerToOpenButtons();
+        _addEventListenerToBoardTitles();
+        _addEventListenerToAddColumnButtons();
+        _addEventListenerToSaveColumnButtons();
+        _addEventListenerToAddCardButtons();
+        _addEventListenerToSaveCardButtons();
+        _addEventListenerToSaveBoardTitleButtons();
+    })
+
+}
+
+function handleTogglePublic(event) {
+    const privateButton = document.querySelector('button.toggle-private');
+    privateButton.disabled = false;
+    const publicButton = event.currentTarget;
+    publicButton.disabled = true;
+    u.setElementActiveState(privateButton, false);
+    const allBoards = document.querySelectorAll('.board');
+    for (const board of allBoards) {
+        if (!board.classList.contains('hidden')) {
+            board.remove();
+        } else {
+            u.toggleElementDisplay(board);
+        }
+    }
+}
 
 //--------------------------------------------------
 // CREATE BOARD
@@ -253,7 +294,9 @@ function handleSaveBoardButtonClick() {
         showFeedback('Board title cannot be empty!');
         return;
     }
-    dataHandler.createNewBoard(boardTitle, (boardData) => {
+    const privateButton = document.querySelector('button.toggle-private');
+    let isPrivate = u.isElementActive(privateButton);
+    dataHandler.createNewBoard(boardTitle, isPrivate, (boardData) => {
         const boardTemplate = u.getBoardTemplate();
         const board = renderBoard(boardData, boardTemplate);
         const appendedBoard = appendBoard(board);
@@ -645,6 +688,13 @@ function handleLogout(event) {
 //----------------------------------------------------------------------
 // ADD EVENT HANDLERS WHEN LOADING BOARDS OR ONE BOARD
 //----------------------------------------------------------------------
+function _addEventListenerToPublicPrivate() {
+    const privateButton = document.querySelector('button.toggle-private');
+    privateButton.addEventListener('click', event => handleTogglePrivate(event));
+
+    const publicButton = document.querySelector('button.toggle-public');
+    publicButton.addEventListener('click', event => handleTogglePublic(event));
+}
 
 function _addEventListenerToBoardTitles(board = null) {
     const selectionRoot = board ? board : document;
@@ -733,7 +783,8 @@ export const dom = {
         openRegistrationModalButton.addEventListener('click', openRegistrationModal);
         registrationModalContainer.addEventListener('click', closeRegistrationModal);
         registrationForm.addEventListener('click', submitRegistration);
-        registrationForm.addEventListener('input', validateRegistrationFormInRealTime)
+        registrationForm.addEventListener('input', validateRegistrationFormInRealTime);
+        _addEventListenerToPublicPrivate()
     },
     loadBoards: function () {
         // retrieves boards and makes showBoards called

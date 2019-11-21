@@ -15,9 +15,9 @@ def index():
     return render_template('index.html', session=session)
 
 
-@app.route("/get-boards")
+@app.route("/boards")
 @json_response
-def get_boards():
+def get_public_boards():
     """
     All the boards
     """
@@ -29,8 +29,20 @@ def get_boards():
 @json_response
 def create_board():
     req = request.get_json()
+    private = req['private']
     data_manager.insert_board(req['title'])
-    return data_manager.get_newest_board()
+    new_board = data_manager.get_newest_board()
+    if private:
+        data_manager.set_board_private(new_board['id'], session.get('username'))
+    return new_board
+
+
+@app.route('/boards/private')
+@json_response
+def get_private_boards():
+    username = session.get('username')
+    boards = data_manager.get_private_boards(username)
+    return boards
 
 
 @app.route("/get-cards/<board_id>")
@@ -133,6 +145,7 @@ def move_cards():
 def log_user_in():
     user_data = request.get_json()
     authentication_result = data_manager.authenticate_user(user_data)
+    print(authentication_result)
     if 'error' not in authentication_result:
         session.update(authentication_result)
     return authentication_result

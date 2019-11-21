@@ -9,12 +9,44 @@ def get_boards(cursor):
         '''
         SELECT id, title
         FROM boards
+        WHERE id NOT IN (SELECT board_id
+                         FROM users_boards)
         ORDER BY id;
         '''
     )
     boards = cursor.fetchall()
     return boards
 
+
+@connection_handler
+def get_private_boards(cursor, username):
+    cursor.execute(
+        '''
+        SELECT id, title
+        FROM boards
+        WHERE id IN (SELECT board_id
+                    FROM users_boards
+                    JOIN users u ON u.id = users_boards.user_id
+                    WHERE u.username = %(username)s)
+        ORDER BY id
+        ''',
+        {'username': username}
+    )
+    boards = cursor.fetchall()
+    return boards
+
+
+@connection_handler
+def set_board_private(cursor, board_id, username):
+    cursor.execute(
+        '''
+        INSERT INTO users_boards (board_id, user_id)
+        VALUES (%(board_id)s, (SELECT id
+                                FROM users
+                                WHERE username = %(username)s))
+        ''',
+        {'board_id': board_id, 'username': username}
+    )
 
 @connection_handler
 def get_cards_for_board(cursor, board_id):
