@@ -32,6 +32,18 @@ export let dataHandler = {
         .then(json_response => callback(json_response));
 
     },
+    _api_put: function (url, data, callback) {
+        fetch(url, {
+            method: 'PUT',
+            credentials: "same-origin",
+            headers: new Headers({
+                'content-type': 'application/json'
+            }),
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(json_response => callback(json_response));
+    },
     _api_delete: function (url, callback) {
         fetch(url, {
             method: 'DELETE',
@@ -115,14 +127,14 @@ export let dataHandler = {
             callback();
         })
     },
+    moveCards: function (updatedCards) {
+        this._api_put('/cards/order-and-status', updatedCards, (response) => {
+           this._data = response;
+        })
+    },
     register: function (userData, callback) {
         this._api_post('/users', userData, (response) => {
             callback(response, userData);
-        })
-    },
-    moveCards: function (cardData) {
-        this._api_post('/cards/order-and-status', cardData, (response) => {
-           this._data = response;
         })
     },
     login: function (userData, callback) {

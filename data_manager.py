@@ -1,5 +1,5 @@
 from connection import connection_handler
-from psycopg2 import IntegrityError
+from psycopg2 import IntegrityError, sql
 import util
 
 
@@ -211,15 +211,13 @@ def insert_user(cursor, user_data):
 
 
 @connection_handler
-def update_cards_order_and_status(cursor, cards_data):
-    for card in cards_data:
-        cursor.execute(
-            """
-            UPDATE cards 
-            SET "order" = %(order)s , status_id = %(status_id)s
-            WHERE id = %(id)s
-            """, {'id': card['id'], 'order': card['order'], 'status_id': card['status_id']}
-        )
+def update_cards_order_and_status(cursor, cards):
+    query = '''UPDATE cards
+               SET "order" = %(order)s, status_id = %(status_id)s
+               WHERE id = %(id)s'''
+
+    for card in cards:
+        cursor.execute(query, card)
 
 
 @connection_handler

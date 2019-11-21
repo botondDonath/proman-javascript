@@ -501,37 +501,34 @@ function deleteCard(event) {
 
 function moveCards(board) {
     let columns = board.querySelectorAll('.board-column');
-    let drake = dragula({
-        copy: false
-    });
-    for (let column of columns) {
-        drake.containers.push(column);
-    }
-
-    for (let column of columns) {
-        let cards = column.children;
-        let nodeListForEach = function (array, callback, scope) {
-            for (let i = 0; i < array.length; i++) {
-                let newStatusId = column.dataset.statusId;
-                callback.call(scope, i, array[i], newStatusId);
+    dragula(Array.from(columns), {
+        copy: false,
+        ignoreInputTextSelection: true,
+    })
+        .on('drop', function (draggedCard, target, source, siblingCard) {
+            const sourceCards = source.querySelectorAll('.card');
+            for (let i = 0; i < sourceCards.length; i++) {
+                sourceCards[i].dataset.order = (i + 1).toString();
             }
-        };
-
-        drake.on('dragend', function () {
-            let cardsData = [];
-            nodeListForEach(cards, function (index, card, newStatusId) {
-                let orderOfCard = card.dataset.order = index + 1;
-                cardsData.push({
-                    id: parseInt(card.dataset.cardId),
-                    order: orderOfCard,
-                    status_id: parseInt(newStatusId),
-                    board_id: parseInt(card.dataset.boardId)
-                });
-                console.log(cardsData);
-            });
-            dataHandler.moveCards(cardsData);
+            const changedCards = Array.from(sourceCards);
+            if (target !== source) {
+                if (siblingCard) {
+                    let siblingOrder = parseInt(siblingCard.dataset.order);
+                    draggedCard.dataset.order = siblingOrder.toString();
+                    siblingCard.dataset.order = (++siblingOrder).toString();
+                    changedCards.push(siblingCard)
+                } else {
+                    draggedCard.dataset.order = target.querySelectorAll('.card').length.toString();
+                }
+                changedCards.push(draggedCard);
+            }
+            const requestData = changedCards.map(card => ({
+                id: parseInt(card.dataset.cardId),
+                order: parseInt(card.dataset.order),
+                status_id: [draggedCard, siblingCard].includes(card) ? target.dataset.statusId : source.dataset.statusId,
+            }));
+            dataHandler.moveCards(requestData);
         });
-    }
 }
 
 //--------------------------------------------------
