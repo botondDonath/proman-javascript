@@ -119,7 +119,7 @@ def register_user():
     return data_manager.insert_user(user_data)
 
 
-@app.route('/reorder-cards', methods=['POST'])
+@app.route('/cards/order', methods=['POST'])
 @json_response
 def reorder_cards():
     BOARD_ID = 0

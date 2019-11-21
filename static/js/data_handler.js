@@ -115,7 +115,7 @@ export let dataHandler = {
         })
     },
     reorderCards: function (cardData) {
-        this._api_post('/reorder-cards', cardData, (response) => {
+        this._api_post('/cards/order', cardData, (response) => {
            this._data = response;
         })
     },
