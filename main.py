@@ -125,7 +125,6 @@ def move_cards():
     BOARD_ID = 0
     cards_data = request.get_json()
     board_id = cards_data[BOARD_ID]['board_id']
-    print(cards_data)
     data_manager.update_cards_order_and_status(cards_data)
     updated_cards = data_manager.get_cards_for_board(board_id)
     return updated_cards
