@@ -692,7 +692,7 @@ export const dom = {
                             board_id: parseInt(card.dataset.boardId)
                         });
                         console.log(cardsData);
-                        // DATA.Handler
+                        dataHandler.changeColumnOfCards(cardsData);
                         });
             })
 

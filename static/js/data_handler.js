@@ -113,6 +113,11 @@ export let dataHandler = {
         this._api_post('/users', userData, (response) => {
             callback(response);
         })
+    },
+    changeColumnOfCards: function (cardData) {
+        this._api_post('/cards/status', cardData, (response) => {
+            this._data = response;
+        })
     }
     // here comes more features
 };

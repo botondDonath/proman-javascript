@@ -119,6 +119,19 @@ def register_user():
     return data_manager.insert_user(user_data)
 
 
+@app.route('/cards/status', methods=['POST'])
+@json_response
+def change_cards_status():
+    BOARD_ID = 0
+    cards_data = request.get_json()
+    board_id = cards_data[BOARD_ID]['board_id']
+    data_manager.update_cards_status(cards_data)
+    updated_cards = data_manager.get_cards_for_board(board_id)
+    print(cards_data)
+
+    return updated_cards
+
+
 def main():
     app.run(debug=True)
 
