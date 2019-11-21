@@ -55,6 +55,7 @@ const createCard = function (card) {
     copy.querySelector('.card-title').value = card.title;
     copy.querySelector('.card-title').dataset.cardTitle = card.title;
     copy.querySelector('.card').dataset.cardId = card.id;
+    copy.querySelector('.card').dataset.order = card.order;
     copy.querySelector('.card').dataset.boardId = card.board_id;
     copy.querySelector('.card-save-title').dataset.cardId = card.id;
     copy.querySelector('.card-delete').dataset.cardId = card.id;
@@ -472,6 +473,32 @@ function deleteCard(event) {
 }
 
 //--------------------------------------------------
+// REORDER CARDS
+//--------------------------------------------------
+
+function reorderCards(column) {
+        let sortableCards = dragula([column]);
+        let cards = column.children;
+        let nodeListForEach = function (array, callback, scope) {
+            for (let i = 0; i < array.length; i++) {
+                callback.call(scope, i, array[i]);
+            }
+        };
+        sortableCards.on('dragend', function () {
+            let orderOfCards = [];
+            nodeListForEach(cards, function(index, row) {
+                let orderOfCard = row.dataset.order = index + 1;
+                orderOfCards.push({
+                    id: parseInt(row.dataset.cardId),
+                    order: orderOfCard,
+                    board_id: row.dataset.boardId
+                });
+                });
+            dataHandler.reorderCards(orderOfCards);
+            });
+}
+
+//--------------------------------------------------
 // CHANGE CARD STATUS
 //--------------------------------------------------
 
@@ -510,6 +537,8 @@ function changeCardStatus(board) {
 
     }
 }
+
+
 
 //--------------------------------------------------
 // REGISTRATION MODAL
@@ -685,8 +714,6 @@ export const dom = {
         // shows the cards of a board
         // it adds necessary event listeners also
         const board = document.querySelector(`.board[data-board-id="${cards[0].board_id}"]`);
-
-
         for (const card of cards) {
             const column = board.querySelector(`.board-column[data-status-id="${card.status_id}"]`);
             const cardNode = createCard(card);
@@ -697,13 +724,9 @@ export const dom = {
             saveButton.addEventListener('click', renameCard);
             deleteButton.addEventListener('click', (event) => deleteCard(event));
             column.appendChild(cardNode);
-
+            reorderCards(column);
         }
         changeCardStatus(board);
-
-
-
-
     },
     loadColumns: function (board) {
         const boardId = board.dataset.boardId;
