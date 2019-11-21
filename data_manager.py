@@ -208,3 +208,14 @@ def insert_user(cursor, user_data):
         return {'error': 'Username already exists!'}
     else:
         return cursor.fetchone()
+
+
+@connection_handler
+def update_cards_status(cursor, cards_data):
+    for card in cards_data:
+        cursor.execute("""
+            UPDATE cards 
+            SET status_id = %(status_id)s 
+            WHERE id = %(id)s
+            """, {'id': card['id'], 'status_id': card['status_id']}
+            )
