@@ -225,7 +225,13 @@ function handleTogglePrivate() {
     }
     dataHandler.getPrivateBoards( (boards)=> {
         dom.showBoards(boards);
-        console.log(boards)
+        _addEventListenerToOpenButtons();
+        _addEventListenerToBoardTitles();
+        _addEventListenerToAddColumnButtons();
+        _addEventListenerToSaveColumnButtons();
+        _addEventListenerToAddCardButtons();
+        _addEventListenerToSaveCardButtons();
+        _addEventListenerToSaveBoardTitleButtons();
     })
 
 }
