@@ -121,25 +121,13 @@ def register_user():
 
 @app.route('/cards/order-and-status', methods=['POST'])
 @json_response
-def reorder_cards():
+def move_cards():
     BOARD_ID = 0
     cards_data = request.get_json()
     board_id = cards_data[BOARD_ID]['board_id']
     print(cards_data)
-    data_manager.update_cards_order(cards_data)
+    data_manager.update_cards_order_and_status(cards_data)
     updated_cards = data_manager.get_cards_for_board(board_id)
-    return updated_cards
-
-
-@app.route('/cards/status', methods=['POST'])
-@json_response
-def change_cards_status():
-    BOARD_ID = 0
-    cards_data = request.get_json()
-    board_id = cards_data[BOARD_ID]['board_id']
-    data_manager.update_cards_status(cards_data)
-    updated_cards = data_manager.get_cards_for_board(board_id)
-    print(updated_cards)
     return updated_cards
 
 

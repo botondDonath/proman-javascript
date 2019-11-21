@@ -114,15 +114,9 @@ export let dataHandler = {
             callback(response);
         })
     },
-    reorderCards: function (cardData) {
+    moveCards: function (cardData) {
         this._api_post('/cards/order-and-status', cardData, (response) => {
            this._data = response;
         })
     },
-    // changeColumnOfCards: function (cardData) {
-    //     this._api_post('/cards/status', cardData, (response) => {
-    //         this._data = response;
-    //     })
-    // }
-    // here comes more features
 };

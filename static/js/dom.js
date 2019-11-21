@@ -476,7 +476,7 @@ function deleteCard(event) {
 // REORDER CARDS
 //--------------------------------------------------
 
-function reorderCards(board, column) {
+function moveCards(board, column) {
         let columns = board.querySelectorAll('.board-column');
         let drake = dragula({
           copy: false
@@ -485,24 +485,17 @@ function reorderCards(board, column) {
         drake.containers.push(column);
         }
 
-        let sortableCards = dragula([column]);
         let cards = column.children;
         let nodeListForEach = function (array, callback, scope) {
             for (let i = 0; i < array.length; i++) {
                 let newStatusId = column.dataset.statusId;
                 callback.call(scope, i, array[i], newStatusId);
-
-                //change card status
-
-                //console.log(newStatusId);
-                //callback.call(scope, i, array[i], newStatusId);
-                // end
             }
         };
+
         drake.on('dragend', function () {
             let cardsData = [];
             nodeListForEach(cards, function(index, card, newStatusId) {
-                console.log(newStatusId);
                 let orderOfCard = card.dataset.order = index + 1;
                 cardsData.push({
                     id: parseInt(card.dataset.cardId),
@@ -512,7 +505,7 @@ function reorderCards(board, column) {
                 });
                 console.log(cardsData);
                 });
-            dataHandler.reorderCards(cardsData);
+            dataHandler.moveCards(cardsData);
             });
 }
 
@@ -742,7 +735,7 @@ export const dom = {
             saveButton.addEventListener('click', renameCard);
             deleteButton.addEventListener('click', (event) => deleteCard(event));
             column.appendChild(cardNode);
-            reorderCards(board, column);
+            moveCards(board, column);
         }
         //changeCardStatus(board);
     },

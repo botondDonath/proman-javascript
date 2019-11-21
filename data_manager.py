@@ -211,7 +211,7 @@ def insert_user(cursor, user_data):
 
 
 @connection_handler
-def update_cards_order(cursor, cards_data):
+def update_cards_order_and_status(cursor, cards_data):
     for card in cards_data:
         print(card)
         cursor.execute(
@@ -222,13 +222,3 @@ def update_cards_order(cursor, cards_data):
             """, {'id': card['id'], 'order': card['order'], 'status_id': card['status_id']}
         )
 
-
-# @connection_handler
-# def update_cards_status(cursor, cards_data):
-#     for card in cards_data:
-#         cursor.execute("""
-#             UPDATE cards
-#             SET status_id = %(status_id)s
-#             WHERE id = %(id)s
-#             """, {'id': card['id'], 'status_id': card['status_id']}
-#             )
