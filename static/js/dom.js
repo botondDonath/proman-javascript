@@ -500,38 +500,38 @@ function deleteCard(event) {
 //--------------------------------------------------
 
 function moveCards(board) {
-        let columns = board.querySelectorAll('.board-column');
-        let drake = dragula({
-          copy: false
-        });
-        for (let column of columns) {
+    let columns = board.querySelectorAll('.board-column');
+    let drake = dragula({
+        copy: false
+    });
+    for (let column of columns) {
         drake.containers.push(column);
-        }
+    }
 
-        for (let column of columns) {
-            let cards = column.children;
-            let nodeListForEach = function (array, callback, scope) {
-                for (let i = 0; i < array.length; i++) {
-                    let newStatusId = column.dataset.statusId;
-                    callback.call(scope, i, array[i], newStatusId);
-                }
-            };
+    for (let column of columns) {
+        let cards = column.children;
+        let nodeListForEach = function (array, callback, scope) {
+            for (let i = 0; i < array.length; i++) {
+                let newStatusId = column.dataset.statusId;
+                callback.call(scope, i, array[i], newStatusId);
+            }
+        };
 
-            drake.on('dragend', function () {
-                let cardsData = [];
-                nodeListForEach(cards, function (index, card, newStatusId) {
-                    let orderOfCard = card.dataset.order = index + 1;
-                    cardsData.push({
-                        id: parseInt(card.dataset.cardId),
-                        order: orderOfCard,
-                        status_id: parseInt(newStatusId),
-                        board_id: parseInt(card.dataset.boardId)
-                    });
-                    console.log(cardsData);
+        drake.on('dragend', function () {
+            let cardsData = [];
+            nodeListForEach(cards, function (index, card, newStatusId) {
+                let orderOfCard = card.dataset.order = index + 1;
+                cardsData.push({
+                    id: parseInt(card.dataset.cardId),
+                    order: orderOfCard,
+                    status_id: parseInt(newStatusId),
+                    board_id: parseInt(card.dataset.boardId)
                 });
-                dataHandler.moveCards(cardsData);
+                console.log(cardsData);
             });
-        }
+            dataHandler.moveCards(cardsData);
+        });
+    }
 }
 
 //--------------------------------------------------
