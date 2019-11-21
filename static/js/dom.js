@@ -527,7 +527,6 @@ function moveCards(board) {
                 order: parseInt(card.dataset.order),
                 status_id: targetCards.includes(card) ? target.dataset.statusId : source.dataset.statusId,
             }));
-            console.log(requestData);
             dataHandler.moveCards(requestData);
         });
 }
