@@ -473,10 +473,10 @@ function deleteCard(event) {
 }
 
 //--------------------------------------------------
-// REORDER CARDS
+// MOVE CARDS
 //--------------------------------------------------
 
-function moveCards(board, column) {
+function moveCards(board) {
         let columns = board.querySelectorAll('.board-column');
         let drake = dragula({
           copy: false
@@ -485,71 +485,31 @@ function moveCards(board, column) {
         drake.containers.push(column);
         }
 
-        let cards = column.children;
-        let nodeListForEach = function (array, callback, scope) {
-            for (let i = 0; i < array.length; i++) {
-                let newStatusId = column.dataset.statusId;
-                callback.call(scope, i, array[i], newStatusId);
-            }
-        };
+        for (let column of columns) {
+            let cards = column.children;
+            let nodeListForEach = function (array, callback, scope) {
+                for (let i = 0; i < array.length; i++) {
+                    let newStatusId = column.dataset.statusId;
+                    callback.call(scope, i, array[i], newStatusId);
+                }
+            };
 
-        drake.on('dragend', function () {
-            let cardsData = [];
-            nodeListForEach(cards, function(index, card, newStatusId) {
-                let orderOfCard = card.dataset.order = index + 1;
-                cardsData.push({
-                    id: parseInt(card.dataset.cardId),
-                    order: orderOfCard,
-                    status_id: parseInt(newStatusId),
-                    board_id: parseInt(card.dataset.boardId)
+            drake.on('dragend', function () {
+                let cardsData = [];
+                nodeListForEach(cards, function (index, card, newStatusId) {
+                    let orderOfCard = card.dataset.order = index + 1;
+                    cardsData.push({
+                        id: parseInt(card.dataset.cardId),
+                        order: orderOfCard,
+                        status_id: parseInt(newStatusId),
+                        board_id: parseInt(card.dataset.boardId)
+                    });
+                    console.log(cardsData);
                 });
-                console.log(cardsData);
-                });
-            dataHandler.moveCards(cardsData);
+                dataHandler.moveCards(cardsData);
             });
-}
-
-//--------------------------------------------------
-// CHANGE CARD STATUS
-//--------------------------------------------------
-
-function changeCardStatus(board) {
-    let columns = board.querySelectorAll('.board-column');
-    let drake = dragula({
-          copy: false
-        });
-    for (let column of columns) {
-        drake.containers.push(column);
-
         }
-
-    //let columnIds = [];
-    for (let column of columns) {
-        //columnIds.push(parseInt(column.dataset.statusId));
-        let cards = column.children;
-        // let nodeListForEach = function (array, callback, scope) {
-        //     for (let i = 0; i < array.length; i++) {
-        //         let newStatusId = column.dataset.statusId;
-        //         callback.call(scope, newStatusId, array[i]);
-        //     }
-        // };
-        drake.on('dragend', function () {
-            let cardsData = [];
-            nodeListForEach(cards, function(newStatusId, card) {
-                cardsData.push({
-                    id: parseInt(card.dataset.cardId),
-                    status_id: parseInt(newStatusId),
-                    board_id: parseInt(card.dataset.boardId)
-                });
-                console.log(cardsData);
-                dataHandler.changeColumnOfCards(cardsData);
-                });
-    })
-
-    }
 }
-
-
 
 //--------------------------------------------------
 // REGISTRATION MODAL
@@ -735,7 +695,6 @@ export const dom = {
             saveButton.addEventListener('click', renameCard);
             deleteButton.addEventListener('click', (event) => deleteCard(event));
             column.appendChild(cardNode);
-            moveCards(board, column);
         }
         //changeCardStatus(board);
     },
