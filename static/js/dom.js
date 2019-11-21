@@ -472,6 +472,46 @@ function deleteCard(event) {
 }
 
 //--------------------------------------------------
+// CHANGE CARD STATUS
+//--------------------------------------------------
+
+function changeCardStatus(board) {
+    let columns = board.querySelectorAll('.board-column');
+    let drake = dragula({
+          copy: false
+        });
+    for (let column of columns) {
+        drake.containers.push(column);
+
+        }
+
+    let columnIds = [];
+    for (let column of columns) {
+        columnIds.push(parseInt(column.dataset.statusId));
+        let cards = column.children;
+        let nodeListForEach = function (array, callback, scope) {
+            for (let i = 0; i < array.length; i++) {
+                let newStatusId = column.dataset.statusId;
+                callback.call(scope, newStatusId, array[i]);
+            }
+        };
+        drake.on('dragend', function () {
+            let cardsData = [];
+            nodeListForEach(cards, function(newStatusId, card) {
+                cardsData.push({
+                    id: parseInt(card.dataset.cardId),
+                    status_id: parseInt(newStatusId),
+                    board_id: parseInt(card.dataset.boardId)
+                });
+                console.log(cardsData);
+                dataHandler.changeColumnOfCards(cardsData);
+                });
+    })
+
+    }
+}
+
+//--------------------------------------------------
 // REGISTRATION MODAL
 //--------------------------------------------------
 
@@ -659,45 +699,9 @@ export const dom = {
             column.appendChild(cardNode);
 
         }
-
         changeCardStatus(board);
 
 
-        function changeCardStatus(board) {
-            let columns = board.querySelectorAll('.board-column');
-            let drake = dragula({
-                  copy: false
-                });
-            for (let column of columns) {
-                drake.containers.push(column);
-
-                }
-
-            let columnIds = [];
-            for (let column of columns) {
-                columnIds.push(parseInt(column.dataset.statusId));
-                let cards = column.children;
-                let nodeListForEach = function (array, callback, scope) {
-                    for (let i = 0; i < array.length; i++) {
-                        let newStatusId = column.dataset.statusId;
-                        callback.call(scope, newStatusId, array[i]);
-                    }
-                };
-                drake.on('dragend', function () {
-                    let cardsData = [];
-                    nodeListForEach(cards, function(newStatusId, card) {
-                        cardsData.push({
-                            id: parseInt(card.dataset.cardId),
-                            status_id: parseInt(newStatusId),
-                            board_id: parseInt(card.dataset.boardId)
-                        });
-                        console.log(cardsData);
-                        dataHandler.changeColumnOfCards(cardsData);
-                        });
-            })
-
-            }
-        }
 
 
     },
