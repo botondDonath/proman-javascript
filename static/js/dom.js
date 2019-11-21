@@ -722,6 +722,7 @@ export const dom = {
             const columns = board.querySelector('.board-columns');
             columns.appendChild(column);
         }
+        changeCardStatus(board);
     }
     // here comes more features
 };
