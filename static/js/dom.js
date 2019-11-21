@@ -495,31 +495,43 @@ function deleteCard(event) {
     showFeedback('Card deleted!');
 }
 
-
 //--------------------------------------------------
-// REORDER CARDS
+// MOVE CARDS
 //--------------------------------------------------
 
-function reorderCards(column) {
-    let sortableCards = dragula([column]);
-    let cards = column.children;
-    let nodeListForEach = function (array, callback, scope) {
-        for (let i = 0; i < array.length; i++) {
-            callback.call(scope, i, array[i]);
-        }
-    };
-    sortableCards.on('dragend', function () {
-        let orderOfCards = [];
-        nodeListForEach(cards, function (index, row) {
-            let orderOfCard = row.dataset.order = index + 1;
-            orderOfCards.push({
-                id: parseInt(row.dataset.cardId),
-                order: orderOfCard,
-                board_id: row.dataset.boardId
-            });
+function moveCards(board) {
+        let columns = board.querySelectorAll('.board-column');
+        let drake = dragula({
+          copy: false
         });
-        dataHandler.reorderCards(orderOfCards);
-    });
+        for (let column of columns) {
+        drake.containers.push(column);
+        }
+
+        for (let column of columns) {
+            let cards = column.children;
+            let nodeListForEach = function (array, callback, scope) {
+                for (let i = 0; i < array.length; i++) {
+                    let newStatusId = column.dataset.statusId;
+                    callback.call(scope, i, array[i], newStatusId);
+                }
+            };
+
+            drake.on('dragend', function () {
+                let cardsData = [];
+                nodeListForEach(cards, function (index, card, newStatusId) {
+                    let orderOfCard = card.dataset.order = index + 1;
+                    cardsData.push({
+                        id: parseInt(card.dataset.cardId),
+                        order: orderOfCard,
+                        status_id: parseInt(newStatusId),
+                        board_id: parseInt(card.dataset.boardId)
+                    });
+                    console.log(cardsData);
+                });
+                dataHandler.moveCards(cardsData);
+            });
+        }
 }
 
 //--------------------------------------------------
@@ -772,11 +784,8 @@ export const dom = {
             saveButton.addEventListener('click', renameCard);
             deleteButton.addEventListener('click', (event) => deleteCard(event));
             column.appendChild(cardNode);
-
-            reorderCards(column);
-
-
         }
+        moveCards(board);
     },
     loadColumns: function (board) {
         const boardId = board.dataset.boardId;

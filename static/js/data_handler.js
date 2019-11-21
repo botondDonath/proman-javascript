@@ -120,8 +120,8 @@ export let dataHandler = {
             callback(response, userData);
         })
     },
-    reorderCards: function (cardData) {
-        this._api_post('/reorder-cards', cardData, (response) => {
+    moveCards: function (cardData) {
+        this._api_post('/cards/order-and-status', cardData, (response) => {
            this._data = response;
         })
     },

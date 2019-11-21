@@ -211,14 +211,14 @@ def insert_user(cursor, user_data):
 
 
 @connection_handler
-def update_cards_order(cursor, cards_data):
+def update_cards_order_and_status(cursor, cards_data):
     for card in cards_data:
         cursor.execute(
             """
             UPDATE cards 
-            SET "order" = %(order)s 
+            SET "order" = %(order)s , status_id = %(status_id)s
             WHERE id = %(id)s
-            """, {'id': card['id'], 'order': card['order']}
+            """, {'id': card['id'], 'order': card['order'], 'status_id': card['status_id']}
         )
 
 
