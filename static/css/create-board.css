@@ -1,7 +1,7 @@
 .container.create-board
 {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     /*width: 475px;*/
     padding: 0;
@@ -74,4 +74,8 @@ button.save-board:hover {
     color: var(--nice-blue);
     border-right: var(--nice-blue) solid 2px;
     padding-right: 5px;
+}
+
+.switch-private {
+    display: flex;
 }
