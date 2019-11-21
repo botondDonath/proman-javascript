@@ -50,8 +50,8 @@ export let dataHandler = {
             callback(response);
         });
     },
-    getPrivateBoards: function (username, callback) {
-        this._api_get(`/boards/${username}`, (response) => {
+    getPrivateBoards: function (callback) {
+        this._api_get(`/boards/private`, (response) => {
             callback(response);
         })
     },

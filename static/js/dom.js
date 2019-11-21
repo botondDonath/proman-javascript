@@ -214,6 +214,32 @@ function handleOutsideClick(event) {
     outsideClick.handleColumnTitle(event);
     outsideClick.handleNewColumn(event);
 }
+//--------------------------------------------------
+// GET PRIVATE BOARDS
+//--------------------------------------------------
+function handleTogglePrivate() {
+    const publicBoards = document.querySelectorAll('.board');
+    for (const board of publicBoards) {
+        if (!u.isElementHidden(board)) {
+            u.toggleElementDisplay(board) }
+    }
+    dataHandler.getPrivateBoards( (boards)=> {
+        dom.showBoards(boards);
+        console.log(boards)
+    })
+
+}
+
+function handleTogglePublic() {
+    const allBoards = document.querySelectorAll('.board');
+    for (const board of allBoards) {
+        if (!board.classList.contains('hidden')) {
+            board.remove();
+        } else {
+            u.toggleElementDisplay(board);
+        }
+    }
+}
 
 //--------------------------------------------------
 // CREATE BOARD
@@ -634,6 +660,13 @@ function handleLogout(event) {
 //----------------------------------------------------------------------
 // ADD EVENT HANDLERS WHEN LOADING BOARDS OR ONE BOARD
 //----------------------------------------------------------------------
+function _addEventListenerToPublicPrivate() {
+    const privateButton = document.querySelector('button.toggle-private');
+    privateButton.addEventListener('click', handleTogglePrivate);
+
+    const publicButton = document.querySelector('button.toggle-public');
+    publicButton.addEventListener('click', handleTogglePublic)
+}
 
 function _addEventListenerToBoardTitles(board = null) {
     const selectionRoot = board ? board : document;
@@ -722,7 +755,8 @@ export const dom = {
         openRegistrationModalButton.addEventListener('click', openRegistrationModal);
         registrationModalContainer.addEventListener('click', closeRegistrationModal);
         registrationForm.addEventListener('click', submitRegistration);
-        registrationForm.addEventListener('input', validateRegistrationFormInRealTime)
+        registrationForm.addEventListener('input', validateRegistrationFormInRealTime);
+        _addEventListenerToPublicPrivate()
     },
     loadBoards: function () {
         // retrieves boards and makes showBoards called
