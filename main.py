@@ -33,12 +33,12 @@ def create_board():
     return data_manager.get_newest_board()
 
 
-@app.route('/boards/<string: username>')
+@app.route('/boards/private')
 @json_response
-def get_private_boards(username: str):
-    if username == session.get('username'):
-        boards = data_manager.get_private_boards(username)
-        return boards
+def get_private_boards():
+    username = session.get('username')
+    boards = data_manager.get_private_boards(username)
+    return boards
 
 
 @app.route("/get-cards/<board_id>")
