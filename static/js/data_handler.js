@@ -86,9 +86,9 @@ export let dataHandler = {
         // the card is retrieved and then the callback function is called with the card
         this._api_get(`/card/${cardId}`, (card) => callback(card))
     },
-    createNewBoard: function (boardTitle, callback) {
+    createNewBoard: function (boardTitle, isPrivate, callback) {
         // creates new board, saves it and calls the callback function with its data
-        this._api_post('/boards', {'title': boardTitle}, boardData => callback(boardData))
+        this._api_post('/boards', {'title': boardTitle, 'private': isPrivate}, boardData => callback(boardData))
     },
     createNewCard: function (cardTitle, boardId, statusId, callback) {
         // creates new card, saves it and calls the callback function with its data

@@ -29,8 +29,12 @@ def get_public_boards():
 @json_response
 def create_board():
     req = request.get_json()
+    private = req['private']
     data_manager.insert_board(req['title'])
-    return data_manager.get_newest_board()
+    new_board = data_manager.get_newest_board()
+    if private:
+        data_manager.set_board_private(new_board['id'], session.get('username'))
+    return new_board
 
 
 @app.route('/boards/private')

@@ -217,7 +217,9 @@ function handleOutsideClick(event) {
 //--------------------------------------------------
 // GET PRIVATE BOARDS
 //--------------------------------------------------
-function handleTogglePrivate() {
+function handleTogglePrivate(event) {
+    const button = event.currentTarget;
+    u.setElementActiveState(button, true);
     const publicBoards = document.querySelectorAll('.board');
     for (const board of publicBoards) {
         if (!u.isElementHidden(board)) {
@@ -236,7 +238,9 @@ function handleTogglePrivate() {
 
 }
 
-function handleTogglePublic() {
+function handleTogglePublic(event) {
+    const privateButton = document.querySelector('button.toggle-private');
+    u.setElementActiveState(privateButton, false);
     const allBoards = document.querySelectorAll('.board');
     for (const board of allBoards) {
         if (!board.classList.contains('hidden')) {
@@ -285,7 +289,9 @@ function handleSaveBoardButtonClick() {
         showFeedback('Board title cannot be empty!');
         return;
     }
-    dataHandler.createNewBoard(boardTitle, (boardData) => {
+    const privateButton = document.querySelector('button.toggle-private');
+    let isPrivate = u.isElementActive(privateButton);
+    dataHandler.createNewBoard(boardTitle, isPrivate, (boardData) => {
         const boardTemplate = u.getBoardTemplate();
         const board = renderBoard(boardData, boardTemplate);
         const appendedBoard = appendBoard(board);
@@ -668,10 +674,10 @@ function handleLogout(event) {
 //----------------------------------------------------------------------
 function _addEventListenerToPublicPrivate() {
     const privateButton = document.querySelector('button.toggle-private');
-    privateButton.addEventListener('click', handleTogglePrivate);
+    privateButton.addEventListener('click', event => handleTogglePrivate(event));
 
     const publicButton = document.querySelector('button.toggle-public');
-    publicButton.addEventListener('click', handleTogglePublic)
+    publicButton.addEventListener('click', event => handleTogglePublic(event));
 }
 
 function _addEventListenerToBoardTitles(board = null) {

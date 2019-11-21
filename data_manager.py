@@ -37,6 +37,18 @@ def get_private_boards(cursor, username):
 
 
 @connection_handler
+def set_board_private(cursor, board_id, username):
+    cursor.execute(
+        '''
+        INSERT INTO users_boards (board_id, user_id)
+        VALUES (%(board_id)s, (SELECT id
+                                FROM users
+                                WHERE username = %(username)s))
+        ''',
+        {'board_id': board_id, 'username': username}
+    )
+
+@connection_handler
 def get_cards_for_board(cursor, board_id):
     cursor.execute(
         '''
