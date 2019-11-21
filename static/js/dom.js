@@ -218,8 +218,10 @@ function handleOutsideClick(event) {
 // GET PRIVATE BOARDS
 //--------------------------------------------------
 function handleTogglePrivate(event) {
-    const button = event.currentTarget;
-    u.setElementActiveState(button, true);
+    const privateButton = event.currentTarget;
+    u.setElementActiveState(privateButton, true);
+    privateButton.disabled = true;
+    document.querySelector('button.toggle-public').disabled = false;
     const publicBoards = document.querySelectorAll('.board');
     for (const board of publicBoards) {
         if (!u.isElementHidden(board)) {
@@ -240,6 +242,9 @@ function handleTogglePrivate(event) {
 
 function handleTogglePublic(event) {
     const privateButton = document.querySelector('button.toggle-private');
+    privateButton.disabled = false;
+    const publicButton = event.currentTarget;
+    publicButton.disabled = true;
     u.setElementActiveState(privateButton, false);
     const allBoards = document.querySelectorAll('.board');
     for (const board of allBoards) {
