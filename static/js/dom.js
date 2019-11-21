@@ -499,14 +499,18 @@ function deleteCard(event) {
 // MOVE CARDS
 //--------------------------------------------------
 
-function getUpdatedCards(cards, draggedCard = null) {
+function getUpdatedCards(cards, statusId, draggedCard = null) {
     let updatedCards = [];
     for (let i = 0; i < cards.length; i++) {
         const currentOrder = parseInt(cards[i].dataset.order);
         const newOrder = i + 1;
         if (currentOrder !== newOrder || cards[i] === draggedCard) {
             cards[i].dataset.order = newOrder.toString();
-            updatedCards.push(cards[i]);
+            updatedCards.push({
+                id: parseInt(cards[i].dataset.cardId),
+                order: newOrder,
+                status_id: statusId
+            });
         }
     }
     return updatedCards
@@ -519,15 +523,11 @@ function moveCards(board) {
         ignoreInputTextSelection: true,
     })
         .on('drop', function (draggedCard, target, source) {
-            const sourceCards = (target !== source) ? getUpdatedCards(source.querySelectorAll('.card')) : [];
-            const targetCards = getUpdatedCards(target.querySelectorAll('.card'), draggedCard);
-            const changedCards = sourceCards.concat(targetCards);
-            const requestData = changedCards.map(card => ({
-                id: parseInt(card.dataset.cardId),
-                order: parseInt(card.dataset.order),
-                status_id: targetCards.includes(card) ? target.dataset.statusId : source.dataset.statusId,
-            }));
-            dataHandler.moveCards(requestData);
+            let sourceCards = (target !== source) ? source.querySelectorAll('.card') : null;
+            let targetCards = target.querySelectorAll('.card');
+            sourceCards = sourceCards ? getUpdatedCards(sourceCards, source.dataset.statusId) : [];
+            targetCards = getUpdatedCards(targetCards, target.dataset.statusId, draggedCard);
+            dataHandler.moveCards(sourceCards.concat(targetCards));
         });
 }
 
