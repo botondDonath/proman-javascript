@@ -10,7 +10,8 @@ def get_boards(cursor):
         SELECT id, title
         FROM boards
         WHERE id NOT IN (SELECT board_id
-                         FROM users_boards)
+                         FROM users_boards
+                         WHERE user_id IS NOT NULL )
         ORDER BY id;
         '''
     )
