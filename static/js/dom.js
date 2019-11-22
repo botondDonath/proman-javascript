@@ -309,7 +309,8 @@ function handleSaveBoardButtonClick() {
         _addEventListenerToSaveBoardTitleButtons(appendedBoard);
 
         input.value = input.dataset.default;
-        u.toggleElementDisplay(u.getCreateBoardFormContainer());
+        const pseudoClick = new Event('click');
+        document.querySelector('button.create-board').dispatchEvent(pseudoClick);
         showFeedback('Board created!');
     });
 }
@@ -537,31 +538,40 @@ function deleteCard(event) {
     showFeedback('Card deleted!');
 }
 
-
 //--------------------------------------------------
-// REORDER CARDS
+// MOVE CARDS
 //--------------------------------------------------
 
-function reorderCards(column) {
-    let sortableCards = dragula([column]);
-    let cards = column.children;
-    let nodeListForEach = function (array, callback, scope) {
-        for (let i = 0; i < array.length; i++) {
-            callback.call(scope, i, array[i]);
-        }
-    };
-    sortableCards.on('dragend', function () {
-        let orderOfCards = [];
-        nodeListForEach(cards, function (index, row) {
-            let orderOfCard = row.dataset.order = index + 1;
-            orderOfCards.push({
-                id: parseInt(row.dataset.cardId),
-                order: orderOfCard,
-                board_id: row.dataset.boardId
+function getUpdatedCards(cards, statusId, draggedCard = null) {
+    let updatedCards = [];
+    for (let i = 0; i < cards.length; i++) {
+        const currentOrder = parseInt(cards[i].dataset.order);
+        const newOrder = i + 1;
+        if (currentOrder !== newOrder || cards[i] === draggedCard) {
+            cards[i].dataset.order = newOrder.toString();
+            updatedCards.push({
+                id: parseInt(cards[i].dataset.cardId),
+                order: newOrder,
+                status_id: statusId
             });
+        }
+    }
+    return updatedCards
+}
+
+function moveCards(board) {
+    let columns = board.querySelectorAll('.board-column');
+    dragula(Array.from(columns), {
+        copy: false,
+        ignoreInputTextSelection: true,
+    })
+        .on('drop', function (draggedCard, target, source) {
+            let sourceCards = (target !== source) ? source.querySelectorAll('.card') : null;
+            let targetCards = target.querySelectorAll('.card');
+            sourceCards = sourceCards ? getUpdatedCards(sourceCards, source.dataset.statusId) : [];
+            targetCards = getUpdatedCards(targetCards, target.dataset.statusId, draggedCard);
+            dataHandler.moveCards(sourceCards.concat(targetCards));
         });
-        dataHandler.reorderCards(orderOfCards);
-    });
 }
 
 //--------------------------------------------------
@@ -613,9 +623,10 @@ function submitRegistration(event) {
 }
 
 function validateRegistrationFormInRealTime(event) {
+    const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
     const confirmedPasswordInput = document.getElementById('password-confirm');
-    if ([passwordInput, confirmedPasswordInput].includes(event.target)) {
+    if ([usernameInput, passwordInput, confirmedPasswordInput].includes(event.target)) {
         const submitButton = document.getElementById('register');
         submitButton.disabled = !(
             this.checkValidity() &&
@@ -821,11 +832,8 @@ export const dom = {
             saveButton.addEventListener('click', renameCard);
             deleteButton.addEventListener('click', (event) => deleteCard(event));
             column.appendChild(cardNode);
-
-            reorderCards(column);
-
-
         }
+        moveCards(board);
     },
     loadColumns: function (board) {
         const boardId = board.dataset.boardId;

@@ -62,3 +62,7 @@
     padding-right: 4px;
     color: var(--nice-blue);
 }
+
+.board-column {
+    min-height: 50px;
+}
