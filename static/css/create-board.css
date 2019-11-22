@@ -1,5 +1,4 @@
-.container.create-board
-{
+.container.create-board {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -8,17 +7,20 @@
     margin-bottom: 30px;
 }
 
+.create-board-left {
+    display: flex;
+    justify-content: flex-start;
+}
+
 .button-container.create-board,
-.form-container.create-board:not(.hidden)
-{
+.form-container.create-board:not(.hidden) {
     display: flex;
     align-items: stretch;
     height: 40px;
 }
 
 .input-container.create-board,
-.button-container.save-board
-{
+.button-container.save-board {
     display: flex;
     align-items: stretch;
 }
@@ -78,4 +80,36 @@ button.save-board:hover {
 
 .switch-private {
     display: flex;
+}
+
+.toggle-public, .toggle-private {
+    box-sizing: border-box;
+    width: 66px;
+    padding: 6px;
+    border: none;
+    border-left: black solid 1px;
+    background-color: rgba(0, 0, 0, .9);
+    color: var(--soft-grey);
+}
+
+.toggle-public:hover, .toggle-private:hover {
+    color: var(--nice-blue);
+}
+
+.toggle-public:enabled:hover {
+    border-left: var(--nice-blue) solid 2px;
+    padding-left: 5px;
+}
+
+.toggle-private:enabled:hover {
+    border-right: var(--nice-blue) solid 2px;
+    padding-right: 5px;
+}
+
+.toggle-private:disabled, .toggle-public:disabled {
+    color: var(--heavy-grey);
+}
+
+.toggle-private:disabled:hover, .toggle-public:disabled:hover {
+    color: var(--heavy-grey);
 }
