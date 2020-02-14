@@ -48,7 +48,7 @@ const createColumns = function (status, board) {
     return clone;
 };
 
-const createCard = function (card) {
+const creacalteCard = function (card) {
     const template = document.querySelector('#card-template');
     const copy = document.importNode(template.content, true);
 

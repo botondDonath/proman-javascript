@@ -145,7 +145,6 @@ def move_cards():
 def log_user_in():
     user_data = request.get_json()
     authentication_result = data_manager.authenticate_user(user_data)
-    print(authentication_result)
     if 'error' not in authentication_result:
         session.update(authentication_result)
     return authentication_result
